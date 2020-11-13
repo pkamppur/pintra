@@ -1,0 +1,138 @@
+@use '../common.scss';
+
+$navBar: rgb(83, 88, 99);
+$navBarMenu: darken($navBar, 10%);
+$nav-background-color: #222;
+$nav-background-color-hover: lighten($nav-background-color, 10%);
+$nav-link-text-color-hover: #fff;
+$nav-link-text-color: #fff;
+
+.header {
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  font-family: sans-serif;
+  background-color: $navBar;
+
+  @include common.phone {
+    position: fixed;
+    top: 0;
+  }
+}
+
+.padding {
+  height: 0;
+
+  @include common.phone {
+    height: 50px;
+  }
+}
+
+.brand {
+  width: auto;
+  height: 100%;
+  float: left;
+  margin: 0 0 0 0;
+  padding: 0 1rem 0 1rem;
+}
+
+.menu {
+  width: 70%;
+  height: 100%;
+  float: right;
+
+  @include common.phone {
+    width: 100%;
+    height: auto;
+  }
+}
+.menu ul {
+  width: 100%;
+  height: inherit;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-end;
+
+  @include common.phone {
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s;
+  }
+
+  li {
+    list-style: none;
+    display: block;
+
+    @include common.phone {
+      text-align: left;
+      width: 100%;
+      background-color: $navBarMenu;
+    }
+  }
+}
+
+.brand:hover {
+  background-color: $nav-background-color-hover;
+}
+
+.menu .navLink {
+  display: inline-block;
+  padding: 0 1rem;
+}
+
+.navLink {
+  height: 100%;
+  width: inherit;
+  color: $nav-link-text-color;
+  text-decoration: none;
+}
+
+.navLink:hover {
+  background-color: $nav-background-color-hover;
+  color: $nav-link-text-color-hover;
+}
+
+.menu ul li:hover {
+  background-color: $nav-background-color-hover;
+}
+.menu ul li:hover a {
+  color: $nav-link-text-color-hover;
+}
+
+.menuToggle {
+  display: none;
+}
+
+@include common.phone {
+  .menuToggle ~ ul {
+    position: absolute;
+  }
+  .menuToggle:checked ~ ul {
+    max-height: 90vh;
+  }
+}
+
+.menuIconLabel {
+  display: none;
+
+  @include common.phone {
+    width: 100px;
+    height: inherit;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    background-image: url('/assets/icon-menu.png');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 30%;
+  }
+}
+
+.menuIcon {
+  display: inline-block;
+}

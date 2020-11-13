@@ -1,0 +1,12 @@
+@use 'components/common.scss';
+
+$padding: 15px;
+$borders: 15px;
+
+.main {
+  padding-bottom: 1rem; // margin collapse clips card shadow from bottom
+  padding: 1rem;
+
+  margin-left: auto;
+  margin-right: auto;
+}

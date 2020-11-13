@@ -1,0 +1,47 @@
+$colors: (
+  primary-light: lighten(#005dff, 40%),
+  primary-dark: darken(#005dff, 40%),
+  accent: rgb(255, 83, 106),
+);
+
+$padding: 15px;
+$borders: 15px;
+
+@function color($color-name) {
+  @return map-get($colors, $color-name);
+}
+
+$desktop-small: 600px;
+$desktop: 800px;
+$desktop-large: 1100px;
+$phone: calc(#{$desktop-small - 1});
+
+@mixin phone {
+  @media (max-width: #{$phone}) {
+    @content;
+  }
+}
+
+@mixin desktop-small {
+  @media (min-width: #{$desktop-small}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$desktop}) {
+    @content;
+  }
+}
+
+@mixin desktop-large {
+  @media (min-width: #{$desktop-large}) {
+    @content;
+  }
+}
+
+.main {
+  a:not(:hover) {
+    color: black;
+  }
+}
