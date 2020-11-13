@@ -1,0 +1,11 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "search.useIgnoreFiles": true,
+  "files.exclude": {
+    "out": true,
+    "node_modules": true
+  }
+}
