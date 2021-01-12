@@ -32,6 +32,7 @@ export default function HomePage() {
         >
           <div className={styles.dialogContentContainer}>{dialogContent}</div>
         </Dialog>
+        <div className={styles.sectionDivider}>Vacation</div>
         <section className={styles.cards}>
           <Card title="Vacation Image 01" openDialog={openDialog}>
             <p>

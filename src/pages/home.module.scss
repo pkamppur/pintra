@@ -14,6 +14,15 @@ $borders: 15px;
   margin-left: auto;
   margin-right: auto;
 
+  .sectionDivider {
+    background-color: #dfdfdf;
+    padding: 5px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 120%;
+  }
+
   $cardPadding: 6px;
 
   .cards {
