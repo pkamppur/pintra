@@ -23,7 +23,6 @@ export default function HomePage() {
   return (
     <Scaffold title="Pintra">
       <main className={styles.main}>
-        <h1>Resources</h1>
         <Dialog
           open={open}
           onClose={handleClose}
@@ -32,6 +31,8 @@ export default function HomePage() {
         >
           <div className={styles.dialogContentContainer}>{dialogContent}</div>
         </Dialog>
+
+        <h1>Resources</h1>
         <div className={styles.sectionDivider}>Vacation</div>
         <section className={styles.cards}>
           <Card title="Vacation Image 01" openDialog={openDialog}>
