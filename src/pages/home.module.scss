@@ -14,13 +14,13 @@ $borders: 15px;
   margin-left: auto;
   margin-right: auto;
 
-  $cardPadding: 5px;
+  $cardPadding: 6px;
 
   .cards {
+    max-width: 70em;
+
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-flow: row wrap;
     padding: $cardPadding;
   }
 
@@ -33,16 +33,17 @@ $borders: 15px;
     //flex: 1 0;
     //min-width: 250px;
     //max-width: 300px;
-    width: 275px;
+    width: 256px;
 
     //height: 200px;
     margin: $cardPadding;
+    margin-bottom: 10px;
 
     > div {
       padding: 10px;
     }
 
-    p {
+    .markdownContent {
       display: none;
     }
   }
