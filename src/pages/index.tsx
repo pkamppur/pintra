@@ -34,6 +34,16 @@ export default function HomePage() {
         </Dialog>
 
         <h1>Resources</h1>
+        <div className={styles.sectionDivider}>Section</div>
+        <section className={styles.cards}>
+          {items.map((item) => (
+            <Card title={item.title} key={item.id} openDialog={openDialog}>
+              <h2>{item.title}</h2>
+              <Markdown content={item.content} />
+            </Card>
+          ))}
+        </section>
+
         <div className={styles.sectionDivider}>Vacation</div>
         <section className={styles.cards}>
           <Card title="Vacation Image 01" openDialog={openDialog}>
