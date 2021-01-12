@@ -122,3 +122,8 @@ function Card({
     </article>
   )
 }
+
+function Markdown({ content }: { content: string }) {
+  const renderedContent = MarkdownIt({ html: false, linkify: true }).render(content)
+  return <div dangerouslySetInnerHTML={{ __html: renderedContent }} />
+}
