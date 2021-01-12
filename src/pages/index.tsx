@@ -1,7 +1,9 @@
 import Scaffold from 'components/scaffold'
 import styles from './home.module.scss'
 import { ReactNode, useState } from 'react'
-import { Dialog } from '@material-ui/core'
+import { Dialog, Popover } from '@material-ui/core'
+import MarkdownIt from 'markdown-it'
+import { items } from '../components/items'
 
 export default function HomePage() {
   const [dialogContent, setDialogContent] = useState<ReactNode>()
