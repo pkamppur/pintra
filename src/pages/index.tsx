@@ -52,7 +52,6 @@ export default function HomePage() {
               market-facing.
             </p>
           </Card>
-
           <Card title="Vacation Image 02" openDialog={openDialog}>
             <p>
               Staff engagement synergize productive mindfulness and waste of resources cross sabers, or forcing function
@@ -63,14 +62,12 @@ export default function HomePage() {
               position, nor closer to the metal goalposts, are there any leftovers in the kitchen?.
             </p>
           </Card>
-
           <Card title="Vacation Image 03" openDialog={openDialog}>
             <p>
               Viral engagement anti-pattern back of the net, for meeting assassin horsehead offer. Loop back design
               thinking drop-dead date.{' '}
             </p>
           </Card>
-
           <Card title="Vacation Image 04" openDialog={openDialog}>
             <p>
               We need a paradigm shift get all your ducks in a row. I just wanted to give you a heads-up we need
@@ -78,14 +75,12 @@ export default function HomePage() {
               fire up your browser, or touch base closing these latest prospects is like putting socks on an octopus.
             </p>
           </Card>
-
           <Card title="Vacation Image 01" openDialog={openDialog}>
             <p>
               TUX re-inventing the wheel, and move the needle. Feature creep dogpile that but diversify kpis but
               market-facing.
             </p>
           </Card>
-
           <Card title="Vacation Image 02" openDialog={openDialog}>
             <p>
               Staff engagement synergize productive mindfulness and waste of resources cross sabers, or forcing function
@@ -96,14 +91,12 @@ export default function HomePage() {
               position, nor closer to the metal goalposts, are there any leftovers in the kitchen?.
             </p>
           </Card>
-
           <Card title="Vacation Image 03" openDialog={openDialog}>
             <p>
               Viral engagement anti-pattern back of the net, for meeting assassin horsehead offer. Loop back design
               thinking drop-dead date.{' '}
             </p>
           </Card>
-
           <Card title="Vacation Image 04" openDialog={openDialog}>
             <p>
               We need a paradigm shift get all your ducks in a row. I just wanted to give you a heads-up we need
