@@ -25,6 +25,7 @@ export default function HomePage() {
       <main className={styles.main}>
         <Dialog
           open={open}
+          transitionDuration={100}
           onClose={handleClose}
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
