@@ -41,68 +41,6 @@ export default function HomePage() {
             </section>
           </>
         ))}
-
-        <div className={styles.sectionDivider}>Vacation</div>
-        <section className={styles.cards}>
-          <Card title="Vacation Image 01" openDialog={openDialog}>
-            <p>
-              TUX re-inventing the wheel, and move the needle. Feature creep dogpile that but diversify kpis but
-              market-facing.
-            </p>
-          </Card>
-          <Card title="Vacation Image 02" openDialog={openDialog}>
-            <p>
-              Staff engagement synergize productive mindfulness and waste of resources cross sabers, or forcing function
-              shotgun approach drink the Kool-aid.
-            </p>
-            <p>
-              Execute are we in agreeance what do you feel you would bring to the table if you were hired for this
-              position, nor closer to the metal goalposts, are there any leftovers in the kitchen?.
-            </p>
-          </Card>
-          <Card title="Vacation Image 03" openDialog={openDialog}>
-            <p>
-              Viral engagement anti-pattern back of the net, for meeting assassin horsehead offer. Loop back design
-              thinking drop-dead date.{' '}
-            </p>
-          </Card>
-          <Card title="Vacation Image 04" openDialog={openDialog}>
-            <p>
-              We need a paradigm shift get all your ducks in a row. I just wanted to give you a heads-up we need
-              distributors to evangelize the new line to local markets when does this sunset? so waste of resources, yet
-              fire up your browser, or touch base closing these latest prospects is like putting socks on an octopus.
-            </p>
-          </Card>
-          <Card title="Vacation Image 01" openDialog={openDialog}>
-            <p>
-              TUX re-inventing the wheel, and move the needle. Feature creep dogpile that but diversify kpis but
-              market-facing.
-            </p>
-          </Card>
-          <Card title="Vacation Image 02" openDialog={openDialog}>
-            <p>
-              Staff engagement synergize productive mindfulness and waste of resources cross sabers, or forcing function
-              shotgun approach drink the Kool-aid.
-            </p>
-            <p>
-              Execute are we in agreeance what do you feel you would bring to the table if you were hired for this
-              position, nor closer to the metal goalposts, are there any leftovers in the kitchen?.
-            </p>
-          </Card>
-          <Card title="Vacation Image 03" openDialog={openDialog}>
-            <p>
-              Viral engagement anti-pattern back of the net, for meeting assassin horsehead offer. Loop back design
-              thinking drop-dead date.{' '}
-            </p>
-          </Card>
-          <Card title="Vacation Image 04" openDialog={openDialog}>
-            <p>
-              We need a paradigm shift get all your ducks in a row. I just wanted to give you a heads-up we need
-              distributors to evangelize the new line to local markets when does this sunset? so waste of resources, yet
-              fire up your browser, or touch base closing these latest prospects is like putting socks on an octopus.
-            </p>
-          </Card>
-        </section>
       </main>
     </Scaffold>
   )
