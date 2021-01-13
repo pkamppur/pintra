@@ -1,7 +1,3 @@
-interface Item {
-  title: string
-  id: string
-  content: string
-}
+import { Group } from './group'
 
-export const items: Item[] = []
+export const groups: Group[] = []

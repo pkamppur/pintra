@@ -3,7 +3,7 @@ import styles from './home.module.scss'
 import { ReactNode, useState } from 'react'
 import { Dialog, Popover } from '@material-ui/core'
 import MarkdownIt from 'markdown-it'
-import { items } from '../components/items'
+import { groups } from '../components/items'
 
 export default function HomePage() {
   const [dialogContent, setDialogContent] = useState<ReactNode>()
@@ -28,15 +28,19 @@ export default function HomePage() {
         </Dialog>
 
         <h1>Resources</h1>
-        <div className={styles.sectionDivider}>Section</div>
-        <section className={styles.cards}>
-          {items.map((item) => (
-            <Card title={item.title} key={item.id} openDialog={openDialog}>
-              <h2>{item.title}</h2>
-              <Markdown content={item.content} />
-            </Card>
-          ))}
-        </section>
+        {groups.map((group) => (
+          <>
+            <div className={styles.sectionDivider}>{group.title}</div>
+            <section className={styles.cards}>
+              {group.items.map((item) => (
+                <Card title={item.title} key={item.id} openDialog={openDialog}>
+                  <h2>{item.title}</h2>
+                  <Markdown content={item.content} />
+                </Card>
+              ))}
+            </section>
+          </>
+        ))}
 
         <div className={styles.sectionDivider}>Vacation</div>
         <section className={styles.cards}>
