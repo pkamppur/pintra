@@ -9,17 +9,9 @@ export default function HomePage() {
   const [dialogContent, setDialogContent] = useState<ReactNode>()
   const [open, setOpen] = useState(false)
 
-  const handleOpen = () => {
-    setOpen(true)
-  }
-
-  const handleClose = () => {
-    setOpen(false)
-  }
-
   const openDialog = (content: ReactNode) => {
     setDialogContent(content)
-    handleOpen()
+    setOpen(true)
   }
 
   return (
@@ -28,7 +20,7 @@ export default function HomePage() {
         <Dialog
           open={open}
           transitionDuration={100}
-          onClose={handleClose}
+          onClose={() => setOpen(false)}
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
         >
