@@ -57,12 +57,12 @@ function Card({
 }) {
   return (
     <div>
-      <article className={styles.card} onClick={() => openDialog(children)}>
+      <div className={styles.card} onClick={() => openDialog(children)}>
         <div>
           <div>{title}</div>
         </div>
         <div className={styles.markdownContent}>{children}</div>
-      </article>
+      </div>
     </div>
   )
 }
