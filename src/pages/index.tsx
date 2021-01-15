@@ -56,12 +56,14 @@ function Card({
   children: ReactNode
 }) {
   return (
-    <article className={styles.card} onClick={() => openDialog(children)}>
-      <div>
-        <div>{title}</div>
-      </div>
-      <div className={styles.markdownContent}>{children}</div>
-    </article>
+    <div>
+      <article className={styles.card} onClick={() => openDialog(children)}>
+        <div>
+          <div>{title}</div>
+        </div>
+        <div className={styles.markdownContent}>{children}</div>
+      </article>
+    </div>
   )
 }
 
