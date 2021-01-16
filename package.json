@@ -18,6 +18,7 @@
     "@material-ui/core": "^4.11.2",
     "markdown-it": "^12.0.4",
     "next": "^10.0.5",
+    "pg": "^8.5.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "sass": "^1.32.2"
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@types/markdown-it": "^12.0.1",
     "@types/node": "^14.14.20",
+    "@types/pg": "^7.14.8",
     "@types/react": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^4.12.0",
     "@typescript-eslint/parser": "^4.12.0",
