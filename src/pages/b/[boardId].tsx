@@ -1,10 +1,20 @@
 import { Dialog } from '@material-ui/core'
-import { groups } from 'components/items'
 import Scaffold from 'components/scaffold'
 import MarkdownIt from 'markdown-it'
 import { useRouter } from 'next/router'
 import { ReactNode, useState } from 'react'
+import { Group } from 'components/board/model'
+import useFetchBoard from 'components/board/useFetchBoard'
 import styles from './board.module.scss'
+import dynamic from 'next/dynamic'
+
+function asString(value: unknown): string | undefined {
+  if (typeof value === 'string' || value instanceof String) {
+    return value as string
+  } else {
+    return undefined
+  }
+}
 
 export default function Board() {
   const [dialogContent, setDialogContent] = useState<ReactNode>()
@@ -17,7 +27,31 @@ export default function Board() {
     setOpen(true)
   }
 
-  const board = { name: 'BoardName' }
+  const rawBoardId = router.query.boardId
+  const boardId = asString(rawBoardId)
+
+  const { loading, data, error } = useFetchBoard(boardId)
+
+  if (error) {
+    return (
+      <Scaffold title={`${boardId} - error | Pintra`}>
+        <div>failed to load {JSON.stringify(error)}</div>
+      </Scaffold>
+    )
+  }
+
+  if (loading || !data) {
+    return (
+      <Scaffold title={`Loading ${boardId} | Pintra`}>
+        <main className={styles.main}>
+          <div>Loading…</div>
+        </main>
+      </Scaffold>
+    )
+  }
+
+  const board = data
+  const groups: Group[] = []
 
   return (
     <Scaffold title={`${board.name} | Pintra`}>
@@ -31,8 +65,6 @@ export default function Board() {
         >
           <div className={styles.dialogContentContainer}>{dialogContent}</div>
         </Dialog>
-
-        <div>{JSON.stringify(router.query)}</div>
 
         <h1>Resources</h1>
         {groups.map((group) => (
