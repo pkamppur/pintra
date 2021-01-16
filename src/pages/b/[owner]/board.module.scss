@@ -1,0 +1,56 @@
+@use 'components/common.scss';
+
+$padding: 15px;
+$borders: 15px;
+
+.dialogContentContainer {
+  padding: 20px;
+}
+
+.main {
+  padding-bottom: 1rem; // margin collapse clips card shadow from bottom
+  padding: 1rem;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  .sectionDivider {
+    background-color: #dfdfdf;
+    padding: 5px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 120%;
+  }
+
+  $cardPadding: 6px;
+
+  .cards {
+    max-width: 70em;
+
+    display: flex;
+    flex-flow: row wrap;
+
+    padding: $cardPadding;
+  }
+
+  .card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+
+    width: 256px;
+
+    margin: $cardPadding;
+    margin-bottom: 10px;
+
+    > div {
+      padding: 10px;
+    }
+
+    .markdownContent {
+      display: none;
+    }
+  }
+}
