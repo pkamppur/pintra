@@ -20,5 +20,4 @@ export interface Card {
   version: number
 
   name: string
-  content: string
 }

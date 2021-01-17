@@ -136,5 +136,5 @@ export async function addCard(boardId: Id, sectionId: Id, name: string, content:
     }
   })
 
-  return { id: cardId, name, version: 0, content }
+  return { id: cardId, name, version: 0 }
 }
