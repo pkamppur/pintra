@@ -2,7 +2,7 @@ import { Dialog } from '@material-ui/core'
 import Scaffold from 'components/scaffold'
 import MarkdownIt from 'markdown-it'
 import { useRouter } from 'next/router'
-import { ReactNode, useState } from 'react'
+import { MouseEvent, ReactNode, useState } from 'react'
 import { Board, Group, Id } from 'shared/board/model'
 import useFetchBoard from 'components/board/useFetchBoard'
 import styles from './board.module.scss'
@@ -64,6 +64,11 @@ function BoardContents({ board }: { board: Board }) {
     setOpen(true)
   }
 
+  function addSection(e: MouseEvent) {
+    e.preventDefault()
+    console.log('The link was clicked.')
+  }
+
   const groups: Group[] = []
   return (
     <>
@@ -90,6 +95,11 @@ function BoardContents({ board }: { board: Board }) {
           </section>
         </>
       ))}
+      <div>
+        <a href="#" className={styles.sectionButton} onClick={addSection}>
+          + Add section
+        </a>
+      </div>
     </>
   )
 }

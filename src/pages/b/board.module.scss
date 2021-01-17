@@ -53,4 +53,14 @@ $borders: 15px;
       display: none;
     }
   }
+
+  .sectionButton {
+    color: #999;
+    padding: 4px;
+
+    &:hover {
+      color: #666;
+      background-color: #ddd;
+    }
+  }
 }
