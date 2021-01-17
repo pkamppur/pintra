@@ -24,8 +24,8 @@ export async function withDBClient<T>(func: (client: PoolClient) => Promise<T>):
 
     await _withDBClient(async (client) => {
       await client.query(`
-                CREATE TABLE IF NOT EXISTS board (id text PRIMARY KEY, name text NOT NULL);
-            `)
+      CREATE TABLE IF NOT EXISTS board (id text PRIMARY KEY, name text NOT NULL);
+      `)
       //            ALTER TABLE board ADD COLUMN IF NOT EXISTS content JSONB NOT NULL;
       ///          ALTER TABLE board ADD COLUMN IF NOT EXISTS history JSONB NOT NULL default '[]';
     })

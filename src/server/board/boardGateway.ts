@@ -1,5 +1,5 @@
-import { withDBClient } from 'db'
-import { Board, Id } from 'components/board/model'
+import { withDBClient } from 'server/db'
+import { Board, Id } from 'shared/board/model'
 
 const boards: Map<Id, Board> = new Map()
 

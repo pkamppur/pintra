@@ -1,5 +1,5 @@
 import useSWR from 'swr'
-import { Board } from './model'
+import { Board } from '../../shared/board/model'
 
 export default function useFetchBoard(boardId?: string) {
   return useFetch<Board>(boardId ? `/api/boards/${boardId}` : null)
