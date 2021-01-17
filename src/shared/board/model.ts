@@ -1,17 +1,24 @@
 export type Id = string
 
 export interface Board {
-  name: string
   id: Id
-}
+  version: number
 
-export interface Card {
-  title: string
-  id: string
-  content: string
+  name: string
 }
 
 export interface Section {
+  id: string
+  version: number
+
   name: string
   cards: Card[]
+}
+
+export interface Card {
+  id: string
+  version: number
+
+  name: string
+  content: string
 }
