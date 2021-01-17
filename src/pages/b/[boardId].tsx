@@ -3,7 +3,7 @@ import Scaffold from 'components/scaffold'
 import MarkdownIt from 'markdown-it'
 import { useRouter } from 'next/router'
 import { ReactNode, useState } from 'react'
-import { Group } from 'components/board/model'
+import { Board, Group, Id } from 'shared/board/model'
 import useFetchBoard from 'components/board/useFetchBoard'
 import styles from './board.module.scss'
 import dynamic from 'next/dynamic'
@@ -16,72 +16,81 @@ function asString(value: unknown): string | undefined {
   }
 }
 
-export default function Board() {
-  const [dialogContent, setDialogContent] = useState<ReactNode>()
-  const [open, setOpen] = useState(false)
-
+export default function BoardPage() {
   const router = useRouter()
-
-  const openDialog = (content: ReactNode) => {
-    setDialogContent(content)
-    setOpen(true)
-  }
 
   const rawBoardId = router.query.boardId
   const boardId = asString(rawBoardId)
 
   const { loading, data, error } = useFetchBoard(boardId)
 
+  const content = BoardPageContent({ boardId, loading, data, error })
+
+  return (
+    <Scaffold title={content.title}>
+      <main className={styles.main}>{content.content}</main>
+    </Scaffold>
+  )
+}
+
+function BoardPageContent({
+  boardId,
+  loading,
+  data,
+  error,
+}: {
+  boardId?: Id
+  loading: boolean
+  data?: Board
+  error: unknown
+}): { title: string; content: ReactNode } {
   if (error) {
-    return (
-      <Scaffold title={`${boardId} - error | Pintra`}>
-        <div>failed to load {JSON.stringify(error)}</div>
-      </Scaffold>
-    )
+    return { title: `Error Loading: ${boardId} | Pintra`, content: <div>failed to load {JSON.stringify(error)}</div> }
   }
 
   if (loading || !data) {
-    return (
-      <Scaffold title={`Loading ${boardId} | Pintra`}>
-        <main className={styles.main}>
-          <div>Loading…</div>
-        </main>
-      </Scaffold>
-    )
+    return { title: `Loading ${boardId} | Pintra`, content: <div>Loading…</div> }
   }
 
-  const board = data
+  return { title: `${data.name} | Pintra`, content: <BoardContents board={data} /> }
+}
+
+function BoardContents({ board }: { board: Board }) {
+  const [dialogContent, setDialogContent] = useState<ReactNode>()
+  const [open, setOpen] = useState(false)
+
+  const openDialog = (content: ReactNode) => {
+    setDialogContent(content)
+    setOpen(true)
+  }
+
   const groups: Group[] = []
-
   return (
-    <Scaffold title={`${board.name} | Pintra`}>
-      <main className={styles.main}>
-        <Dialog
-          open={open}
-          transitionDuration={100}
-          onClose={() => setOpen(false)}
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-        >
-          <div className={styles.dialogContentContainer}>{dialogContent}</div>
-        </Dialog>
-
-        <h1>Resources</h1>
-        {groups.map((group) => (
-          <>
-            <div className={styles.sectionDivider}>{group.title}</div>
-            <section className={styles.cards}>
-              {group.items.map((item) => (
-                <Card title={item.title} key={item.id} openDialog={openDialog}>
-                  <h2>{item.title}</h2>
-                  <Markdown content={item.content} />
-                </Card>
-              ))}
-            </section>
-          </>
-        ))}
-      </main>
-    </Scaffold>
+    <>
+      <Dialog
+        open={open}
+        transitionDuration={100}
+        onClose={() => setOpen(false)}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <div className={styles.dialogContentContainer}>{dialogContent}</div>
+      </Dialog>
+      <h1>{`${board.name}`}</h1>
+      {groups.map((group) => (
+        <>
+          <div className={styles.sectionDivider}>{group.title}</div>
+          <section className={styles.cards}>
+            {group.items.map((item) => (
+              <Card title={item.title} key={item.id} openDialog={openDialog}>
+                <h2>{item.title}</h2>
+                <Markdown content={item.content} />
+              </Card>
+            ))}
+          </section>
+        </>
+      ))}
+    </>
   )
 }
 
