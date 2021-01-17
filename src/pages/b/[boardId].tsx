@@ -4,7 +4,7 @@ import MarkdownIt from 'markdown-it'
 import { useRouter } from 'next/router'
 import { MouseEvent, ReactNode, useState } from 'react'
 import { Board, Id, Section } from 'shared/board/model'
-import useFetchBoard from 'components/board/useFetchBoard'
+import { useFetchBoard, useFetchSections } from 'components/board/useFetchBoard'
 import styles from './board.module.scss'
 import dynamic from 'next/dynamic'
 
@@ -81,7 +81,7 @@ function BoardContents({ board }: { board: Board }) {
         <div className={styles.dialogContentContainer}>{dialogContent}</div>
       </Dialog>
       <h1>{`${board.name}`}</h1>
-      <Sections openDialog={openDialog} />
+      <Sections boardId={board.id} openDialog={openDialog} />
       <div>
         <a href="#" className={styles.sectionButton} onClick={addSection}>
           + Add section
@@ -91,8 +91,17 @@ function BoardContents({ board }: { board: Board }) {
   )
 }
 
-function Sections({ openDialog }: { openDialog: (content: ReactNode) => void }) {
-  const sections: Section[] = []
+function Sections({ boardId, openDialog }: { boardId: Id; openDialog: (content: ReactNode) => void }) {
+  const { loading, data, error } = useFetchSections(boardId)
+
+  if (error) {
+    return <div>Error: {JSON.stringify(error)}</div>
+  }
+  if (loading || !data) {
+    return <div>Loading…</div>
+  }
+  const sections = data
+
   return (
     <>
       {sections.map((section) => (
@@ -100,9 +109,8 @@ function Sections({ openDialog }: { openDialog: (content: ReactNode) => void }) 
           <div className={styles.sectionDivider}>{section.name}</div>
           <section className={styles.cards}>
             {section.cards.map((card) => (
-              <Card title={card.title} key={card.id} openDialog={openDialog}>
-                <h2>{card.title}</h2>
-                <Markdown content={card.content} />
+              <Card title={card.name} key={card.id} openDialog={openDialog}>
+                <h2>{card.name}</h2>
               </Card>
             ))}
           </section>
