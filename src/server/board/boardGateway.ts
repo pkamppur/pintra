@@ -116,7 +116,7 @@ export async function addCard(boardId: Id, sectionId: Id, name: string, content:
 
   const cardJson = JSON.stringify([{ id: cardId, name }])
 
-  const result = await withDB(async (db) => {
+  await withDB(async (db) => {
     try {
       await db.query('BEGIN TRANSACTION;')
 
