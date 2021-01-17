@@ -1,9 +1,3 @@
-export interface BoardWithGroups {
-  name: string
-  id: string
-  groups: Group[]
-}
-
 export type Id = string
 
 export interface Board {
@@ -11,13 +5,13 @@ export interface Board {
   id: Id
 }
 
-export interface Item {
+export interface Card {
   title: string
   id: string
   content: string
 }
 
-export interface Group {
-  title: string
-  items: Item[]
+export interface Section {
+  name: string
+  cards: Card[]
 }

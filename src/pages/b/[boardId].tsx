@@ -3,7 +3,7 @@ import Scaffold from 'components/scaffold'
 import MarkdownIt from 'markdown-it'
 import { useRouter } from 'next/router'
 import { MouseEvent, ReactNode, useState } from 'react'
-import { Board, Group, Id } from 'shared/board/model'
+import { Board, Id, Section } from 'shared/board/model'
 import useFetchBoard from 'components/board/useFetchBoard'
 import styles from './board.module.scss'
 import dynamic from 'next/dynamic'
@@ -69,7 +69,6 @@ function BoardContents({ board }: { board: Board }) {
     console.log('The link was clicked.')
   }
 
-  const groups: Group[] = []
   return (
     <>
       <Dialog
@@ -82,24 +81,33 @@ function BoardContents({ board }: { board: Board }) {
         <div className={styles.dialogContentContainer}>{dialogContent}</div>
       </Dialog>
       <h1>{`${board.name}`}</h1>
-      {groups.map((group) => (
-        <>
-          <div className={styles.sectionDivider}>{group.title}</div>
-          <section className={styles.cards}>
-            {group.items.map((item) => (
-              <Card title={item.title} key={item.id} openDialog={openDialog}>
-                <h2>{item.title}</h2>
-                <Markdown content={item.content} />
-              </Card>
-            ))}
-          </section>
-        </>
-      ))}
+      <Sections openDialog={openDialog} />
       <div>
         <a href="#" className={styles.sectionButton} onClick={addSection}>
           + Add section
         </a>
       </div>
+    </>
+  )
+}
+
+function Sections({ openDialog }: { openDialog: (content: ReactNode) => void }) {
+  const sections: Section[] = []
+  return (
+    <>
+      {sections.map((section) => (
+        <>
+          <div className={styles.sectionDivider}>{section.name}</div>
+          <section className={styles.cards}>
+            {section.cards.map((card) => (
+              <Card title={card.title} key={card.id} openDialog={openDialog}>
+                <h2>{card.title}</h2>
+                <Markdown content={card.content} />
+              </Card>
+            ))}
+          </section>
+        </>
+      ))}
     </>
   )
 }
