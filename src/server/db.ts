@@ -19,18 +19,18 @@ const pgConfig = {
 const connectionPool = new pg.Pool(pgConfig)
 let hasInitialized = false
 
-export async function withDBClient<T>(func: (client: PoolClient) => Promise<T>): Promise<T> {
+export async function withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
   if (!hasInitialized) {
     hasInitialized = true
   }
-  return _withDBClient(func)
+  return _withDB(func)
 }
 
-async function _withDBClient<T>(func: (client: PoolClient) => Promise<T>): Promise<T> {
-  const client = await connectionPool.connect()
+async function _withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
+  const db = await connectionPool.connect()
   try {
-    return func(client)
+    return func(db)
   } finally {
-    client.release()
+    db.release()
   }
 }
