@@ -4,7 +4,7 @@ import MarkdownIt from 'markdown-it'
 import { useRouter } from 'next/router'
 import { MouseEvent, ReactNode, useState } from 'react'
 import { Board, Id, Section } from 'shared/board/model'
-import { useFetchBoard, useFetchSections } from 'components/board/useFetchBoard'
+import { useFetchBoard, useFetchSections, useFetchCardContent } from 'components/board/useFetchBoard'
 import styles from './board.module.scss'
 import dynamic from 'next/dynamic'
 
@@ -110,7 +110,7 @@ function Sections({ boardId, openDialog }: { boardId: Id; openDialog: (content: 
           <section className={styles.cards}>
             {section.cards.map((card) => (
               <Card title={card.name} key={card.id} openDialog={openDialog}>
-                <h2>{card.name}</h2>
+                <CardContent boardId={boardId} cardId={card.id} name={card.name} />
               </Card>
             ))}
           </section>
@@ -138,6 +138,26 @@ function Card({
         <div className={styles.markdownContent}>{children}</div>
       </div>
     </div>
+  )
+}
+
+function CardContent({ boardId, cardId, name }: { boardId: Id; cardId: Id; name: string }) {
+  const { loading, data, error } = useFetchCardContent(boardId, cardId)
+
+  let contentNode: ReactNode
+  if (error) {
+    contentNode = <div>Error: {JSON.stringify(error)}</div>
+  } else if (loading || !data) {
+    contentNode = <div>Loading…</div>
+  } else {
+    contentNode = <Markdown content={data.content} />
+  }
+
+  return (
+    <>
+      <h2>{name}</h2>
+      {contentNode}
+    </>
   )
 }
 

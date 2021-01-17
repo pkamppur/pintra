@@ -21,3 +21,7 @@ export interface Card {
 
   name: string
 }
+
+export interface CardContent {
+  content: string
+}

@@ -1,7 +1,7 @@
 import { PoolClient } from 'pg'
 import short from 'short-uuid'
 import { withDB as _withDB } from 'server/db'
-import { Board, Id, Section, Card } from 'shared/board/model'
+import { Board, Id, Section, Card, CardContent } from 'shared/board/model'
 
 const boards: Map<Id, Board> = new Map()
 
@@ -137,4 +137,12 @@ export async function addCard(boardId: Id, sectionId: Id, name: string, content:
   })
 
   return { id: cardId, name, version: 0 }
+}
+
+export async function fetchCardContent(boardId: Id, cardId: Id): Promise<CardContent> {
+  const result = await withDB((db) =>
+    db.query('SELECT content FROM board_card WHERE board_id=$1 AND id=$2;', [boardId, cardId])
+  )
+
+  return result.rows[0] as CardContent
 }
