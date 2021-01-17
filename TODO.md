@@ -10,5 +10,7 @@
 - editoitavat teemat
 - emojin lisääminen korttiin
 - korttien sisällön kommentointi (Kuten Trellossa?)
+- recent boards (local storage)
+- get boards for user
 
 - Mietin tuota ryhmittelyä vs skriptien visualisointi voisi tulla myös tiimin elinkaaren kautta.
