@@ -26,6 +26,7 @@ async function withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
             board_id text NOT NULL,
             name text NOT NULL,
             version integer NOT NULL,
+            position integer NOT NULL,
             cards JSONB NOT NULL,
 
             CONSTRAINT fk_board
@@ -86,22 +87,21 @@ export async function addBoard(name: string): Promise<Board> {
 }
 
 export async function fetchSections(boardId: Id): Promise<Section[]> {
-  const result = await withDB((db) => db.query('SELECT name, id, cards FROM board WHERE board_id=$1', [boardId]))
+  const result = await withDB((db) =>
+    db.query('SELECT name, id, cards FROM board_section WHERE board_id=$1 ORDER BY position ASC', [boardId])
+  )
 
   return result.rows as Section[]
 }
 
-export async function addSection(boardId: Id, name: string): Promise<Section> {
+export async function addSection(boardId: Id, name: string, position: number): Promise<Section> {
   const sectionId = short.generate()
 
   const result = await withDB((db) =>
-    db.query('INSERT INTO board_section (id, board_id, name, version, cards) VALUES ($1, $2, $3, $4, $5);', [
-      sectionId,
-      boardId,
-      name,
-      0,
-      [],
-    ])
+    db.query(
+      'INSERT INTO board_section (id, board_id, name, version, position, cards) VALUES ($1, $2, $3, $4, $5, $6);',
+      [sectionId, boardId, name, 0, position, []]
+    )
   )
 
   if (result.rowCount !== 1) {
