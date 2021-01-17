@@ -99,8 +99,8 @@ export async function addSection(boardId: Id, name: string, position: number): P
 
   const result = await withDB((db) =>
     db.query(
-      'INSERT INTO board_section (id, board_id, name, version, position, cards) VALUES ($1, $2, $3, $4, $5, $6);',
-      [sectionId, boardId, name, 0, position, []]
+      "INSERT INTO board_section (id, board_id, name, version, position, cards) VALUES ($1, $2, $3, $4, $5, '[]'::jsonb);",
+      [sectionId, boardId, name, 0, position]
     )
   )
 
