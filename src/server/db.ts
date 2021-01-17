@@ -15,20 +15,13 @@ const pgConfig = {
   connectionString: DATABASE_URL,
   ssl: pgSSL,
 }
+
 const connectionPool = new pg.Pool(pgConfig)
 let hasInitialized = false
 
 export async function withDBClient<T>(func: (client: PoolClient) => Promise<T>): Promise<T> {
   if (!hasInitialized) {
     hasInitialized = true
-
-    await _withDBClient(async (client) => {
-      await client.query(`
-      CREATE TABLE IF NOT EXISTS board (id text PRIMARY KEY, name text NOT NULL);
-      `)
-      //            ALTER TABLE board ADD COLUMN IF NOT EXISTS content JSONB NOT NULL;
-      ///          ALTER TABLE board ADD COLUMN IF NOT EXISTS history JSONB NOT NULL default '[]';
-    })
   }
   return _withDBClient(func)
 }
