@@ -12,7 +12,8 @@ export default function Scaffold({ title, children }: { title: string; children:
       </Head>
       <style global jsx>{`
         html,
-        body {
+        body,
+        #__next {
           height: 100%;
         }
         body {
