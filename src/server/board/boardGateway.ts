@@ -8,8 +8,8 @@ const boards: Map<Id, Board> = new Map()
 let hasInitialized = false
 
 async function withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
-  console.log(`hasInitialized ${hasInitialized}`)
   if (!hasInitialized) {
+    console.log(`hasInitialized ${hasInitialized}`)
     hasInitialized = true
 
     await _withDB(async (db) => {
