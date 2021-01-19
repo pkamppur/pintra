@@ -19,33 +19,25 @@ export default function Navigation() {
 
 function NavBar() {
   return (
-    <nav className={styles.menu}>
+    <>
+      {/*<nav className={styles.menu}>
       <input type="checkbox" id="menuToggle" className={styles.menuToggle} />
       <label htmlFor="menuToggle" className={styles.menuIconLabel}>
         <i className={styles.menuIcon}></i>
       </label>
       <ul>
-        {/*<li>
-          <Link href="/spellbookmaster/ios/">
-            <a className={styles.navLink}>SpellbookMaster</a>
+        {<li>
+          <Link href="/somepage/">
+            <a className={styles.navLink}>Some page</a>
           </Link>
-        </li>*/}
-        {/*<li>
-          <Link href="/other-projects/">
-            <a className={styles.navLink}>Other Projects</a>
-          </Link>
-        </li>*/}
-        {/*<li>
-          <Link href="/rahastot">
-            <a className={styles.navLink}>Rahastot</a>
-          </Link>
-        </li>*/}
-        {/*<li>
-          <Link href="/resume/">
-            <a className={styles.navLink}>Resume</a>
-          </Link>
-        </li>*/}
+        </li>}
       </ul>
-    </nav>
+        </nav>*/}
+      <div className={styles.rightNav}>
+        <Link href="/login/">
+          <a className={styles.navLink}>Login</a>
+        </Link>
+      </div>
+    </>
   )
 }
