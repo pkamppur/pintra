@@ -10,10 +10,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const token = await authenticate(username, password)
 
     if (!token) {
-      res.status(400)
+      res.status(403)
       res.setHeader('Content-Type', 'application/problem+json')
       res.setHeader('Content-Language', 'en')
-      res.json({ title: 'Invalid username or password' })
+      res.json({ title: 'Invalid username or password', status: 403 })
       return
     }
 
@@ -24,5 +24,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(400)
   res.setHeader('Content-Type', 'application/problem+json')
   res.setHeader('Content-Language', 'en')
-  res.json({ title: 'Missing parameters' })
+  res.json({ title: 'Missing parameters', status: 400 })
 }

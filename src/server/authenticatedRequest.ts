@@ -6,9 +6,7 @@ export default function authenticatedRequest(
   res: NextApiResponse,
   handler: (username: string) => Promise<void>
 ) {
-  _asyncAuthenticatedRequest(req, res, handler).then(() => {
-    console.log('Request handled')
-  })
+  _asyncAuthenticatedRequest(req, res, handler)
 }
 
 async function _asyncAuthenticatedRequest(
@@ -23,10 +21,10 @@ async function _asyncAuthenticatedRequest(
   } catch (error) {
     const title = error instanceof Error ? error.message : 'Invalid request'
 
-    res.status(400)
+    res.status(404)
     res.setHeader('Content-Type', 'application/problem+json')
     res.setHeader('Content-Language', 'en')
-    res.json({ title })
+    res.json({ title, status: 404 })
     return
   }
 }
