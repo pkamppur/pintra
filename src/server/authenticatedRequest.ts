@@ -30,7 +30,7 @@ async function _asyncAuthenticatedRequest(
 }
 
 async function authenticatedUser(req: NextApiRequest) {
-  const authToken = req.rawHeaders.find((header) => header === 'pintra_auth')
+  const authToken = req.cookies['pintra_auth']
 
   if (!authToken) {
     throw new Error('Invalid authentication')
