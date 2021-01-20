@@ -103,7 +103,7 @@ function Sections({ boardId, openDialog }: { boardId: Id; openDialog: (content: 
           <div className={styles.sectionDivider}>{section.name}</div>
           <section key={section.id} className={styles.cards}>
             {section.cards.map((card) => (
-              <Card title={card.name} key={card.id} openDialog={openDialog}>
+              <Card key={card.id} title={card.name} openDialog={openDialog}>
                 <CardContent boardId={boardId} cardId={card.id} name={card.name} />
               </Card>
             ))}
