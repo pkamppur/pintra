@@ -25,7 +25,6 @@ async function _asyncAuthenticatedRequest(
     res.setHeader('Content-Type', 'application/problem+json')
     res.setHeader('Content-Language', 'en')
     res.json({ title, status: 404 })
-    return
   }
 }
 
