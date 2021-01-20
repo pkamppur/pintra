@@ -7,13 +7,13 @@ export default function HomePage() {
     <Scaffold title="Pintra" loginRedirect="/">
       <main className={styles.main}>
         <h1>Boards</h1>
-        <ul>
+        {/*<ul>
           <li>
             <Link href="/b/username/board">
               <a>Board</a>
             </Link>
           </li>
-        </ul>
+        </ul>*/}
       </main>
     </Scaffold>
   )
