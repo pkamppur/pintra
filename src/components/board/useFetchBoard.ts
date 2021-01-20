@@ -15,7 +15,6 @@ export function useFetchCardContent(boardId?: string, cardId?: string) {
 
 export function useFetch<T>(urlOrPath: string | null) {
   const { data, error } = useSWR<T>(urlOrPath, fetcher)
-  console.log(`url ${urlOrPath}: data: ${JSON.stringify(data)}`)
 
   return { data, error, loading: !error && !data }
 }
