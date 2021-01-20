@@ -1,20 +1,14 @@
 import { Dialog } from '@material-ui/core'
 import Scaffold from 'components/scaffold'
-import MarkdownIt from 'markdown-it'
 import { useRouter } from 'next/router'
 import { MouseEvent, ReactNode, useState } from 'react'
-import { Board, Id, Section } from 'shared/board/model'
-import { useFetchBoard, useFetchSections, useFetchCardContent } from 'components/board/useFetchBoard'
+import { Board, Id } from 'shared/board/model'
+import { useFetchBoard, useFetchSections } from 'components/board/useFetchBoard'
+import { GetServerSideProps } from 'next'
+import { asString } from 'components/stringHelpers'
 import styles from './board.module.scss'
-import dynamic from 'next/dynamic'
-
-function asString(value: unknown): string | undefined {
-  if (typeof value === 'string' || value instanceof String) {
-    return value as string
-  } else {
-    return undefined
-  }
-}
+import CardContent from '../../components/card-content/card-content'
+import Card from '../../components/card/card'
 
 export default function BoardPage() {
   const router = useRouter()
@@ -118,50 +112,4 @@ function Sections({ boardId, openDialog }: { boardId: Id; openDialog: (content: 
       ))}
     </>
   )
-}
-
-function Card({
-  title,
-  openDialog,
-  children,
-}: {
-  title: string
-  openDialog: (content: ReactNode) => void
-  children: ReactNode
-}) {
-  return (
-    <div>
-      <div className={styles.card} onClick={() => openDialog(children)}>
-        <div>
-          <div>{title}</div>
-        </div>
-        <div className={styles.markdownContent}>{children}</div>
-      </div>
-    </div>
-  )
-}
-
-function CardContent({ boardId, cardId, name }: { boardId: Id; cardId: Id; name: string }) {
-  const { loading, data, error } = useFetchCardContent(boardId, cardId)
-
-  let contentNode: ReactNode
-  if (error) {
-    contentNode = <div>Error: {JSON.stringify(error)}</div>
-  } else if (loading || !data) {
-    contentNode = <div>Loading…</div>
-  } else {
-    contentNode = <Markdown content={data.content} />
-  }
-
-  return (
-    <>
-      <h2>{name}</h2>
-      {contentNode}
-    </>
-  )
-}
-
-function Markdown({ content }: { content: string }) {
-  const renderedContent = MarkdownIt({ html: false, linkify: true }).render(content)
-  return <div dangerouslySetInnerHTML={{ __html: renderedContent }} />
 }

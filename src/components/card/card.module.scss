@@ -1,0 +1,21 @@
+.card {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+
+  width: 256px;
+
+  $cardPadding: 6px; // TODO: duplicated with board.module.scss
+
+  margin: $cardPadding;
+  margin-bottom: 10px;
+
+  > div {
+    padding: 10px;
+  }
+
+  .markdownContent {
+    display: none;
+  }
+}

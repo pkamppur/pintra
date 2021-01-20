@@ -23,7 +23,7 @@ $borders: 15px;
     font-size: 120%;
   }
 
-  $cardPadding: 6px;
+  $cardPadding: 6px; // TODO: duplicated with board.module.scss
 
   .cards {
     max-width: 70em;
@@ -34,24 +34,6 @@ $borders: 15px;
     padding: $cardPadding;
   }
 
-  .card {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-
-    width: 256px;
-
-    margin: $cardPadding;
-    margin-bottom: 10px;
-
-    > div {
-      padding: 10px;
-    }
-
-    .markdownContent {
-      display: none;
-    }
   }
 
   .sectionButton {
