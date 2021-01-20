@@ -1,15 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { userFromAuthToken } from './authentication'
 
-export default function authenticatedRequest(
-  req: NextApiRequest,
-  res: NextApiResponse,
-  handler: (username: string) => Promise<void>
-) {
-  _asyncAuthenticatedRequest(req, res, handler)
-}
-
-async function _asyncAuthenticatedRequest(
+export default async function authenticatedRequest(
   req: NextApiRequest,
   res: NextApiResponse,
   handler: (username: string) => Promise<void>

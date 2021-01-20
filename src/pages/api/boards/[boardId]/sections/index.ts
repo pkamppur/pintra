@@ -3,7 +3,7 @@ import { fetchSections } from 'server/board/boardGateway'
 import authenticatedRequest from 'server/authenticatedRequest'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  authenticatedRequest(req, res, async (username) => {
+  await authenticatedRequest(req, res, async (username) => {
     const boardId = req.query.boardId as string
     const sections = await fetchSections(boardId)
 
