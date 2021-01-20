@@ -6,9 +6,9 @@ import { Board, Id } from 'shared/board/model'
 import { useFetchBoard, useFetchSections } from 'components/board/useFetchBoard'
 import { GetServerSideProps } from 'next'
 import { asString } from 'components/stringHelpers'
+import CardContent from 'components/card-content/card-content'
+import Card from 'components/card/card'
 import styles from './board.module.scss'
-import CardContent from '../../components/card-content/card-content'
-import Card from '../../components/card/card'
 
 export default function BoardPage() {
   const router = useRouter()
