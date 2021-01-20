@@ -2,6 +2,8 @@ import Scaffold from 'components/scaffold'
 import styles from './login.module.scss'
 import { FormEvent, useState } from 'react'
 import { CircularProgress } from '@material-ui/core'
+import { useRouter } from 'next/router'
+import { asString } from '../components/stringHelpers'
 
 interface LoginResponse {
   token?: string
@@ -57,6 +59,7 @@ function removeCookie(name: string) {
 export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [errorText, setErrorText] = useState('')
+  const router = useRouter()
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -78,7 +81,7 @@ export default function LoginPage() {
       removeCookie('pintra_auth')
       saveCookie('pintra_auth', token, 5)
 
-      window.location.href = browserBaseUrl()
+      window.location.href = browserBaseUrl() + decodeURIComponent(asString(router.query.redirectTo) || '')
     } catch (error) {
       if (error instanceof Error) {
         setErrorText(error.message)
@@ -94,7 +97,7 @@ export default function LoginPage() {
   }
 
   return (
-    <Scaffold title="Login | Pintra">
+    <Scaffold title="Login | Pintra" loginRedirect="/">
       <main className={styles.main}>
         <div className={styles.loginBox}>
           <form id="login-form" name="login-form" onSubmit={handleSubmit}>

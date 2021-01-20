@@ -21,7 +21,7 @@ export default function BoardPage() {
   const content = BoardPageContent({ boardId, loading, data, error })
 
   return (
-    <Scaffold title={content.title}>
+    <Scaffold title={content.title} loginRedirect={router.asPath}>
       <main className={styles.main}>{content.content}</main>
     </Scaffold>
   )

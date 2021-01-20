@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export default function HomePage() {
   return (
-    <Scaffold title="Pintra">
+    <Scaffold title="Pintra" loginRedirect="/">
       <main className={styles.main}>
         <h1>Boards</h1>
         <ul>

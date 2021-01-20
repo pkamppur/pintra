@@ -4,7 +4,13 @@ import Head from 'next/head'
 import Navigation from 'components/navigation'
 import styles from './scaffold.module.scss'
 
-export default function Scaffold({ title, children }: { title: string; children: ReactNode }) {
+interface ScaffoldProps {
+  title: string
+  loginRedirect: string
+  children: ReactNode
+}
+
+export default function Scaffold({ title, loginRedirect: path, children }: ScaffoldProps) {
   return (
     <>
       <Head>
@@ -21,7 +27,7 @@ export default function Scaffold({ title, children }: { title: string; children:
           margin: 0;
         }
       `}</style>{' '}
-      <Navigation />
+      <Navigation loginRedirect={path} />
       <div className={styles.scaffoldContainer}>{children}</div>
     </>
   )

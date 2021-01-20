@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import styles from './navigation.module.scss'
 
-export default function Navigation() {
+export default function Navigation({ loginRedirect }: { loginRedirect: string }) {
   return (
     <>
       <header className={styles.header}>
@@ -10,14 +10,14 @@ export default function Navigation() {
             <figure className={styles.brand}>Pintra</figure>
           </a>
         </Link>
-        <NavBar />
+        <NavBar loginRedirect={loginRedirect} />
       </header>
       <div className={styles.padding}></div>
     </>
   )
 }
 
-function NavBar() {
+function NavBar({ loginRedirect }: { loginRedirect: string }) {
   return (
     <>
       {/*<nav className={styles.menu}>
@@ -34,7 +34,7 @@ function NavBar() {
       </ul>
         </nav>*/}
       <div className={styles.rightNav}>
-        <Link href="/login/">
+        <Link href={`/login/?redirectTo=${encodeURIComponent(loginRedirect)}`}>
           <a className={styles.navLink}>Login</a>
         </Link>
       </div>
