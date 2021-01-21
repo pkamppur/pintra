@@ -3,7 +3,7 @@ import styles from './login.module.scss'
 import { FormEvent, useState } from 'react'
 import { CircularProgress } from '@material-ui/core'
 import { useRouter } from 'next/router'
-import { asString } from '../components/stringHelpers'
+import { asString } from 'components/stringHelpers'
 
 interface LoginResponse {
   token?: string
