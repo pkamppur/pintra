@@ -1,0 +1,63 @@
+@use 'components/common.scss';
+
+.addContainer {
+  margin-top: 30px;
+
+  .showTextFieldButton {
+    color: #999;
+    padding: 4px;
+
+    &:hover {
+      color: #666;
+      background-color: #ddd;
+    }
+  }
+
+  .addActionButton {
+    padding: 8px;
+    font-size: 16px;
+
+    background-color: #54aa67;
+    border: 1px solid #32a54b;
+    border-radius: 2px;
+    color: white;
+
+    &:hover {
+      background-color: #6ec481;
+    }
+  }
+
+  .composerTextarea {
+    overflow: hidden;
+    word-wrap: break-word;
+    height: 30px;
+
+    font-size: 14px;
+
+    background: none;
+    border: 1px solid #999;
+    box-shadow: none;
+    margin-bottom: 4px;
+    overflow-y: auto;
+    padding: 5px;
+
+    border-radius: 3px;
+    display: block;
+    line-height: 20px;
+    transition-property: background-color, border-color, box-shadow;
+    transition-duration: 85ms;
+    transition-timing-function: ease;
+  }
+
+  a.cancelButton {
+    color: #666;
+    margin-left: 10px;
+    vertical-align: -15%;
+    font-size: 200%;
+    text-decoration: none;
+
+    &:hover {
+      color: #222;
+    }
+  }
+}
