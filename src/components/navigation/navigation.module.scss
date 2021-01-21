@@ -14,6 +14,7 @@ $nav-link-text-color: #fff;
   text-align: center;
   font-family: sans-serif;
   background-color: $navBar;
+  flex: 0 1 auto;
 
   @include common.phone {
     position: fixed;
@@ -22,7 +23,7 @@ $nav-link-text-color: #fff;
 }
 
 .padding {
-  height: 0;
+  flex: 0 1 auto;
 
   @include common.phone {
     height: 50px;

@@ -21,6 +21,8 @@ export default function Scaffold({ title, loginRedirect: path, children }: Scaff
         body,
         #__next {
           height: 100%;
+          display: flex;
+          flex-direction: column;
         }
         body {
           font-family: 'Avenir', sans-serif;
