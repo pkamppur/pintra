@@ -1,0 +1,15 @@
+.searchContainer {
+  float: left;
+
+  .searchInput {
+    width: 400px;
+    height: 32px;
+    border: none;
+
+    font-size: 15px;
+
+    box-shadow: none;
+    outline: none;
+    border-radius: 3px;
+  }
+}
