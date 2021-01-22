@@ -99,53 +99,57 @@ export default function LoginPage() {
   return (
     <Scaffold title="Login | Pintra" loginRedirect="/">
       <main className={styles.main}>
-        <div className={styles.loginBox}>
-          <form id="login-form" name="login-form" onSubmit={handleSubmit}>
-            <div className="login-container" data-resin-component="promptLogin">
-              <h1>Login</h1>
-              <label className={styles.formField}>
-                <span>Username</span>
-                <input
-                  id="login-username"
-                  type="text"
-                  name="login"
-                  required={true}
-                  placeholder="Enter your username"
-                  title="Enter your username"
-                  autoComplete="username"
-                  autoFocus={true}
-                />
-              </label>
+        <div className={styles.topPadding} />
+        <div className={styles.loginBoxContainer}>
+          <div className={styles.loginBox}>
+            <form id="login-form" name="login-form" onSubmit={handleSubmit}>
+              <div className="login-container" data-resin-component="promptLogin">
+                <h1>Login</h1>
+                <label className={styles.formField}>
+                  <span>Username</span>
+                  <input
+                    id="login-username"
+                    type="text"
+                    name="login"
+                    required={true}
+                    placeholder="Enter your username"
+                    title="Enter your username"
+                    autoComplete="username"
+                    autoFocus={true}
+                  />
+                </label>
 
-              <label className={styles.formField}>
-                <span>Password</span>
-                <input
-                  id="login-password"
-                  name="password"
-                  type="password"
-                  required={true}
-                  placeholder="Enter your password"
-                  title="Enter your password"
-                  autoComplete="password"
-                />
-              </label>
+                <label className={styles.formField}>
+                  <span>Password</span>
+                  <input
+                    id="login-password"
+                    name="password"
+                    type="password"
+                    required={true}
+                    placeholder="Enter your password"
+                    title="Enter your password"
+                    autoComplete="password"
+                  />
+                </label>
 
-              <input type="hidden" name="redirect_url" value="/" />
-              <input type="hidden" name="login_page_source" value="email-login" />
+                <input type="hidden" name="redirect_url" value="/" />
+                <input type="hidden" name="login_page_source" value="email-login" />
 
-              <div className={styles.formBottom}>
-                <div className={styles.errorText}> {errorText}</div>
-                {loading ? (
-                  <CircularProgress />
-                ) : (
-                  <button id="login-submit" type="submit" className="btn btn-primary btn-full-width">
-                    Login
-                  </button>
-                )}
+                <div className={styles.formBottom}>
+                  <div className={styles.errorText}> {errorText}</div>
+                  {loading ? (
+                    <CircularProgress />
+                  ) : (
+                    <button id="login-submit" type="submit" className="btn btn-primary btn-full-width">
+                      Login
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
+        <div className={styles.bottomPadding} />
       </main>
     </Scaffold>
   )
