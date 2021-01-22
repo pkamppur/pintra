@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, useState } from 'react'
+import { MouseEvent, useState } from 'react'
 import styles from './inline-add-button.module.scss'
 
 interface InlineAddButtonProps {
