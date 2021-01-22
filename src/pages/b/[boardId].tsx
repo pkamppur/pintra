@@ -99,16 +99,16 @@ function Sections({ boardId, openDialog }: { boardId: Id; openDialog: (content: 
   return (
     <>
       {sections.map((section) => (
-        <>
+        <div key={section.id}>
           <div className={styles.sectionDivider}>{section.name}</div>
-          <section key={section.id} className={styles.cards}>
+          <section className={styles.cards}>
             {section.cards.map((card) => (
               <Card key={card.id} title={card.name} openDialog={openDialog}>
                 <CardContent boardId={boardId} cardId={card.id} name={card.name} />
               </Card>
             ))}
           </section>
-        </>
+        </div>
       ))}
     </>
   )
