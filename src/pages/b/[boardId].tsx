@@ -9,6 +9,7 @@ import { asString } from 'components/stringHelpers'
 import CardContent from 'components/card-content/card-content'
 import Card from 'components/card/card'
 import InlineAddButton from 'components/inline-add-button/inline-add-button'
+import SearchBox from 'components/searchbox/searchbox'
 import styles from './board.module.scss'
 
 export default function BoardPage() {
@@ -21,8 +22,10 @@ export default function BoardPage() {
 
   const content = BoardPageContent({ boardId, loading, data, error })
 
+  const navBarItems = SearchBox()
+
   return (
-    <Scaffold title={content.title} loginRedirect={router.asPath}>
+    <Scaffold title={content.title} loginRedirect={router.asPath} additionalNavComponent={navBarItems}>
       <main className={styles.main}>{content.content}</main>
     </Scaffold>
   )
