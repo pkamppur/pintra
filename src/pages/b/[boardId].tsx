@@ -1,7 +1,7 @@
 import { Dialog } from '@material-ui/core'
 import Scaffold from 'components/scaffold'
 import { useRouter } from 'next/router'
-import { MouseEvent, ReactNode, useState } from 'react'
+import { ReactNode, useState } from 'react'
 import { Board, Id } from 'shared/board/model'
 import { useFetchBoard, useFetchSections } from 'components/board/useFetchBoard'
 import { GetServerSideProps } from 'next'
