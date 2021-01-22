@@ -8,6 +8,7 @@ import { GetServerSideProps } from 'next'
 import { asString } from 'components/stringHelpers'
 import CardContent from 'components/card-content/card-content'
 import Card from 'components/card/card'
+import InlineAddButton from 'components/inline-add-button/inline-add-button'
 import styles from './board.module.scss'
 
 export default function BoardPage() {
@@ -58,9 +59,8 @@ function BoardContents({ board }: { board: Board }) {
     setOpen(true)
   }
 
-  function addSection(e: MouseEvent) {
-    e.preventDefault()
-    console.log('The link was clicked.')
+  const addCard = (name: string) => {
+    console.log(`addCard ${name}`)
   }
 
   return (
@@ -76,11 +76,12 @@ function BoardContents({ board }: { board: Board }) {
       </Dialog>
       <h1>{`${board.name}`}</h1>
       <Sections boardId={board.id} openDialog={openDialog} />
-      <div>
-        <a href="#" className={styles.sectionButton} onClick={addSection}>
-          + Add section
-        </a>
-      </div>
+      <InlineAddButton
+        title="+ Add Card"
+        addButtonLabel="Add Card"
+        placeholder="Name for new card"
+        addAction={addCard}
+      />
     </>
   )
 }
