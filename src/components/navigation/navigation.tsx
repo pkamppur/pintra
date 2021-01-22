@@ -1,7 +1,14 @@
 import Link from 'next/link'
+import { ReactNode } from 'react'
 import styles from './navigation.module.scss'
 
-export default function Navigation({ loginRedirect }: { loginRedirect: string }) {
+export default function Navigation({
+  loginRedirect,
+  additionalNavComponent,
+}: {
+  loginRedirect: string
+  additionalNavComponent?: ReactNode
+}) {
   return (
     <>
       <header className={styles.header}>
@@ -10,6 +17,7 @@ export default function Navigation({ loginRedirect }: { loginRedirect: string })
             <figure className={styles.brand}>Pintra</figure>
           </a>
         </Link>
+        {additionalNavComponent}
         <NavBar loginRedirect={loginRedirect} />
       </header>
       <div className={styles.padding}></div>

@@ -7,10 +7,11 @@ import styles from './scaffold.module.scss'
 interface ScaffoldProps {
   title: string
   loginRedirect: string
+  additionalNavComponent?: ReactNode
   children: ReactNode
 }
 
-export default function Scaffold({ title, loginRedirect: path, children }: ScaffoldProps) {
+export default function Scaffold({ title, loginRedirect: path, additionalNavComponent, children }: ScaffoldProps) {
   return (
     <>
       <Head>
@@ -29,7 +30,7 @@ export default function Scaffold({ title, loginRedirect: path, children }: Scaff
           margin: 0;
         }
       `}</style>{' '}
-      <Navigation loginRedirect={path} />
+      <Navigation loginRedirect={path} additionalNavComponent={additionalNavComponent} />
       <div className={styles.scaffoldContainer}>{children}</div>
     </>
   )
