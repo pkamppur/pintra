@@ -20,7 +20,7 @@ export async function authenticate(username: string, password: string) {
 
   const token = short.generate()
 
-  const tokenValidMinutes = 5
+  const tokenValidMinutes = 60 * 24 * 30 // 30 days
   const today = new Date()
   const expires = new Date()
   expires.setTime(today.getTime() + tokenValidMinutes * 60 * 1000)

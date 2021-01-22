@@ -77,9 +77,10 @@ export default function LoginPage() {
 
     try {
       const token = await loginUser(usernameInput.value, passwordInput.value)
+      const expiryMinutes = 60 * 24 * 30 // 30 days
 
       removeCookie('pintra_auth')
-      saveCookie('pintra_auth', token, 5)
+      saveCookie('pintra_auth', token, expiryMinutes)
 
       window.location.href = browserBaseUrl() + decodeURIComponent(asString(router.query.redirectTo) || '')
     } catch (error) {
