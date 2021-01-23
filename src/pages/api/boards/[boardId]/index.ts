@@ -5,7 +5,6 @@ import authenticatedRequest from 'server/authenticatedRequest'
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   await authenticatedRequest(req, res, async (username) => {
     const boardId = req.query.boardId as string
-    console.log(`api ${username}: boardId: ${boardId}`)
 
     const board = await fetchBoard('userId', boardId)
 

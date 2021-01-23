@@ -241,7 +241,5 @@ export async function searchCards(boardId: Id, searchTerm: string): Promise<Boar
     return { ...boardContents, sections: matchingSections }
   })
 
-  console.log(`matches for ${searchTerm}: ${JSON.stringify(result, null, 2)}`)
-
   return result
 }
