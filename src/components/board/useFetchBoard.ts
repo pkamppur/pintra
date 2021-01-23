@@ -16,3 +16,9 @@ export function useFetchSections(boardId?: string) {
 export function useFetchCardContent(boardId?: string, cardId?: string) {
   return useFetch<CardContent>(boardId && cardId ? `/api/boards/${boardId}/cards/${cardId}/content/` : null)
 }
+
+export function useFetchSearch(boardId?: string, searchString?: string) {
+  return useFetch<BoardContent>(
+    boardId && searchString ? `/api/boards/${boardId}/search/?query=${encodeURIComponent(searchString)}` : null
+  )
+}

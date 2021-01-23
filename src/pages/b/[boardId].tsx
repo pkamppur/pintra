@@ -3,7 +3,7 @@ import Scaffold from 'components/scaffold'
 import { useRouter } from 'next/router'
 import { ReactNode, useState } from 'react'
 import { BoardContent, Id, Section } from 'shared/board/model'
-import { useFetchBoardContent } from 'components/board/useFetchBoard'
+import { useFetchBoardContent, useFetchSearch } from 'components/board/useFetchBoard'
 import { asString } from 'components/stringHelpers'
 import CardContent from 'components/card-content/card-content'
 import Card from 'components/card/card'
@@ -19,9 +19,12 @@ export default function BoardPage() {
 
   const { loading, data, error } = useFetchBoardContent(boardId)
 
-  const content = BoardPageContent({ boardId, loading, data, error })
+  const [searchTerm, setSearchTerm] = useState('')
 
-  const navBarItems = SearchBox()
+  const searchFetch = useFetchSearch(boardId, searchTerm)
+
+  const navBarItems = SearchBox({ search: setSearchTerm })
+  const content = BoardPageContent({ boardId, loading, data: searchFetch.data || data, error })
 
   return (
     <Scaffold title={content.title} loginRedirect={router.asPath} additionalNavComponent={navBarItems}>

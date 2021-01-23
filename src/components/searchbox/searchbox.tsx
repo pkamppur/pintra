@@ -1,13 +1,30 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
+import { debounce } from 'lodash'
 import styles from './searchbox.module.scss'
 
-export default function SearchBox() {
+interface SearchBoxProps {
+  search: (searchTerm: string) => void
+}
+
+export default function SearchBox({ search }: SearchBoxProps) {
   const [searchTerm, setSearchTerm] = useState('')
 
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value)
-    console.log(`search for ${searchTerm}`)
   }
+
+  const doSearch = () => {
+    search(searchTerm)
+  }
+
+  const delayedQuery = debounce(doSearch, 500)
+
+  useEffect(() => {
+    delayedQuery()
+
+    // Cancel the debounce on useEffect cleanup.
+    return delayedQuery.cancel
+  }, [searchTerm, delayedQuery])
 
   return (
     <div className={styles.searchContainer}>
