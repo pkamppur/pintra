@@ -67,7 +67,9 @@ async function withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
 }
 
 export async function fetchBoards(userId: Id): Promise<Board[]> {
-  return await withDB((db) => boardsFromDb(db))
+  // Disabled for privacy/security. One credential for now, so don't want to leak all boards to everyone sharing the same credentials.
+  // return await withDB((db) => boardsFromDb(db))
+  return []
 }
 
 export async function fetchBoard(userId: Id, boardId: Id): Promise<Board> {
