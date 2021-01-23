@@ -28,7 +28,9 @@ export default function BoardPage() {
 
   return (
     <Scaffold title={content.title} loginRedirect={router.asPath} additionalNavComponent={navBarItems}>
-      <main className={styles.main}>{content.content}</main>
+      <main className={styles.main} style={{ color: data?.textColor, backgroundColor: data?.backgroundColor }}>
+        {content.content}
+      </main>
     </Scaffold>
   )
 }
@@ -104,7 +106,12 @@ function Sections({
     <>
       {sections.map((section) => (
         <div key={section.id}>
-          <div className={styles.sectionDivider}>{section.name}</div>
+          <div
+            className={styles.sectionDivider}
+            style={{ color: section.textColor, backgroundColor: section.backgroundColor }}
+          >
+            {section.name}
+          </div>
           <section className={styles.cards}>
             {section.cards.map((card) => (
               <Card key={card.id} title={card.name} openDialog={openDialog}>

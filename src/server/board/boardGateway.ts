@@ -80,15 +80,34 @@ export async function fetchBoard(userId: Id, boardId: Id): Promise<Board> {
   return loadedBoard
 }
 
-async function boardFromDb(db: PoolClient, boardId: Id) {
-  const result = await db.query<Board>('SELECT name, id FROM board WHERE id=$1', [boardId])
+async function boardFromDb(db: PoolClient, boardId: Id): Promise<Board> {
+  const result = await db.query<DbBoard>('SELECT name, id, text_color, background_color FROM board WHERE id=$1', [
+    boardId,
+  ])
 
   if (result.rows.length === 0) {
     throw Error(`Board ${boardId} not found`)
   }
 
-  return result.rows[0]
+  return mapDbBoardToBoard(result.rows[0])
 }
+
+interface DbBoard {
+  id: string
+  version: number
+
+  name: string
+  text_color?: string
+  background_color?: string
+}
+
+const mapDbBoardToBoard = (dbBoard: DbBoard): Board => ({
+  id: dbBoard.id,
+  version: dbBoard.version,
+  name: dbBoard.name,
+  textColor: dbBoard.text_color,
+  backgroundColor: dbBoard.background_color,
+})
 
 export async function addBoard(name: string): Promise<Board> {
   const boardId = short.generate()
@@ -119,13 +138,6 @@ async function boardContentsFromDb(db: PoolClient, boardId: Id): Promise<BoardCo
   return { ...board, sections }
 }
 
-interface DbSection {
-  id: string
-  version: number
-
-  name: string
-}
-
 export async function fetchSections(boardId: Id): Promise<Section[]> {
   const sections = await withDB(async (db) => sectionsForBoardFromDb(db, boardId))
 
@@ -133,17 +145,37 @@ export async function fetchSections(boardId: Id): Promise<Section[]> {
 }
 
 const dbSectionsForBoard = async (db: PoolClient, boardId: Id) =>
-  (await db.query<DbSection>('SELECT name, id FROM board_section WHERE board_id=$1 ORDER BY position ASC', [boardId]))
-    .rows
+  (
+    await db.query<DbSection>(
+      'SELECT name, id, text_color, background_color FROM board_section WHERE board_id=$1 ORDER BY position ASC',
+      [boardId]
+    )
+  ).rows
+
+interface DbSection {
+  id: string
+  version: number
+
+  name: string
+  text_color?: string
+  background_color?: string
+}
 
 async function sectionsForBoardFromDb(db: PoolClient, boardId: Id): Promise<Section[]> {
   const dbSectionsRes = await dbSectionsForBoard(db, boardId)
 
-  const sections = await Promise.all(
+  const sections = await Promise.all<Section>(
     dbSectionsRes.map(async (dbSection) => {
       const cards = await fetchCardsFromDb(db, dbSection.id)
 
-      return { ...dbSection, cards }
+      return {
+        id: dbSection.id,
+        version: dbSection.version,
+        name: dbSection.name,
+        textColor: dbSection.text_color,
+        backgroundColor: dbSection.background_color,
+        cards,
+      }
     })
   )
 

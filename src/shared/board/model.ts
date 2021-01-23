@@ -5,6 +5,9 @@ export interface Board {
   version: number
 
   name: string
+
+  textColor?: string
+  backgroundColor?: string
 }
 
 export interface BoardContent {
@@ -13,6 +16,9 @@ export interface BoardContent {
 
   name: string
   sections: Section[]
+
+  textColor?: string
+  backgroundColor?: string
 }
 
 export interface Section {
@@ -21,6 +27,9 @@ export interface Section {
 
   name: string
   cards: Card[]
+
+  textColor?: string
+  backgroundColor?: string
 }
 
 export interface Card {
