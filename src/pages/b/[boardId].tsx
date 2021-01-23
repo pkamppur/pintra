@@ -2,9 +2,8 @@ import { Dialog } from '@material-ui/core'
 import Scaffold from 'components/scaffold'
 import { useRouter } from 'next/router'
 import { ReactNode, useState } from 'react'
-import { Board, Id } from 'shared/board/model'
-import { useFetchBoard, useFetchSections } from 'components/board/useFetchBoard'
-import { GetServerSideProps } from 'next'
+import { BoardContent, Id, Section } from 'shared/board/model'
+import { useFetchBoardContent } from 'components/board/useFetchBoard'
 import { asString } from 'components/stringHelpers'
 import CardContent from 'components/card-content/card-content'
 import Card from 'components/card/card'
@@ -18,7 +17,7 @@ export default function BoardPage() {
   const rawBoardId = router.query.boardId
   const boardId = asString(rawBoardId)
 
-  const { loading, data, error } = useFetchBoard(boardId)
+  const { loading, data, error } = useFetchBoardContent(boardId)
 
   const content = BoardPageContent({ boardId, loading, data, error })
 
@@ -39,7 +38,7 @@ function BoardPageContent({
 }: {
   boardId?: Id
   loading: boolean
-  data?: Board
+  data?: BoardContent
   error: unknown
 }): { title: string; content: ReactNode } {
   if (error) {
@@ -53,7 +52,7 @@ function BoardPageContent({
   return { title: `${data.name} | Pintra`, content: <BoardContents board={data} /> }
 }
 
-function BoardContents({ board }: { board: Board }) {
+function BoardContents({ board }: { board: BoardContent }) {
   const [dialogContent, setDialogContent] = useState<ReactNode>()
   const [open, setOpen] = useState(false)
 
@@ -78,7 +77,7 @@ function BoardContents({ board }: { board: Board }) {
         <div className={styles.dialogContentContainer}>{dialogContent}</div>
       </Dialog>
       <h1>{`${board.name}`}</h1>
-      <Sections boardId={board.id} openDialog={openDialog} />
+      <Sections boardId={board.id} sections={board.sections} openDialog={openDialog} />
       <InlineAddButton
         title="+ Add Card"
         addButtonLabel="Add Card"
@@ -89,17 +88,15 @@ function BoardContents({ board }: { board: Board }) {
   )
 }
 
-function Sections({ boardId, openDialog }: { boardId: Id; openDialog: (content: ReactNode) => void }) {
-  const { loading, data, error } = useFetchSections(boardId)
-
-  if (error) {
-    return <div>Error: {JSON.stringify(error)}</div>
-  }
-  if (loading || !data) {
-    return <div>Loading…</div>
-  }
-  const sections = data
-
+function Sections({
+  boardId,
+  sections,
+  openDialog,
+}: {
+  boardId: Id
+  sections: Section[]
+  openDialog: (content: ReactNode) => void
+}) {
   return (
     <>
       {sections.map((section) => (

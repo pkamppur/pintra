@@ -99,6 +99,14 @@ export async function addBoard(name: string): Promise<Board> {
   return { id: boardId, name, version: 0 }
 }
 
+export async function fetchBoardContents(userId: Id, boardId: Id): Promise<BoardContent> {
+  const boardContent = await withDB(async (db) => {
+    return boardContentsFromDb(db, boardId)
+  })
+
+  return boardContent
+}
+
 async function boardContentsFromDb(db: PoolClient, boardId: Id): Promise<BoardContent> {
   const board = await boardFromDb(db, boardId)
 
