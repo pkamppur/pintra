@@ -20,6 +20,8 @@ async function withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
             version integer NOT NULL,
 
             name text NOT NULL,
+            text_color text,
+            background_color text
           );
 
           CREATE TABLE IF NOT EXISTS board_section (
@@ -31,6 +33,8 @@ async function withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
             position integer NOT NULL,
 
             name text NOT NULL,
+            text_color text,
+            background_color text,
 
             CONSTRAINT fk_board
               FOREIGN KEY(board_id) 
