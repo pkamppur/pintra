@@ -83,12 +83,12 @@ function BoardContents({ board }: { board: BoardContent }) {
       </Dialog>
       <h1 style={{ color: board?.textColor }}>{`${board.name}`}</h1>
       <Sections boardId={board.id} sections={board.sections} openDialog={openDialog} />
-      <InlineAddButton
+      {/*<InlineAddButton
         title="+ Add Card"
         addButtonLabel="Add Card"
         placeholder="Name for new card"
         addAction={addCard}
-      />
+      />*/}
     </>
   )
 }
