@@ -17,9 +17,9 @@ async function withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
         await db.query(`
           CREATE TABLE IF NOT EXISTS board (
             id text PRIMARY KEY,
-            name text NOT NULL,
+            version integer NOT NULL,
 
-            version integer NOT NULL
+            name text NOT NULL,
           );
 
           CREATE TABLE IF NOT EXISTS board_section (
