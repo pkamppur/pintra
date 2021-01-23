@@ -112,14 +112,15 @@ export async function fetchSections(boardId: Id): Promise<Section[]> {
   return sections
 }
 
+const dbSectionsForBoard = async (db: PoolClient, boardId: Id) =>
+  (await db.query<DbSection>('SELECT name, id FROM board_section WHERE board_id=$1 ORDER BY position ASC', [boardId]))
+    .rows
+
 async function sectionsForBoardFromDb(db: PoolClient, boardId: Id): Promise<Section[]> {
-  const dbSectionsRes = await db.query<DbSection>(
-    'SELECT name, id FROM board_section WHERE board_id=$1 ORDER BY position ASC',
-    [boardId]
-  )
+  const dbSectionsRes = await dbSectionsForBoard(db, boardId)
 
   const sections = await Promise.all(
-    dbSectionsRes.rows.map(async (dbSection) => {
+    dbSectionsRes.map(async (dbSection) => {
       const cards = await fetchCardsFromDb(db, dbSection.id)
 
       return { ...dbSection, cards }
