@@ -216,10 +216,12 @@ export async function searchCards(boardId: Id, searchTerm: string): Promise<Boar
     const matchingSections = boardContents.sections
       .map((section) => {
         const cards = section.cards.filter((card) => {
-          return card.name.includes(lowerCaseSearchTerm) || cardIdsWithContentMatches.includes(card.id)
+          return (
+            card.name.toLocaleLowerCase().includes(lowerCaseSearchTerm) || cardIdsWithContentMatches.includes(card.id)
+          )
         })
 
-        if (section.name.includes(lowerCaseSearchTerm) || cards.length > 0) {
+        if (section.name.toLocaleLowerCase().includes(lowerCaseSearchTerm) || cards.length > 0) {
           return { ...section, cards }
         } else {
           return null
