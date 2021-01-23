@@ -28,7 +28,7 @@ export default function BoardPage() {
 
   return (
     <Scaffold title={content.title} loginRedirect={router.asPath} additionalNavComponent={navBarItems}>
-      <main className={styles.main} style={{ color: data?.textColor, backgroundColor: data?.backgroundColor }}>
+      <main className={styles.main} style={{ backgroundColor: data?.backgroundColor }}>
         {content.content}
       </main>
     </Scaffold>
@@ -81,7 +81,7 @@ function BoardContents({ board }: { board: BoardContent }) {
       >
         <div className={styles.dialogContentContainer}>{dialogContent}</div>
       </Dialog>
-      <h1>{`${board.name}`}</h1>
+      <h1 style={{ color: board?.textColor }}>{`${board.name}`}</h1>
       <Sections boardId={board.id} sections={board.sections} openDialog={openDialog} />
       <InlineAddButton
         title="+ Add Card"
