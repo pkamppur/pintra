@@ -1,7 +1,7 @@
 import { Pool, PoolClient } from 'pg'
 import short from 'short-uuid'
 import { withDB as _withDB } from 'server/db'
-import { Board, Id, Section, Card, CardContent } from 'shared/board/model'
+import { Board, Id, Section, Card, CardContent, BoardContent } from 'shared/board/model'
 
 const boards: Map<Id, Board> = new Map()
 
@@ -186,4 +186,35 @@ export async function fetchCardContent(boardId: Id, cardId: Id): Promise<CardCon
   const result = await withDB((db) => db.query<CardContent>('SELECT content FROM board_card WHERE id=$1;', [cardId]))
 
   return result.rows[0]
+}
+
+export async function searchCards(boardId: Id, searchTerm: string): Promise<BoardContent> {
+  const mapToId = (item: { id: Id }) => item.id
+
+  const result = await withDB(async (db) => {
+    const cardNameMatches = await db.query(
+      "SELECT id, version, name, section_id FROM board_card WHERE section_id in (SELECT id from board_section WHERE board_id=$1) AND name ILIKE '%' || $2 || '%';",
+      [boardId, searchTerm]
+    )
+    const cardContentMatches = await db.query(
+      "SELECT id, version, name, section_id FROM board_card WHERE section_id in (SELECT id from board_section WHERE board_id=$1) AND content ILIKE '%' || $2 || '%';",
+      [boardId, searchTerm]
+    )
+    const sectionNameMatches = await db.query(
+      "SELECT id, version, name FROM board_section WHERE board_id=$1 AND name ILIKE '%' || $2 || '%';",
+      [boardId, searchTerm]
+    )
+    const allSections = await sectionsForBoardFromDb(db, boardId)
+    return {
+      cardNameMatches: cardNameMatches.rows.map(mapToId),
+      cardContentMatches: cardContentMatches.rows.map(mapToId),
+      sectionNameMatches: sectionNameMatches.rows.map(mapToId),
+    }
+  })
+
+  console.log(`matches for ${searchTerm}: ${JSON.stringify(result, null, 2)}`)
+  //console.log(`matches for ${searchTerm}: card content ${JSON.stringify(result.cardContentMatches)}`)
+  //console.log(`matches for ${searchTerm}: section titles ${JSON.stringify(result.sectionNameMatches)}`)
+
+  return { cards: [] } as BoardContent
 }
