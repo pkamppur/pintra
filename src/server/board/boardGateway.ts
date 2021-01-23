@@ -9,7 +9,7 @@ let hasInitialized = false
 
 async function withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
   if (!hasInitialized) {
-    console.log(`hasInitialized ${hasInitialized}`)
+    console.log(`Init DB`)
     hasInitialized = true
 
     await _withDB(async (db) => {
