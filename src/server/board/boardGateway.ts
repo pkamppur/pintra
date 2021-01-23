@@ -13,17 +13,18 @@ async function withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
     await _withDB(async (db) => {
       try {
         await db.query(`
-          CREATE TABLE IF NOT EXISTS board (
+          CREATE TABLE IF NOT EXISTS boards (
             id text PRIMARY KEY,
             version integer NOT NULL,
 
             name text NOT NULL,
             text_color text,
             background_color text
-          );`)
+          );
+        `)
 
         await db.query(`
-          CREATE TABLE IF NOT EXISTS board_section (
+          CREATE TABLE IF NOT EXISTS sections (
             id text PRIMARY KEY,
             board_id text NOT NULL,
 
@@ -36,13 +37,14 @@ async function withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
             background_color text,
 
             CONSTRAINT fk_board
-              FOREIGN KEY(board_id) 
-              REFERENCES board(id)
+              FOREIGN KEY (board_id) 
+              REFERENCES board (id)
               ON DELETE CASCADE
-          );`)
+          );
+        `)
 
         await db.query(`
-          CREATE TABLE IF NOT EXISTS board_card (
+          CREATE TABLE IF NOT EXISTS cards (
             id text PRIMARY KEY,
             section_id text NOT NULL,
 
@@ -55,7 +57,7 @@ async function withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
 
             CONSTRAINT fk_section
               FOREIGN KEY(section_id) 
-              REFERENCES board_section(id)
+              REFERENCES sections (id)
               ON DELETE CASCADE
           );
         `)
@@ -79,13 +81,13 @@ export async function fetchBoard(userId: Id, boardId: Id): Promise<Board> {
 }
 
 async function boardsFromDb(db: PoolClient): Promise<Board[]> {
-  const result = await db.query<DbBoard>('SELECT name, id, text_color, background_color FROM board ORDER BY name ASC')
+  const result = await db.query<DbBoard>('SELECT name, id, text_color, background_color FROM boards ORDER BY name ASC')
 
   return result.rows.map(mapDbBoardToBoard)
 }
 
 async function boardFromDb(db: PoolClient, boardId: Id): Promise<Board> {
-  const result = await db.query<DbBoard>('SELECT name, id, text_color, background_color FROM board WHERE id=$1', [
+  const result = await db.query<DbBoard>('SELECT name, id, text_color, background_color FROM boards WHERE id=$1', [
     boardId,
   ])
 
@@ -117,7 +119,7 @@ export async function addBoard(name: string): Promise<Board> {
   const boardId = short.generate()
 
   const result = await withDB((db) =>
-    db.query('INSERT INTO board (id, name, version) VALUES ($1, $2, $3);', [boardId, name, 0])
+    db.query('INSERT INTO boards (id, name, version) VALUES ($1, $2, $3);', [boardId, name, 0])
   )
   if (result.rowCount !== 1) {
     throw Error(`Couldn't create board ${name}`)
@@ -151,7 +153,7 @@ export async function fetchSections(boardId: Id): Promise<Section[]> {
 const dbSectionsForBoard = async (db: PoolClient, boardId: Id) =>
   (
     await db.query<DbSection>(
-      'SELECT name, id, text_color, background_color FROM board_section WHERE board_id=$1 ORDER BY position ASC',
+      'SELECT name, id, text_color, background_color FROM sections WHERE board_id=$1 ORDER BY position ASC',
       [boardId]
     )
   ).rows
@@ -191,10 +193,9 @@ export async function fetchCards(boardId: Id, sectionId: Id): Promise<Card[]> {
 }
 
 async function fetchCardsFromDb(db: PoolClient, sectionId: Id): Promise<Card[]> {
-  const result = await db.query<Card>(
-    'SELECT name, id, version FROM board_card WHERE section_id=$1 ORDER BY position ASC',
-    [sectionId]
-  )
+  const result = await db.query<Card>('SELECT name, id, version FROM cards WHERE section_id=$1 ORDER BY position ASC', [
+    sectionId,
+  ])
 
   return result.rows
 }
@@ -203,7 +204,7 @@ export async function addSection(boardId: Id, name: string, position: number): P
   const sectionId = short.generate()
 
   const result = await withDB((db) =>
-    db.query('INSERT INTO board_section (id, board_id, version, position, name) VALUES ($1, $2, $3, $4, $5);', [
+    db.query('INSERT INTO sections (id, board_id, version, position, name) VALUES ($1, $2, $3, $4, $5);', [
       sectionId,
       boardId,
       0,
@@ -230,7 +231,7 @@ export async function addCard(
 
   await withDB(async (db) => {
     await db.query(
-      'INSERT INTO board_card (id, section_id, version, position, name, content) VALUES ($1, $2, $3, $4, $5, $6);',
+      'INSERT INTO cards (id, section_id, version, position, name, content) VALUES ($1, $2, $3, $4, $5, $6);',
       [cardId, sectionId, 0, position, name, content]
     )
   })
@@ -239,7 +240,7 @@ export async function addCard(
 }
 
 export async function fetchCardContent(boardId: Id, cardId: Id): Promise<CardContent> {
-  const result = await withDB((db) => db.query<CardContent>('SELECT content FROM board_card WHERE id=$1;', [cardId]))
+  const result = await withDB((db) => db.query<CardContent>('SELECT content FROM cards WHERE id=$1;', [cardId]))
 
   return result.rows[0]
 }
@@ -256,7 +257,7 @@ export async function searchCards(boardId: Id, searchTerm: string): Promise<Boar
     const boardContents = await boardContentsFromDb(db, boardId)
     const cardIdsWithContentMatches = (
       await db.query<ObjectWithId>(
-        "SELECT id FROM board_card WHERE section_id in (SELECT id from board_section WHERE board_id=$1) AND content ILIKE '%' || $2 || '%';",
+        "SELECT id FROM cards WHERE section_id in (SELECT id from sections WHERE board_id=$1) AND content ILIKE '%' || $2 || '%';",
         [boardId, lowerCaseSearchTerm]
       )
     ).rows.map(mapToId)
