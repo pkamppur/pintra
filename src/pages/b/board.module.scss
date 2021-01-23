@@ -8,6 +8,8 @@ $borders: 15px;
 }
 
 .main {
+  flex: 1;
+
   padding-bottom: 1rem; // margin collapse clips card shadow from bottom
   padding: 1rem;
 
