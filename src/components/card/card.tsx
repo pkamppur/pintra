@@ -17,9 +17,11 @@ export default function Card({ title, tags, openDialog, children }: CardProps) {
         <div>
           <div>{title}</div>
           <div>
-            {tags.reduce((str, tag) => {
-              return str + tag.name
-            }, '')}
+            {tags.map((tag) => (
+              <div key={tag.id} className={styles.tag}>
+                {tag.name}
+              </div>
+            ))}
           </div>
         </div>
       </div>
