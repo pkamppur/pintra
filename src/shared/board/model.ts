@@ -37,6 +37,12 @@ export interface Card {
   version: number
 
   name: string
+  tags: Tag[]
+}
+
+export interface Tag {
+  id: number
+  name: string
 }
 
 export interface CardContent {

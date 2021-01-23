@@ -1,7 +1,7 @@
 import { PoolClient } from 'pg'
 import short from 'short-uuid'
 import { withDB as _withDB } from 'server/db'
-import { Board, Id, Section, Card, CardContent, BoardContent } from 'shared/board/model'
+import { Board, Id, Section, Card, CardContent, BoardContent, Tag } from 'shared/board/model'
 
 let hasInitialized = false
 
@@ -219,11 +219,40 @@ export async function fetchCards(boardId: Id, sectionId: Id): Promise<Card[]> {
 }
 
 async function fetchCardsFromDb(db: PoolClient, sectionId: Id): Promise<Card[]> {
-  const result = await db.query<Card>('SELECT name, id, version FROM cards WHERE section_id=$1 ORDER BY position ASC', [
-    sectionId,
-  ])
+  const result = await db.query<DbCard>(
+    'SELECT name, id, version FROM cards WHERE section_id=$1 ORDER BY position ASC',
+    [sectionId]
+  )
 
-  return result.rows
+  const cardIds = result.rows.map((dbCard) => dbCard.id)
+  const tags = await db.query<DbTaggedCard>(
+    `SELECT card_tags.card_id AS card_id, array_agg(ARRAY[tags.name, CAST ( tags.id AS TEXT)]) AS tags FROM card_tags, tags
+    WHERE card_tags.tag_id = tags.id AND card_tags.card_id = ANY($1::text[])
+    GROUP BY card_tags.card_id;`,
+    [cardIds]
+  )
+  const tagMap = tags.rows.reduce((map, tagResult) => {
+    const cardTags = tagResult.tags.map((array) => ({ id: parseInt(array[1]), name: array[0] }))
+    map.set(tagResult.card_id, cardTags)
+    return map
+  }, new Map<string, Tag[]>())
+
+  return result.rows.map((card) => ({
+    ...card,
+    tags: tagMap.get(card.id) || [],
+  }))
+}
+
+interface DbCard {
+  id: string
+  version: number
+
+  name: string
+}
+
+interface DbTaggedCard {
+  card_id: string
+  tags: string[][]
 }
 
 export async function addSection(boardId: Id, name: string, position: number): Promise<Section> {
@@ -262,7 +291,7 @@ export async function addCard(
     )
   })
 
-  return { id: cardId, name, version: 0 }
+  return { id: cardId, name, version: 0, tags: [] }
 }
 
 export async function fetchCardContent(boardId: Id, cardId: Id): Promise<CardContent> {
