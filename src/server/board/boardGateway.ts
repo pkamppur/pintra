@@ -99,6 +99,14 @@ export async function addBoard(name: string): Promise<Board> {
   return { id: boardId, name, version: 0 }
 }
 
+async function boardContentsFromDb(db: PoolClient, boardId: Id): Promise<BoardContent> {
+  const board = await boardFromDb(db, boardId)
+
+  const sections = await sectionsForBoardFromDb(db, boardId)
+
+  return { ...board, sections }
+}
+
 interface DbSection {
   id: string
   version: number
@@ -188,33 +196,42 @@ export async function fetchCardContent(boardId: Id, cardId: Id): Promise<CardCon
   return result.rows[0]
 }
 
+interface ObjectWithId {
+  id: Id
+}
+
 export async function searchCards(boardId: Id, searchTerm: string): Promise<BoardContent> {
+  const lowerCaseSearchTerm = searchTerm.toLocaleLowerCase()
   const mapToId = (item: { id: Id }) => item.id
 
   const result = await withDB(async (db) => {
-    const cardNameMatches = await db.query(
-      "SELECT id, version, name, section_id FROM board_card WHERE section_id in (SELECT id from board_section WHERE board_id=$1) AND name ILIKE '%' || $2 || '%';",
-      [boardId, searchTerm]
-    )
-    const cardContentMatches = await db.query(
-      "SELECT id, version, name, section_id FROM board_card WHERE section_id in (SELECT id from board_section WHERE board_id=$1) AND content ILIKE '%' || $2 || '%';",
-      [boardId, searchTerm]
-    )
-    const sectionNameMatches = await db.query(
-      "SELECT id, version, name FROM board_section WHERE board_id=$1 AND name ILIKE '%' || $2 || '%';",
-      [boardId, searchTerm]
-    )
-    const allSections = await sectionsForBoardFromDb(db, boardId)
-    return {
-      cardNameMatches: cardNameMatches.rows.map(mapToId),
-      cardContentMatches: cardContentMatches.rows.map(mapToId),
-      sectionNameMatches: sectionNameMatches.rows.map(mapToId),
-    }
+    const boardContents = await boardContentsFromDb(db, boardId)
+    const cardIdsWithContentMatches = (
+      await db.query<ObjectWithId>(
+        "SELECT id FROM board_card WHERE section_id in (SELECT id from board_section WHERE board_id=$1) AND content ILIKE '%' || $2 || '%';",
+        [boardId, lowerCaseSearchTerm]
+      )
+    ).rows.map(mapToId)
+
+    const matchingSections = boardContents.sections
+      .map((section) => {
+        const cards = section.cards.filter((card) => {
+          return card.name.includes(lowerCaseSearchTerm) || cardIdsWithContentMatches.includes(card.id)
+        })
+
+        if (section.name.includes(lowerCaseSearchTerm) || cards.length > 0) {
+          return { ...section, cards }
+        } else {
+          return null
+        }
+      })
+      .filter((section) => section)
+      .map((section) => section as Section)
+
+    return { ...boardContents, sections: matchingSections }
   })
 
   console.log(`matches for ${searchTerm}: ${JSON.stringify(result, null, 2)}`)
-  //console.log(`matches for ${searchTerm}: card content ${JSON.stringify(result.cardContentMatches)}`)
-  //console.log(`matches for ${searchTerm}: section titles ${JSON.stringify(result.sectionNameMatches)}`)
 
-  return { cards: [] } as BoardContent
+  return result
 }
