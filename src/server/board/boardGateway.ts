@@ -135,11 +135,12 @@ export async function fetchCards(boardId: Id, sectionId: Id): Promise<Card[]> {
 }
 
 async function fetchCardsFromDb(db: PoolClient, sectionId: Id): Promise<Card[]> {
-  const result = await db.query('SELECT name, id, version FROM board_card WHERE section_id=$1 ORDER BY position ASC', [
-    sectionId,
-  ])
+  const result = await db.query<Card>(
+    'SELECT name, id, version FROM board_card WHERE section_id=$1 ORDER BY position ASC',
+    [sectionId]
+  )
 
-  return result.rows as Card[]
+  return result.rows
 }
 
 export async function addSection(boardId: Id, name: string, position: number): Promise<Section> {
@@ -182,7 +183,7 @@ export async function addCard(
 }
 
 export async function fetchCardContent(boardId: Id, cardId: Id): Promise<CardContent> {
-  const result = await withDB((db) => db.query('SELECT content FROM board_card WHERE id=$1;', [cardId]))
+  const result = await withDB((db) => db.query<CardContent>('SELECT content FROM board_card WHERE id=$1;', [cardId]))
 
-  return result.rows[0] as CardContent
+  return result.rows[0]
 }
