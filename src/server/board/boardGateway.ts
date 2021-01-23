@@ -66,8 +66,18 @@ async function withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
   return _withDB(func)
 }
 
+export async function fetchBoards(userId: Id): Promise<Board[]> {
+  return await withDB((db) => boardsFromDb(db))
+}
+
 export async function fetchBoard(userId: Id, boardId: Id): Promise<Board> {
   return await withDB((db) => boardFromDb(db, boardId))
+}
+
+async function boardsFromDb(db: PoolClient): Promise<Board[]> {
+  const result = await db.query<DbBoard>('SELECT name, id, text_color, background_color FROM board ORDER BY name ASC')
+
+  return result.rows.map(mapDbBoardToBoard)
 }
 
 async function boardFromDb(db: PoolClient, boardId: Id): Promise<Board> {

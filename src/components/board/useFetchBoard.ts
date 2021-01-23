@@ -1,6 +1,10 @@
 import useFetch from 'components/network/useFetch'
 import { Board, Section, CardContent, BoardContent } from 'shared/board/model'
 
+export function useFetchBoards() {
+  return useFetch<Board[]>(`/api/boards/`)
+}
+
 export function useFetchBoard(boardId?: string) {
   return useFetch<Board>(boardId ? `/api/boards/${boardId}` : null)
 }
