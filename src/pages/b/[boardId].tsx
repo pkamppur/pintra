@@ -114,7 +114,7 @@ function Sections({
           </div>
           <section className={styles.cards}>
             {section.cards.map((card) => (
-              <Card key={card.id} title={card.name} openDialog={openDialog}>
+              <Card key={card.id} title={card.name} tags={card.tags} openDialog={openDialog}>
                 <CardContent boardId={boardId} cardId={card.id} name={card.name} />
               </Card>
             ))}
