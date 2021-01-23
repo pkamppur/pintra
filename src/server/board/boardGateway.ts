@@ -1,9 +1,7 @@
-import { Pool, PoolClient } from 'pg'
+import { PoolClient } from 'pg'
 import short from 'short-uuid'
 import { withDB as _withDB } from 'server/db'
 import { Board, Id, Section, Card, CardContent, BoardContent } from 'shared/board/model'
-
-const boards: Map<Id, Board> = new Map()
 
 let hasInitialized = false
 
@@ -69,15 +67,7 @@ async function withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
 }
 
 export async function fetchBoard(userId: Id, boardId: Id): Promise<Board> {
-  const board = boards.get(boardId)
-  if (board) {
-    return board
-  }
-
-  const loadedBoard = await withDB((db) => boardFromDb(db, boardId))
-
-  boards.set(loadedBoard.id, loadedBoard)
-  return loadedBoard
+  return await withDB((db) => boardFromDb(db, boardId))
 }
 
 async function boardFromDb(db: PoolClient, boardId: Id): Promise<Board> {
