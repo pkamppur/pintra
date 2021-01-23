@@ -306,7 +306,7 @@ interface ObjectWithId {
 
 export async function searchCards(boardId: Id, searchTerm: string): Promise<BoardContent> {
   const lowerCaseSearchTerm = searchTerm.toLocaleLowerCase()
-  const mapToId = (item: { id: Id }) => item.id
+  const mapToId = (item: ObjectWithId) => item.id
 
   const result = await withDB(async (db) => {
     const boardContents = await boardContentsFromDb(db, boardId)
