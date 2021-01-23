@@ -14,7 +14,6 @@ export default function Card({ title, openDialog, children }: CardProps) {
         <div>
           <div>{title}</div>
         </div>
-        <div className={styles.markdownContent}>{children}</div>
       </div>
     </div>
   )
