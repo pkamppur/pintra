@@ -12,7 +12,7 @@ export interface CardProps {
 export default function Card({ title, tags, openDialog, children }: CardProps) {
   console.log(`Card ${title}, tags = ${JSON.stringify(tags)}`)
   return (
-    <div>
+    <div className={styles.cardContainer}>
       <div className={styles.card} onClick={() => openDialog(children)}>
         <div>
           <div>{title}</div>
