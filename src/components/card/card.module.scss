@@ -1,10 +1,10 @@
 .cardContainer {
+  width: 268px;
+
   .card {
     background-color: white;
     border-radius: 6px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-
-    width: 256px;
 
     $cardPadding: 6px; // TODO: duplicated with board.module.scss
 
