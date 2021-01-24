@@ -21,6 +21,10 @@ export default async function authenticatedRequest(
 }
 
 async function authenticatedUser(req: NextApiRequest) {
+  if (process.env['DISABLE_AUTH']) {
+    return 'userid'
+  }
+
   const authToken = req.cookies['pintra_auth']
 
   if (!authToken) {
