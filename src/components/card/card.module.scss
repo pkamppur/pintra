@@ -4,9 +4,7 @@
   width: calc(50% - 0em);
   //width: 100%; for single column
   @include common.desktop-small {
-    flex-grow: 1;
-    max-width: 340px;
-    width: 268px;
+    width: 100%;
   }
 
   .card {

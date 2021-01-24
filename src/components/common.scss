@@ -14,6 +14,7 @@ $borders: 15px;
 $desktop-small: 600px;
 $desktop: 800px;
 $desktop-large: 1100px;
+$desktop-huge: 1300px;
 $phone: calc(#{$desktop-small - 1});
 
 @mixin phone {
@@ -36,6 +37,12 @@ $phone: calc(#{$desktop-small - 1});
 
 @mixin desktop-large {
   @media (min-width: #{$desktop-large}) {
+    @content;
+  }
+}
+
+@mixin desktop-huge {
+  @media (min-width: #{$desktop-huge}) {
     @content;
   }
 }

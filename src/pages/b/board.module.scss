@@ -34,10 +34,25 @@ $borders: 15px;
   $cardPadding: 6px; // TODO: duplicated with board.module.scss
 
   .cards {
-    max-width: 70em;
 
     display: flex;
     flex-flow: row wrap;
 
+    @include common.desktop-small {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    @include common.desktop {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    @include common.desktop-large {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+    @include common.desktop-huge {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    }
   }
 }
