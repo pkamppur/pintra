@@ -317,6 +317,7 @@ export async function searchCards(boardId: Id, searchTerm: string): Promise<Boar
 
   const result = await withDB(async (db) => {
     const boardContents = await boardContentsFromDb(db, boardId)
+
     const cardIdsWithContentMatches = (
       await db.query<ObjectWithId>(
         "SELECT id FROM cards WHERE section_id in (SELECT id from sections WHERE board_id=$1) AND content ILIKE '%' || $2 || '%';",
@@ -324,11 +325,22 @@ export async function searchCards(boardId: Id, searchTerm: string): Promise<Boar
       )
     ).rows.map(mapToId)
 
+    const cardIdsWithTagMatches = (
+      await db.query<ObjectWithId>(
+        `SELECT card_tags.card_id AS id FROM card_tags, tags, cards
+          WHERE card_tags.tag_id = tags.id AND card_tags.card_id = cards.id AND tags.name ILIKE '%' || $1 || '%'
+          GROUP BY card_tags.card_id;`,
+        [searchTerm]
+      )
+    ).rows.map(mapToId)
+
     const matchingSections = boardContents.sections
       .map((section) => {
         const cards = section.cards.filter((card) => {
           return (
-            card.name.toLocaleLowerCase().includes(lowerCaseSearchTerm) || cardIdsWithContentMatches.includes(card.id)
+            card.name.toLocaleLowerCase().includes(lowerCaseSearchTerm) ||
+            cardIdsWithContentMatches.includes(card.id) ||
+            cardIdsWithTagMatches.includes(card.id)
           )
         })
 
