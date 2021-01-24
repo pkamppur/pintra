@@ -3,9 +3,10 @@ import { getEnv } from './env'
 
 const DATABASE_URL = getEnv('DATABASE_URL')
 const NODE_ENV = getEnv('NODE_ENV')
+const SKIP_POSTGRESS_SSL = process.env['SKIP_POSTGRESS_SSL']
 
 const pgSSL =
-  NODE_ENV === 'production'
+  NODE_ENV === 'production' && !SKIP_POSTGRESS_SSL
     ? {
         rejectUnauthorized: false,
       }
