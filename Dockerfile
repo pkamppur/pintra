@@ -58,4 +58,4 @@ COPY --from=runtime-deps --chown=pintra:pintra /usr/local/pintra/node_modules ./
 COPY --from=builder --chown=pintra:pintra /usr/local/pintra/next.config.js ./
 COPY --from=builder --chown=pintra:pintra /usr/local/pintra/public ./public
 COPY --from=builder --chown=pintra:pintra /usr/local/pintra/.next ./.next
-CMD ["node_modules/.bin/next", "start"]
+CMD node_modules/.bin/next start --port $PORT
