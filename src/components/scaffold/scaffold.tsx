@@ -18,6 +18,14 @@ export default function Scaffold({ title, loginRedirect: path, additionalNavComp
         <title>{title}</title>
       </Head>
       <style global jsx>{`
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+          font-family: -apple-system, sans-serif;
+        }
         html,
         body,
         #__next {
