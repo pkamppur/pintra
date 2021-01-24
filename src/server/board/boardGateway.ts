@@ -38,7 +38,7 @@ async function withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
 
             CONSTRAINT fk_board
               FOREIGN KEY (board_id) 
-              REFERENCES board (id)
+              REFERENCES boards (id)
               ON DELETE CASCADE
           );
         `)
