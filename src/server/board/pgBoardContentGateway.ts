@@ -7,7 +7,7 @@ import { fetchBoard } from './boardGateway'
 
 let hasInitialized = false
 
-export async function pgBoardContentGateway(username: Id, boardId: Id): Promise<BoardContentGateway> {
+export default async function pgBoardContentGateway(username: Id, boardId: Id): Promise<BoardContentGateway> {
   return {
     fetchBoardContent: async () => {
       return await fetchBoardContent(username, boardId)
