@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { searchCards } from 'server/board/boardGateway'
+import { boardContentGateway } from 'server/board/boardContentGatewayProvider'
 import authenticatedRequest from 'server/authenticatedRequest'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -11,7 +11,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       console.log(`searchResults No content found`)
       res.status(404).json({ title: 'No content found' })
     }
-    const searchResults = await searchCards(boardId, query)
+    const gateway = await boardContentGateway(username, boardId)
+    const searchResults = await gateway.searchCards(query)
 
     res.status(200).json(searchResults)
   })
