@@ -6,8 +6,8 @@ export default function useFetch<T>(urlOrPath: string | null) {
   return { data, error, loading: !error && !data }
 }
 
-const fetcher = async (url: string) => {
-  const res = await fetch(url)
+export const fetcher = async <T>(url: string, options?: RequestInit) => {
+  const res = await fetch(url, options)
   // If the status code is not in the range 200-299,
   // we still try to parse and throw it.
   if (!res.ok) {
@@ -16,7 +16,7 @@ const fetcher = async (url: string) => {
     // Attach extra info to the error object.
     throw error
   }
-  return res.json()
+  return res.json() as Promise<T>
 }
 
 class HttpError extends Error {
