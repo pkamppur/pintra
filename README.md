@@ -42,7 +42,10 @@ You need to add Trello configuration directly to DB and configure encryption env
 Create id for board and insert a new row to `board_configs` table.
 Set `data_source` to `trello`.
 
+Format for Trello integration columns:
+
 `options`: `{"boardId": "trello-board-id"}`
+
 `secret`: `{"apiKey": "encrypted-trello-api-key", "apiToken": "encrypted-trello-api-token"}`
 
 Secrets need to be encrypted using AES-256-CBC. Encryption key and iv need to be added to environment config (`.env.local` for local dev).
