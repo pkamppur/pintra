@@ -9,5 +9,6 @@ export interface BoardContentGateway {
 export interface BoardConfig {
   id: Id
   dataSource: string
-  config?: unknown
+  secrets?: unknown
+  options?: unknown
 }
