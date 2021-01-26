@@ -7,9 +7,15 @@ export default async function trelloBoardContentGateway(
   username: Id,
   config: BoardConfig
 ): Promise<BoardContentGateway> {
-  const trelloBoardId = ''
-  const trelloApiKey = ''
-  const trelloToken = ''
+  const secrets = config.secrets as TrelloSecrets
+  const options = config.options as TrelloConfigOptions
+  const trelloBoardId = options?.boardId
+  const trelloApiKey = secrets?.apiKey
+  const trelloToken = secrets?.apiToken
+
+  if (!trelloBoardId || !trelloApiKey || !trelloToken) {
+    throw new Error('Missing Trello configuration')
+  }
 
   const trelloApi = async <T>(path: string) => {
     const result = fetcher<T>(`https://api.trello.com${path}?key=${trelloApiKey}&token=${trelloToken}`, {
@@ -52,6 +58,15 @@ export default async function trelloBoardContentGateway(
       return { ...board, sections: [] }
     },
   }
+}
+
+interface TrelloSecrets {
+  apiKey: string
+  apiToken: string
+}
+
+interface TrelloConfigOptions {
+  boardId: string
 }
 
 interface TrelloList {
