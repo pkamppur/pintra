@@ -5,8 +5,6 @@ import { Id, Section, Card, CardContent, BoardContent, Tag } from 'shared/board/
 import { BoardContentGateway } from 'server/board/boardContentGateway'
 import { fetchBoard } from './boardGateway'
 
-let hasInitialized = false
-
 export default async function pgBoardContentGateway(username: Id, boardId: Id): Promise<BoardContentGateway> {
   return {
     fetchBoardContent: async () => {
@@ -21,10 +19,12 @@ export default async function pgBoardContentGateway(username: Id, boardId: Id): 
   }
 }
 
+let hasInitializedDb = false
+
 async function withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
-  if (!hasInitialized) {
+  if (!hasInitializedDb) {
     console.log(`Init BoardContent Gateway DB`)
-    hasInitialized = true
+    hasInitializedDb = true
 
     await _withDB(async (db) => {
       try {
