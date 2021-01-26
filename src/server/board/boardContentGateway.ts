@@ -5,3 +5,9 @@ export interface BoardContentGateway {
   fetchCardContent: (cardId: Id) => Promise<CardContent>
   searchCards: (searchTerm: string) => Promise<BoardContent>
 }
+
+export interface BoardConfig {
+  id: Id
+  dataSource: string
+  config?: unknown
+}
