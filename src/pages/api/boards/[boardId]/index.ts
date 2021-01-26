@@ -7,7 +7,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const boardId = req.query.boardId as string
 
     try {
-      const board = await fetchBoard('userId', boardId)
+      const gateway = await boardContentGateway(username, boardId)
+      const board = await gateway.fetchBoard()
 
       res.status(200).json(board)
     } catch (e) {
