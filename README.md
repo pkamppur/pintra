@@ -46,7 +46,7 @@ Format for Trello integration columns:
 
 `options`: `{"boardId": "trello-board-id"}`
 
-`secret`: `{"apiKey": "encrypted-trello-api-key", "apiToken": "encrypted-trello-api-token"}`
+`secrets`: `{"apiKey": "encrypted-trello-api-key", "apiToken": "encrypted-trello-api-token"}`
 
 Secrets need to be encrypted using AES-256-CBC. Encryption key and iv need to be added to environment config (`.env.local` for local dev).
 
