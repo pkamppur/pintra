@@ -37,12 +37,12 @@ async function withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
 
             name text NOT NULL,
             text_color text,
-            background_color text
+            background_color text,
 
-            ADD CONSTRAINT fk_board_configs
+            CONSTRAINT fk_board_configs
               FOREIGN KEY (id) 
               REFERENCES board_configs (id)
-              ON DELETE CASCADE;
+              ON DELETE CASCADE
           );
         `)
 
