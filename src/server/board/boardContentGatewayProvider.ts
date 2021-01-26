@@ -9,9 +9,9 @@ export async function boardContentGateway(userId: Id, boardId: Id): Promise<Boar
   const config = await configForBoard(userId, boardId)
 
   if (config.dataSource === 'trello') {
-    return trelloBoardContentGateway(userId, boardId)
+    return trelloBoardContentGateway(userId, config)
   }
-  return pgBoardContentGateway(userId, boardId)
+  return pgBoardContentGateway(userId, config)
 }
 
 async function configForBoard(userId: Id, boardId: Id): Promise<BoardConfig> {

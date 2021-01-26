@@ -2,19 +2,19 @@ import { PoolClient } from 'pg'
 import short from 'short-uuid'
 import { withDB as _withDB } from 'server/db'
 import { Id, Section, Card, CardContent, BoardContent, Tag } from 'shared/board/model'
-import { BoardContentGateway } from 'server/board/boardContentGateway'
+import { BoardConfig, BoardContentGateway } from 'server/board/boardContentGateway'
 import { fetchBoard } from './boardGateway'
 
-export default async function pgBoardContentGateway(username: Id, boardId: Id): Promise<BoardContentGateway> {
+export default async function pgBoardContentGateway(username: Id, config: BoardConfig): Promise<BoardContentGateway> {
   return {
     fetchBoardContent: async () => {
-      return await fetchBoardContent(username, boardId)
+      return await fetchBoardContent(username, config.id)
     },
     fetchCardContent: async (cardId: Id) => {
-      return await fetchCardContent(boardId, cardId)
+      return await fetchCardContent(config.id, cardId)
     },
     searchCards: async (searchTerm: string) => {
-      return await searchCards(username, boardId, searchTerm)
+      return await searchCards(username, config.id, searchTerm)
     },
   }
 }

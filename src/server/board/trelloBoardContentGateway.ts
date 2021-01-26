@@ -1,9 +1,12 @@
-import { BoardContentGateway } from 'server/board/boardContentGateway'
+import { BoardConfig, BoardContentGateway } from 'server/board/boardContentGateway'
 import { Id, Section } from 'shared/board/model'
 import { fetchBoard } from './boardGateway'
 import { fetcher } from 'components/network/useFetch'
 
-export default async function trelloBoardContentGateway(username: Id, boardId: Id): Promise<BoardContentGateway> {
+export default async function trelloBoardContentGateway(
+  username: Id,
+  config: BoardConfig
+): Promise<BoardContentGateway> {
   const trelloBoardId = ''
   const trelloApiKey = ''
   const trelloToken = ''
@@ -17,7 +20,7 @@ export default async function trelloBoardContentGateway(username: Id, boardId: I
 
   return {
     fetchBoardContent: async () => {
-      const board = await fetchBoard(username, boardId)
+      const board = await fetchBoard(username, config.id)
       const lists = await trelloApi<TrelloList[]>(`/1/boards/${trelloBoardId}/lists`)
 
       const sections: Section[] = await Promise.all(
@@ -45,7 +48,7 @@ export default async function trelloBoardContentGateway(username: Id, boardId: I
       return { content: trelloCard.desc }
     },
     searchCards: async (searchTerm: string) => {
-      const board = await fetchBoard(username, boardId)
+      const board = await fetchBoard(username, config.id)
       return { ...board, sections: [] }
     },
   }
