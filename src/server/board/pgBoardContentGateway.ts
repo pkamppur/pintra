@@ -44,7 +44,9 @@ async function withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
               REFERENCES board_configs (id)
               ON DELETE CASCADE;
           );
+        `)
 
+        await db.query(`
           CREATE TABLE IF NOT EXISTS sections (
             id text PRIMARY KEY,
             board_id text NOT NULL,
