@@ -180,7 +180,7 @@ async function fetchCardsFromDb(db: PoolClient, sectionId: Id): Promise<Card[]> 
     [cardIds]
   )
   const tagMap = tags.rows.reduce((map, tagResult) => {
-    const cardTags = tagResult.tags.map((array) => ({ id: parseInt(array[1]), name: array[0] }))
+    const cardTags = tagResult.tags.map((array) => ({ id: array[1], name: array[0] }))
     map.set(tagResult.card_id, cardTags)
     return map
   }, new Map<string, Tag[]>())

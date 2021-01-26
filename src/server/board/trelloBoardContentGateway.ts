@@ -29,7 +29,7 @@ export default async function trelloBoardContentGateway(username: Id, boardId: I
               version: 0,
               name: card.name,
               tags: card.labels.map((label) => {
-                return { name: label.name, id: 0 }
+                return { name: label.name, id: label.id }
               }),
             }
           })
