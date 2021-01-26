@@ -27,7 +27,7 @@ export default async function trelloBoardContentGateway(
     const board = await trelloApi<TrelloBoard>(`/1/boards/${trelloBoardId}`)
 
     return {
-      id: board.id,
+      id: config.id,
       name: board.name,
       version: 0,
       textColor: board.prefs.backgroundBrightness === 'dark' ? 'white' : 'rgb(0, 0, 0, 0.85)',
