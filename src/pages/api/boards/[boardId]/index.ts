@@ -11,6 +11,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       res.status(200).json(board)
     } catch (e) {
+      console.log(`[boardId] error ${JSON.stringify(e)}, error ${e}`)
       res.status(404)
       res.setHeader('Content-Type', 'application/problem+json')
       res.setHeader('Content-Language', 'en')
