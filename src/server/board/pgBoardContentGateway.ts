@@ -1,12 +1,14 @@
 import { PoolClient } from 'pg'
 import short from 'short-uuid'
 import { withDB as _withDB } from 'server/db'
-import { Id, Section, Card, CardContent, BoardContent, Tag } from 'shared/board/model'
+import { Id, Section, Card, CardContent, BoardContent, Tag, Board } from 'shared/board/model'
 import { BoardConfig, BoardContentGateway } from 'server/board/boardContentGateway'
-import { fetchBoard } from './boardGateway'
 
 export default async function pgBoardContentGateway(username: Id, config: BoardConfig): Promise<BoardContentGateway> {
   return {
+    fetchBoard: async () => {
+      return await fetchBoard(username, config.id)
+    },
     fetchBoardContent: async () => {
       return await fetchBoardContent(username, config.id)
     },
@@ -29,6 +31,15 @@ async function withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
     await _withDB(async (db) => {
       try {
         await db.query(`
+          CREATE TABLE IF NOT EXISTS boards (
+            id text PRIMARY KEY,
+            version integer NOT NULL,
+
+            name text NOT NULL,
+            text_color text,
+            background_color text
+          );
+
           CREATE TABLE IF NOT EXISTS sections (
             id text PRIMARY KEY,
             board_id text NOT NULL,
@@ -106,6 +117,58 @@ async function withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
   }
 
   return _withDB(func)
+}
+
+async function boardsFromDb(db: PoolClient): Promise<Board[]> {
+  const result = await db.query<DbBoard>('SELECT name, id, text_color, background_color FROM boards ORDER BY name ASC')
+
+  return result.rows.map(mapDbBoardToBoard)
+}
+
+async function fetchBoard(userId: Id, boardId: Id): Promise<Board> {
+  return await withDB((db) => boardFromDb(db, boardId))
+}
+
+async function boardFromDb(db: PoolClient, boardId: Id): Promise<Board> {
+  const result = await db.query<DbBoard>('SELECT name, id, text_color, background_color FROM boards WHERE id=$1', [
+    boardId,
+  ])
+
+  if (result.rows.length === 0) {
+    throw Error(`Board ${boardId} not found`)
+  }
+
+  return mapDbBoardToBoard(result.rows[0])
+}
+
+interface DbBoard {
+  id: string
+  version: number
+
+  name: string
+  text_color?: string
+  background_color?: string
+}
+
+const mapDbBoardToBoard = (dbBoard: DbBoard): Board => ({
+  id: dbBoard.id,
+  version: dbBoard.version,
+  name: dbBoard.name,
+  textColor: dbBoard.text_color,
+  backgroundColor: dbBoard.background_color,
+})
+
+async function addBoard(name: string): Promise<Board> {
+  const boardId = short.generate()
+
+  const result = await withDB((db) =>
+    db.query('INSERT INTO boards (id, name, version) VALUES ($1, $2, $3);', [boardId, name, 0])
+  )
+  if (result.rowCount !== 1) {
+    throw Error(`Couldn't create board ${name}`)
+  }
+
+  return { id: boardId, name, version: 0 }
 }
 
 async function fetchBoardContent(userId: Id, boardId: Id): Promise<BoardContent> {

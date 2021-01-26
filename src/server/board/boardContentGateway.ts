@@ -1,6 +1,7 @@
-import { Id, CardContent, BoardContent } from 'shared/board/model'
+import { Id, CardContent, BoardContent, Board } from 'shared/board/model'
 
 export interface BoardContentGateway {
+  fetchBoard: () => Promise<Board>
   fetchBoardContent: () => Promise<BoardContent>
   fetchCardContent: (cardId: Id) => Promise<CardContent>
   searchCards: (searchTerm: string) => Promise<BoardContent>

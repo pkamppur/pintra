@@ -1,6 +1,5 @@
 import { BoardConfig, BoardContentGateway } from 'server/board/boardContentGateway'
-import { Id, Section } from 'shared/board/model'
-import { fetchBoard } from './boardGateway'
+import { Board, Id, Section } from 'shared/board/model'
 import { fetcher } from 'components/network/useFetch'
 
 export default async function trelloBoardContentGateway(
@@ -24,9 +23,26 @@ export default async function trelloBoardContentGateway(
     return result
   }
 
+  const fetchBoardFromTrello = async (): Promise<Board> => {
+    const board = await trelloApi<TrelloBoard>(`/1/boards/${trelloBoardId}`)
+    console.log(`Trello board ${JSON.stringify(board, null, 2)}`)
+
+    return {
+      id: board.id,
+      name: board.name,
+      version: 0,
+      textColor: board.prefs.backgroundBrightness === 'dark' ? 'white' : 'rgb(0, 0, 0, 0.85)',
+      backgroundColor: board.prefs.backgroundColor,
+    }
+  }
+
   return {
+    fetchBoard: async () => {
+      const board = await fetchBoardFromTrello()
+      return { id: config.id, version: 0, name: board.name }
+    },
     fetchBoardContent: async () => {
-      const board = await fetchBoard(username, config.id)
+      const board = await fetchBoardFromTrello()
       const lists = await trelloApi<TrelloList[]>(`/1/boards/${trelloBoardId}/lists`)
 
       const sections: Section[] = await Promise.all(
@@ -54,7 +70,7 @@ export default async function trelloBoardContentGateway(
       return { content: trelloCard.desc }
     },
     searchCards: async (searchTerm: string) => {
-      const board = await fetchBoard(username, config.id)
+      const board = await fetchBoardFromTrello()
       return { ...board, sections: [] }
     },
   }
@@ -67,6 +83,18 @@ interface TrelloSecrets {
 
 interface TrelloConfigOptions {
   boardId: string
+}
+
+interface TrelloBoard {
+  id: string
+  name: string
+
+  prefs: TrelloBoardPrefs
+}
+
+interface TrelloBoardPrefs {
+  backgroundBrightness: string
+  backgroundColor: string
 }
 
 interface TrelloList {
