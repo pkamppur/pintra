@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import authenticatedRequest from 'server/authenticatedRequest'
-import { boardContentGateway } from 'server/board/boardContentGatewayProvider'
+import { boardContentGateway } from 'server/board/boardGatewayProvider'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   await authenticatedRequest(req, res, async (username) => {
