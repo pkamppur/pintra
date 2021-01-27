@@ -23,8 +23,12 @@ export default async function trelloBoardContentGateway(
     return result
   }
 
+  const trelloBoard = async (): Promise<TrelloBoard> => {
+    return await trelloApi<TrelloBoard>(`/1/boards/${trelloBoardId}`)
+  }
+
   const fetchBoardFromTrello = async (): Promise<Board> => {
-    const board = await trelloApi<TrelloBoard>(`/1/boards/${trelloBoardId}`)
+    const board = await trelloBoard()
 
     return {
       id: config.id,
