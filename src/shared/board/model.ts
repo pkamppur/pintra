@@ -5,9 +5,6 @@ export interface Board {
   version: number
 
   name: string
-
-  textColor?: string
-  backgroundColor?: string
 }
 
 export interface BoardContent {
@@ -17,6 +14,10 @@ export interface BoardContent {
   name: string
   sections: Section[]
 
+  styles: BoardStyles
+}
+
+export interface BoardStyles {
   textColor?: string
   backgroundColor?: string
 }

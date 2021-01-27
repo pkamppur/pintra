@@ -1,13 +1,13 @@
 import { PoolClient } from 'pg'
 import short from 'short-uuid'
 import { withDB as _withDB } from 'server/db'
-import { Id, Section, Card, CardContent, BoardContent, Tag, Board } from 'shared/board/model'
+import { Id, Section, Card, CardContent, BoardContent, Tag, Board, BoardStyles } from 'shared/board/model'
 import { BoardConfig, BoardContentGateway } from 'server/board/boardContentGateway'
 
 export default async function pgBoardContentGateway(username: Id, config: BoardConfig): Promise<BoardContentGateway> {
   return {
     fetchBoard: async () => {
-      return await fetchBoard(username, config.id)
+      return await (await fetchBoard(username, config.id)).board
     },
     fetchBoardContent: async () => {
       return await fetchBoardContent(username, config.id)
@@ -129,14 +129,14 @@ async function withDB<T>(func: (db: PoolClient) => Promise<T>): Promise<T> {
 async function boardsFromDb(db: PoolClient): Promise<Board[]> {
   const result = await db.query<DbBoard>('SELECT name, id, text_color, background_color FROM boards ORDER BY name ASC')
 
-  return result.rows.map(mapDbBoardToBoard)
+  return result.rows.map(mapDbBoardToBoard).map((tuple) => tuple.board)
 }
 
-async function fetchBoard(userId: Id, boardId: Id): Promise<Board> {
+async function fetchBoard(userId: Id, boardId: Id) {
   return await withDB((db) => boardFromDb(db, boardId))
 }
 
-async function boardFromDb(db: PoolClient, boardId: Id): Promise<Board> {
+async function boardFromDb(db: PoolClient, boardId: Id) {
   const result = await db.query<DbBoard>('SELECT name, id, text_color, background_color FROM boards WHERE id=$1', [
     boardId,
   ])
@@ -157,12 +157,13 @@ interface DbBoard {
   background_color?: string
 }
 
-const mapDbBoardToBoard = (dbBoard: DbBoard): Board => ({
-  id: dbBoard.id,
-  version: dbBoard.version,
-  name: dbBoard.name,
-  textColor: dbBoard.text_color,
-  backgroundColor: dbBoard.background_color,
+const mapDbBoardToBoard = (dbBoard: DbBoard): { board: Board; styles: BoardStyles } => ({
+  board: {
+    id: dbBoard.id,
+    version: dbBoard.version,
+    name: dbBoard.name,
+  },
+  styles: { textColor: dbBoard.text_color, backgroundColor: dbBoard.background_color },
 })
 
 async function addBoard(name: string): Promise<Board> {
@@ -179,13 +180,13 @@ async function addBoard(name: string): Promise<Board> {
 }
 
 async function fetchBoardContent(userId: Id, boardId: Id): Promise<BoardContent> {
-  const board = await fetchBoard(userId, boardId)
+  const { board, styles } = await fetchBoard(userId, boardId)
 
   const sections = await withDB(async (db) => {
     return await sectionsForBoardFromDb(db, boardId)
   })
 
-  return { ...board, sections }
+  return { ...board, styles, sections }
 }
 
 async function fetchSections(boardId: Id): Promise<Section[]> {
@@ -319,7 +320,7 @@ interface ObjectWithId {
 async function searchCards(userId: string, boardId: Id, searchTerm: string): Promise<BoardContent> {
   const lowerCaseSearchTerm = searchTerm.toLocaleLowerCase()
   const mapToId = (item: ObjectWithId) => item.id
-  const board = await fetchBoard(userId, boardId)
+  const { board, styles } = await fetchBoard(userId, boardId)
 
   const result = await withDB(async (db) => {
     const sections = await sectionsForBoardFromDb(db, boardId)
@@ -359,7 +360,7 @@ async function searchCards(userId: string, boardId: Id, searchTerm: string): Pro
       .filter((section) => section)
       .map((section) => section as Section)
 
-    return { ...board, sections: matchingSections }
+    return { ...board, styles, sections: matchingSections }
   })
 
   return result
