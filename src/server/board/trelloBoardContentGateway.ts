@@ -101,7 +101,7 @@ interface TrelloBoard {
 
 interface TrelloBoardPrefs {
   backgroundBrightness: string
-  backgroundColor: string
+  backgroundColor?: string
 }
 
 interface TrelloList {
