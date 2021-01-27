@@ -32,6 +32,9 @@ export default function BoardPage() {
         className={styles.main}
         style={{
           backgroundColor: data?.styles.backgroundColor,
+          background: data?.styles.background,
+          backgroundImage: data?.styles.backgroundImage,
+          backgroundSize: data?.styles.backgroundImage ? 'cover' : undefined,
         }}
       >
         {content.content}

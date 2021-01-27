@@ -20,6 +20,8 @@ export interface BoardContent {
 export interface BoardStyles {
   textColor?: string
   backgroundColor?: string
+  backgroundImage?: string
+  background?: string
 }
 
 export interface Section {

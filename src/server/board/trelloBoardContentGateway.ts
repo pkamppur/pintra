@@ -38,7 +38,12 @@ export default async function trelloBoardContentGateway(
       },
       styles: {
         textColor: board.prefs.backgroundBrightness === 'dark' ? 'white' : 'rgb(0, 0, 0, 0.85)',
-        backgroundColor: board.prefs.backgroundColor,
+        backgroundColor: board.prefs.backgroundColor ? board.prefs.backgroundColor : undefined,
+        background:
+          board.prefs.backgroundTopColor && board.prefs.backgroundBottomColor
+            ? `linear-gradient(${board.prefs.backgroundTopColor}, ${board.prefs.backgroundBottomColor})`
+            : undefined,
+        backgroundImage: board.prefs.backgroundImage ? `url(${board.prefs.backgroundImage})` : undefined,
       },
     }
   }
@@ -102,6 +107,9 @@ interface TrelloBoard {
 interface TrelloBoardPrefs {
   backgroundBrightness: string
   backgroundColor?: string
+  backgroundBottomColor?: string
+  backgroundTopColor?: string
+  backgroundImage?: string
 }
 
 interface TrelloList {
