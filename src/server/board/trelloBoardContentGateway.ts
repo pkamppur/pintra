@@ -86,7 +86,36 @@ export default async function trelloBoardContentGateway(
     },
     searchCards: async (searchTerm: string) => {
       const { board, styles } = await fetchBoardFromTrello()
-      return { ...board, styles, sections: [] }
+      const allListIds = (await trelloListsForBoard()).map((list) => list.id)
+
+      const searchResult = await trelloApi<TrelloSearchResult>(
+        `/1/search/?query=${encodeURIComponent(searchTerm)}&boards=${
+          board.id
+        }&modelTypes=cards&card_fields=name,desc&card_list=true&partial=true`
+      )
+
+      type TrelloListWithCards = TrelloList & { cards: TrelloCard[] }
+      const listsWithMatchingCards = searchResult.cards.reduce<TrelloListWithCards[]>((cur, card) => {
+        const list = cur.find((list) => list.id == card.list.id)
+        if (list) {
+          list.cards.push(card)
+        } else {
+          cur.push({ ...card.list, cards: [card] })
+        }
+        return cur
+      }, [])
+
+      const sections: Section[] = allListIds
+        .map((listId) => {
+          return listsWithMatchingCards.find((list) => list.id === listId)
+        })
+        .filter((list) => list)
+        .map((list) => list as TrelloListWithCards)
+        .map((list) => {
+          return { id: list.id, version: 0, name: list.name, cards: list.cards.map(mapTrelloCardToCard) }
+        })
+
+      return { ...board, styles, sections }
     },
   }
 }
@@ -142,3 +171,9 @@ interface TrelloLabel {
   id: string
   name: string
 }
+
+interface TrelloSearchResult {
+  cards: TrelloSearchResultCard[]
+}
+
+type TrelloSearchResultCard = TrelloCard & { list: TrelloList }
