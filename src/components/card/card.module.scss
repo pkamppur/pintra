@@ -22,17 +22,19 @@
       padding: 10px;
     }
 
-    .tag {
-      display: inline;
-      padding: 3px;
-      padding-left: 10px;
-      padding-right: 10px;
-      margin-right: 5px;
-      font-size: 80%;
+    .tags {
+      .tag {
+        display: inline;
+        padding: 3px;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-right: 5px;
+        font-size: 80%;
 
-      color: #555;
-      background-color: #f3f3f3;
-      border-radius: 12px;
+        color: #555;
+        background-color: #f3f3f3;
+        border-radius: 12px;
+      }
     }
   }
 }

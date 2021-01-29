@@ -15,7 +15,7 @@ export default function Card({ title, tags, openDialog, children }: CardProps) {
       <div className={styles.card} onClick={() => openDialog(children)}>
         <div>
           <div>{title}</div>
-          <div>
+          <div className={styles.tags}>
             {tags.map((tag) => (
               <div key={tag.id} className={styles.tag}>
                 {tag.name}
