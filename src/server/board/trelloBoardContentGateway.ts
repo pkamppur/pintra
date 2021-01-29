@@ -17,9 +17,13 @@ export default async function trelloBoardContentGateway(
   }
 
   const trelloApi = async <T>(path: string) => {
-    const result = fetcher<T>(`https://api.trello.com${path}?key=${trelloApiKey}&token=${trelloToken}`, {
-      method: 'GET',
-    })
+    const querySeparator = path.includes('?') ? '&' : '?'
+    const result = fetcher<T>(
+      `https://api.trello.com${path}${querySeparator}key=${trelloApiKey}&token=${trelloToken}`,
+      {
+        method: 'GET',
+      }
+    )
     return result
   }
 
