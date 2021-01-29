@@ -31,6 +31,14 @@ export default async function trelloBoardContentGateway(
     return await trelloApi<TrelloBoard>(`/1/boards/${trelloBoardId}`)
   }
 
+  const trelloListsForBoard = async (): Promise<TrelloList[]> => {
+    return await trelloApi<TrelloList[]>(`/1/boards/${trelloBoardId}/lists`)
+  }
+
+  const trelloCardsForList = async (listId: string): Promise<TrelloCard[]> => {
+    return await trelloApi<TrelloCard[]>(`/1/lists/${listId}/cards`)
+  }
+
   const fetchBoardFromTrello = async () => {
     const board = await trelloBoard()
 
@@ -59,11 +67,11 @@ export default async function trelloBoardContentGateway(
     },
     fetchBoardContent: async () => {
       const { board, styles } = await fetchBoardFromTrello()
-      const lists = await trelloApi<TrelloList[]>(`/1/boards/${trelloBoardId}/lists`)
+      const lists = await trelloListsForBoard()
 
       const sections: Section[] = await Promise.all(
         lists.map(async (list) => {
-          const trelloCards = await trelloApi<TrelloCard[]>(`/1/lists/${list.id}/cards`)
+          const trelloCards = await trelloCardsForList(list.id)
           const cards = trelloCards.map(mapTrelloCardToCard)
 
           return { id: list.id, version: 0, name: list.name, cards }
