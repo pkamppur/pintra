@@ -1,5 +1,5 @@
 import { BoardConfig, BoardContentGateway } from 'server/board/boardContentGateway'
-import { Board, Id, Section } from 'shared/board/model'
+import { Board, Card, Id, Section } from 'shared/board/model'
 import { fetcher } from 'components/network/useFetch'
 
 export default async function trelloBoardContentGateway(
@@ -64,16 +64,7 @@ export default async function trelloBoardContentGateway(
       const sections: Section[] = await Promise.all(
         lists.map(async (list) => {
           const trelloCards = await trelloApi<TrelloCard[]>(`/1/lists/${list.id}/cards`)
-          const cards = trelloCards.map((card) => {
-            return {
-              id: card.id,
-              version: 0,
-              name: card.name,
-              tags: card.labels.map((label) => {
-                return { name: label.name, id: label.id }
-              }),
-            }
-          })
+          const cards = trelloCards.map(mapTrelloCardToCard)
 
           return { id: list.id, version: 0, name: list.name, cards }
         })
@@ -89,6 +80,17 @@ export default async function trelloBoardContentGateway(
       const { board, styles } = await fetchBoardFromTrello()
       return { ...board, styles, sections: [] }
     },
+  }
+}
+
+function mapTrelloCardToCard(card: TrelloCard): Card {
+  return {
+    id: card.id,
+    version: 0,
+    name: card.name,
+    tags: card.labels.map((label) => {
+      return { name: label.name, id: label.id }
+    }),
   }
 }
 
