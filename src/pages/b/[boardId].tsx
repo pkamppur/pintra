@@ -20,47 +20,40 @@ export default function DynamicBoardPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const searchFetch = useFetchSearch(boardId, searchTerm)
 
-  return (
-    <BoardPage
-      data={data}
-      loading={loading}
-      error={error}
-      searchData={searchFetch.data}
-      setSearchTerm={setSearchTerm}
-      pagePath={pagePath}
-    />
-  )
+  if (error) {
+    return (
+      <Scaffold title="Error Loading | Pintra" loginRedirect={pagePath}>
+        <main className={styles.main}>
+          <div>failed to load {JSON.stringify(error)}</div>
+        </main>
+      </Scaffold>
+    )
+  }
+
+  if (loading || !data) {
+    return (
+      <Scaffold title="Loading… | Pintra" loginRedirect={pagePath}>
+        <main className={styles.main}>
+          <div>Loading…</div>
+        </main>
+      </Scaffold>
+    )
+  }
+
+  return <BoardPage board={searchFetch.data || data} setSearchTerm={setSearchTerm} pagePath={pagePath} />
 }
 
 interface BoardPageProps {
-  data?: BoardContent
-  loading: boolean
-  error: unknown
-  searchData?: BoardContent
+  board: BoardContent
   setSearchTerm: Dispatch<SetStateAction<string>>
   pagePath: string
 }
 
-function BoardPage({ data, searchData, error, loading, setSearchTerm, pagePath }: BoardPageProps) {
+function BoardPage({ board, setSearchTerm, pagePath }: BoardPageProps) {
   const navBarItems = SearchBox({ search: setSearchTerm })
 
-  const board = searchData || data
-  let title: string
-  let content: ReactNode
-
-  if (error) {
-    title = `Error Loading | Pintra`
-    content = <div>failed to load {JSON.stringify(error)}</div>
-  } else if (loading || !board) {
-    title = `Loading… | Pintra`
-    content = <div>Loading…</div>
-  } else {
-    title = `${board.name} | Pintra`
-    content = <BoardContents board={board} />
-  }
-
   return (
-    <Scaffold title={title} loginRedirect={pagePath} additionalNavComponent={navBarItems}>
+    <Scaffold title={`${board.name} | Pintra`} loginRedirect={pagePath} additionalNavComponent={navBarItems}>
       <main
         className={styles.main}
         style={{
@@ -70,7 +63,7 @@ function BoardPage({ data, searchData, error, loading, setSearchTerm, pagePath }
           backgroundSize: board?.styles.backgroundImage ? 'cover' : undefined,
         }}
       >
-        {content}
+        <BoardContents board={board} />
       </main>
     </Scaffold>
   )
