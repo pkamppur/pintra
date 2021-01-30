@@ -15,19 +15,21 @@ export default function Card({ title, tags, openDialog, children }: CardProps) {
       <div className={styles.card} onClick={() => openDialog(children)}>
         <div>
           <div>{title}</div>
-          <div className={styles.tags}>
-            {tags.map((tag) => (
-              <div
-                key={tag.id}
-                style={{ color: tag.textColor, backgroundColor: tag.backgroundColor }}
-                className={styles.tag}
-              >
-                {tag.name}
-              </div>
-            ))}
-          </div>
+          {<CardTagList tags={tags} />}
         </div>
       </div>
+    </div>
+  )
+}
+
+function CardTagList({ tags }: { tags: Tag[] }) {
+  return (
+    <div className={styles.tags}>
+      {tags.map((tag) => (
+        <div key={tag.id} style={{ color: tag.textColor, backgroundColor: tag.backgroundColor }} className={styles.tag}>
+          {tag.name}
+        </div>
+      ))}
     </div>
   )
 }
