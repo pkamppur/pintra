@@ -90,7 +90,7 @@ export default async function trelloBoardContentGateway(
       const searchResult = await trelloApi<TrelloSearchResult>(
         `/1/search/?query=${encodeURIComponent(searchTerm)}&boards=${
           board.id
-        }&modelTypes=cards&card_fields=name,desc&card_list=true&partial=true`
+        }&modelTypes=cards&card_fields=name,desc,labels&card_list=true&partial=true`
       )
 
       type TrelloListWithCards = TrelloList & { cards: TrelloCard[] }
