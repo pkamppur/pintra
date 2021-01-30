@@ -66,11 +66,11 @@ function BoardPageContent({
 }
 
 function BoardContents({ board }: { board: BoardContent }) {
-  const [dialogContent, setDialogContent] = useState<ReactNode>()
+  const [cardContent, setCardContent] = useState<ReactNode>()
   const [open, setOpen] = useState(false)
 
-  const openDialog = (content: ReactNode) => {
-    setDialogContent(content)
+  const openCard = (content: ReactNode) => {
+    setCardContent(content)
     setOpen(true)
   }
 
@@ -87,10 +87,10 @@ function BoardContents({ board }: { board: BoardContent }) {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <div className={styles.dialogContentContainer}>{dialogContent}</div>
+        <div className={styles.cardContentContainer}>{cardContent}</div>
       </Dialog>
       <h1 style={{ color: board?.styles.textColor }}>{`${board.name}`}</h1>
-      <Sections boardId={board.id} sections={board.sections} openDialog={openDialog} />
+      <Sections boardId={board.id} sections={board.sections} openCard={openCard} />
       {/*<InlineAddButton
         title="+ Add Card"
         addButtonLabel="Add Card"
@@ -104,11 +104,11 @@ function BoardContents({ board }: { board: BoardContent }) {
 function Sections({
   boardId,
   sections,
-  openDialog,
+  openCard,
 }: {
   boardId: Id
   sections: Section[]
-  openDialog: (content: ReactNode) => void
+  openCard: (content: ReactNode) => void
 }) {
   return (
     <>
@@ -122,7 +122,7 @@ function Sections({
           </div>
           <section className={styles.cards}>
             {section.cards.map((card) => (
-              <Card key={card.id} title={card.name} tags={card.tags} openDialog={openDialog}>
+              <Card key={card.id} title={card.name} tags={card.tags} openCard={openCard}>
                 <CardContent boardId={boardId} cardId={card.id} name={card.name} />
               </Card>
             ))}
