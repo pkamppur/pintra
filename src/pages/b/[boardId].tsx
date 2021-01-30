@@ -1,7 +1,6 @@
-import { Dialog } from '@material-ui/core'
 import { useRouter } from 'next/router'
-import { ReactNode, useState } from 'react'
-import { BoardContent, Id, Section } from 'shared/board/model'
+import { Dispatch, ReactNode, SetStateAction, useState } from 'react'
+import { BoardContent } from 'shared/board/model'
 import Scaffold from 'components/scaffold'
 import { useFetchBoardContent, useFetchSearch } from 'components/board/useFetchBoard'
 import { asString } from 'components/stringHelpers'
@@ -21,9 +20,31 @@ export default function DynamicBoardPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const searchFetch = useFetchSearch(boardId, searchTerm)
 
+  return (
+    <BoardPage
+      data={data}
+      loading={loading}
+      error={error}
+      searchData={searchFetch.data}
+      setSearchTerm={setSearchTerm}
+      pagePath={pagePath}
+    />
+  )
+}
+
+interface BoardPageProps {
+  data?: BoardContent
+  loading: boolean
+  error: unknown
+  searchData?: BoardContent
+  setSearchTerm: Dispatch<SetStateAction<string>>
+  pagePath: string
+}
+
+function BoardPage({ data, searchData, error, loading, setSearchTerm, pagePath }: BoardPageProps) {
   const navBarItems = SearchBox({ search: setSearchTerm })
 
-  const board = searchFetch.data || data
+  const board = searchData || data
   let title: string
   let content: ReactNode
 
