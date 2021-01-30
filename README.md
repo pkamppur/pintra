@@ -7,6 +7,8 @@ Work in progress.
 Supports using Trello as the data source in addition to own database.
 No editing support yet, and Trello integration nicely sidesteps that problem.
 
+<img src="docs/board-screenshot.jpg" width="800"/>
+
 ## Tech Stack
 
 Web application running with Next.js using Postgres as database.
