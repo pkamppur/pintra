@@ -17,24 +17,24 @@ export default function BoardPage() {
   const rawBoardId = router.query.boardId
   const boardId = asString(rawBoardId)
 
-  const { loading, data, error } = useFetchBoardContent(boardId)
+  const { loading, data: board, error } = useFetchBoardContent(boardId)
 
   const [searchTerm, setSearchTerm] = useState('')
 
   const searchFetch = useFetchSearch(boardId, searchTerm)
 
   const navBarItems = SearchBox({ search: setSearchTerm })
-  const content = BoardPageContent({ boardId, loading, data: searchFetch.data || data, error })
+  const content = BoardPageContent({ boardId, loading, board: searchFetch.data || board, error })
 
   return (
     <Scaffold title={content.title} loginRedirect={router.asPath} additionalNavComponent={navBarItems}>
       <main
         className={styles.main}
         style={{
-          backgroundColor: data?.styles.backgroundColor,
-          background: data?.styles.background,
-          backgroundImage: data?.styles.backgroundImage,
-          backgroundSize: data?.styles.backgroundImage ? 'cover' : undefined,
+          backgroundColor: board?.styles.backgroundColor,
+          background: board?.styles.background,
+          backgroundImage: board?.styles.backgroundImage,
+          backgroundSize: board?.styles.backgroundImage ? 'cover' : undefined,
         }}
       >
         {content.content}
@@ -46,23 +46,23 @@ export default function BoardPage() {
 function BoardPageContent({
   boardId,
   loading,
-  data,
+  board,
   error,
 }: {
   boardId?: Id
   loading: boolean
-  data?: BoardContent
+  board?: BoardContent
   error: unknown
 }): { title: string; content: ReactNode } {
   if (error) {
     return { title: `Error Loading: ${boardId} | Pintra`, content: <div>failed to load {JSON.stringify(error)}</div> }
   }
 
-  if (loading || !data) {
+  if (loading || !board) {
     return { title: `Loading ${boardId} | Pintra`, content: <div>Loading…</div> }
   }
 
-  return { title: `${data.name} | Pintra`, content: <BoardContents board={data} /> }
+  return { title: `${board.name} | Pintra`, content: <BoardContents board={board} /> }
 }
 
 function BoardContents({ board }: { board: BoardContent }) {
