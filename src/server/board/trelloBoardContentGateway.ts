@@ -145,8 +145,14 @@ function mapTrelloColorToHtmlColor(colorName: string): string | undefined {
       return '#b381c7'
     case 'blue':
       return '#2772c7'
-    case 'black, sky, pink, lime':
-      return undefined
+    case 'sky':
+      return '#37c7f3'
+    case 'black':
+      return '#3c434e'
+    case 'pink':
+      return '#e081bc'
+    case 'lime':
+      return '#98ec76'
     default:
       return undefined
   }
