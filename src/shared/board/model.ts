@@ -2,14 +2,12 @@ export type Id = string
 
 export interface Board {
   id: Id
-  version: number
 
   name: string
 }
 
 export interface BoardContent {
   id: Id
-  version: number
 
   name: string
   sections: Section[]
@@ -26,7 +24,6 @@ export interface BoardStyles {
 
 export interface Section {
   id: string
-  version: number
 
   name: string
   cards: Card[]
@@ -37,7 +34,6 @@ export interface Section {
 
 export interface Card {
   id: string
-  version: number
 
   name: string
   tags: Tag[]

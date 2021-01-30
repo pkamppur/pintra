@@ -46,7 +46,6 @@ export default async function trelloBoardContentGateway(
       board: {
         id: config.id,
         name: board.name,
-        version: 0,
       },
       styles: {
         textColor: board.prefs.backgroundBrightness === 'dark' ? 'white' : 'rgb(0, 0, 0, 0.85)',
@@ -63,7 +62,7 @@ export default async function trelloBoardContentGateway(
   return {
     fetchBoard: async () => {
       const { board } = await fetchBoardFromTrello()
-      return { id: config.id, version: 0, name: board.name }
+      return { id: config.id, name: board.name }
     },
     fetchBoardContent: async () => {
       const { board, styles } = await fetchBoardFromTrello()
@@ -74,7 +73,7 @@ export default async function trelloBoardContentGateway(
           const trelloCards = await trelloCardsForList(list.id)
           const cards = trelloCards.map(mapTrelloCardToCard)
 
-          return { id: list.id, version: 0, name: list.name, cards }
+          return { id: list.id, name: list.name, cards }
         })
       )
 
@@ -112,7 +111,7 @@ export default async function trelloBoardContentGateway(
         .filter((list) => list)
         .map((list) => list as TrelloListWithCards)
         .map((list) => {
-          return { id: list.id, version: 0, name: list.name, cards: list.cards.map(mapTrelloCardToCard) }
+          return { id: list.id, name: list.name, cards: list.cards.map(mapTrelloCardToCard) }
         })
 
       return { ...board, styles, sections }
@@ -123,7 +122,6 @@ export default async function trelloBoardContentGateway(
 function mapTrelloCardToCard(card: TrelloCard): Card {
   return {
     id: card.id,
-    version: 0,
     name: card.name,
     tags: card.labels.map((label) => {
       return { name: label.name, id: label.id }
