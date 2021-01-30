@@ -15,17 +15,30 @@ export default function BoardPage() {
   const rawBoardId = router.query.boardId
   const boardId = asString(rawBoardId)
 
-  const { loading, data: board, error } = useFetchBoardContent(boardId)
+  const { loading, data, error } = useFetchBoardContent(boardId)
 
   const [searchTerm, setSearchTerm] = useState('')
   const searchFetch = useFetchSearch(boardId, searchTerm)
 
   const navBarItems = SearchBox({ search: setSearchTerm })
 
-  const content = BoardPageContent({ boardId, loading, board: searchFetch.data || board, error })
+  const board = searchFetch.data || data
+  let title: string
+  let content: ReactNode
+
+  if (error) {
+    title = `Error Loading: ${boardId} | Pintra`
+    content = <div>failed to load {JSON.stringify(error)}</div>
+  } else if (loading || !board) {
+    title = `Loading ${boardId} | Pintra`
+    content = <div>Loading…</div>
+  } else {
+    title = `${board.name} | Pintra`
+    content = <BoardContents board={board} />
+  }
 
   return (
-    <Scaffold title={content.title} loginRedirect={router.asPath} additionalNavComponent={navBarItems}>
+    <Scaffold title={title} loginRedirect={router.asPath} additionalNavComponent={navBarItems}>
       <main
         className={styles.main}
         style={{
@@ -35,30 +48,8 @@ export default function BoardPage() {
           backgroundSize: board?.styles.backgroundImage ? 'cover' : undefined,
         }}
       >
-        {content.content}
+        {content}
       </main>
     </Scaffold>
   )
-}
-
-function BoardPageContent({
-  boardId,
-  loading,
-  board,
-  error,
-}: {
-  boardId?: Id
-  loading: boolean
-  board?: BoardContent
-  error: unknown
-}): { title: string; content: ReactNode } {
-  if (error) {
-    return { title: `Error Loading: ${boardId} | Pintra`, content: <div>failed to load {JSON.stringify(error)}</div> }
-  }
-
-  if (loading || !board) {
-    return { title: `Loading ${boardId} | Pintra`, content: <div>Loading…</div> }
-  }
-
-  return { title: `${board.name} | Pintra`, content: <BoardContents board={board} /> }
 }
