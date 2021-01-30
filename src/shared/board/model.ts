@@ -42,6 +42,9 @@ export interface Card {
 export interface Tag {
   id: string
   name: string
+
+  textColor?: string
+  backgroundColor?: string
 }
 
 export interface CardContent {

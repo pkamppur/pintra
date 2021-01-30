@@ -124,8 +124,31 @@ function mapTrelloCardToCard(card: TrelloCard): Card {
     id: card.id,
     name: card.name,
     tags: card.labels.map((label) => {
-      return { name: label.name, id: label.id }
+      const backgroundColor = mapTrelloColorToHtmlColor(label.color)
+      const textColor = backgroundColor ? 'white' : undefined
+      return { name: label.name, id: label.id, textColor, backgroundColor }
     }),
+  }
+}
+
+function mapTrelloColorToHtmlColor(colorName: string): string | undefined {
+  switch (colorName) {
+    case 'green':
+      return '#76be67'
+    case 'yellow':
+      return '#f3dd35'
+    case 'red':
+      return '#ec7767'
+    case 'orange':
+      return '#ffac39'
+    case 'purple':
+      return '#b381c7'
+    case 'blue':
+      return '#2772c7'
+    case 'black, sky, pink, lime':
+      return undefined
+    default:
+      return undefined
   }
 }
 
@@ -168,6 +191,7 @@ interface TrelloCard {
 interface TrelloLabel {
   id: string
   name: string
+  color: string
 }
 
 interface TrelloSearchResult {
