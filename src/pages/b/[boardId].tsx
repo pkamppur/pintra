@@ -57,8 +57,7 @@ function BoardPage({ board, setSearchTerm, pagePath }: BoardPageProps) {
       <main
         className={styles.main}
         style={{
-          backgroundColor: board?.styles.backgroundColor,
-          background: board?.styles.background,
+          background: board?.styles.background || board?.styles.backgroundColor,
           backgroundImage: board?.styles.backgroundImage,
           backgroundSize: board?.styles.backgroundImage ? 'cover' : undefined,
         }}
