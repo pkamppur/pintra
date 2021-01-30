@@ -27,10 +27,10 @@ export default function BoardPage() {
   let content: ReactNode
 
   if (error) {
-    title = `Error Loading: ${boardId} | Pintra`
+    title = `Error Loading | Pintra`
     content = <div>failed to load {JSON.stringify(error)}</div>
   } else if (loading || !board) {
-    title = `Loading ${boardId} | Pintra`
+    title = `Loading… | Pintra`
     content = <div>Loading…</div>
   } else {
     title = `${board.name} | Pintra`
