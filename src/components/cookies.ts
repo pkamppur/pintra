@@ -1,3 +1,18 @@
+export function getCookie(name: string) {
+  if (process.browser && document.cookie) {
+    const cookies = document.cookie.split(';')
+
+    for (const i in cookies) {
+      const cookie = cookies[i].trim()
+
+      if (cookie.startsWith(name + '=')) {
+        return decodeURIComponent(cookie.substring(name.length + 1))
+      }
+    }
+  }
+  return undefined
+}
+
 export function saveCookie(name: string, value: string, expiresInMinutes: number) {
   const today = new Date()
   const expire = new Date()
