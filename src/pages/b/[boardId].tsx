@@ -9,7 +9,7 @@ import SearchBox from 'components/searchbox/searchbox'
 import BoardContents from 'components/board/boardContents'
 import styles from './board.module.scss'
 
-export default function BoardPage() {
+export default function DynamicBoardPage() {
   const router = useRouter()
 
   const rawBoardId = router.query.boardId
