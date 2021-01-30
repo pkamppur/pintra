@@ -1,7 +1,7 @@
 import MarkdownIt from 'markdown-it'
 import { ReactNode } from 'react'
-import { Id } from '../../shared/board/model'
-import { useFetchCardContent } from '../board/useFetchBoard'
+import { Id } from 'shared/board/model'
+import { useFetchCardContent } from 'components/board/useFetchBoard'
 
 export default function CardContent({ boardId, cardId, name }: { boardId: Id; cardId: Id; name: string }) {
   const { loading, data, error } = useFetchCardContent(boardId, cardId)
