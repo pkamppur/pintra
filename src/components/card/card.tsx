@@ -23,6 +23,10 @@ export default function Card({ title, tags, openDialog, children }: CardProps) {
 }
 
 function CardTagList({ tags }: { tags: Tag[] }) {
+  if (tags.length === 0) {
+    return <></>
+  }
+
   return (
     <div className={styles.tags}>
       {tags.map((tag) => (
