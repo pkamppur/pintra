@@ -1,0 +1,42 @@
+@use 'components/common.scss';
+
+.sectionDivider {
+  background-color: #eaecf1cc;
+  padding: 6px;
+  padding-left: 10px;
+  margin-top: 40px;
+  margin-bottom: 10px;
+
+  font-weight: 500;
+  font-size: 110%;
+
+  border-radius: 6px;
+}
+
+$cardPadding: 6px; // TODO: duplicated with board.module.scss
+
+.cards {
+  display: flex;
+  flex-flow: row wrap;
+
+  @include common.desktop-small {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  @include common.desktop {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  @include common.desktop-large {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  @include common.desktop-huge {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
+}
+
+.cardContentContainer {
+  padding: 20px;
+}
