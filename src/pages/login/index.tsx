@@ -4,6 +4,7 @@ import { FormEvent, useState } from 'react'
 import { CircularProgress } from '@material-ui/core'
 import { useRouter } from 'next/router'
 import { asString } from 'components/stringHelpers'
+import { removeCookie, saveCookie } from 'components/cookies'
 
 interface LoginResponse {
   token?: string
@@ -37,23 +38,6 @@ async function loginUser(username: string, password: string) {
     throw new Error('Invalid login, try again')
   }
   return data.token
-}
-
-function saveCookie(name: string, value: string, expiresInMinutes: number) {
-  const today = new Date()
-  const expire = new Date()
-
-  expire.setTime(today.getTime() + expiresInMinutes * 60 * 1000)
-
-  const cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expire.toUTCString() + '; path=/'
-  document.cookie = cookie
-}
-
-function removeCookie(name: string) {
-  const expiresNow = new Date(0)
-
-  const cookie = name + '=' + encodeURIComponent('') + '; expires=' + expiresNow.toUTCString() + '; path=/'
-  document.cookie = cookie
 }
 
 export default function LoginPage() {
