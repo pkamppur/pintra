@@ -67,11 +67,11 @@ function BoardPageContent({
 
 function BoardContents({ board }: { board: BoardContent }) {
   const [cardContent, setCardContent] = useState<ReactNode>()
-  const [open, setOpen] = useState(false)
+  const [cardOpen, setCardOpen] = useState(false)
 
   const openCard = (content: ReactNode) => {
     setCardContent(content)
-    setOpen(true)
+    setCardOpen(true)
   }
 
   const addCard = (name: string) => {
@@ -81,9 +81,9 @@ function BoardContents({ board }: { board: BoardContent }) {
   return (
     <>
       <Dialog
-        open={open}
+        open={cardOpen}
         transitionDuration={100}
-        onClose={() => setOpen(false)}
+        onClose={() => setCardOpen(false)}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
