@@ -14,6 +14,7 @@ export default function DynamicBoardPage() {
 
   const rawBoardId = router.query.boardId
   const boardId = asString(rawBoardId)
+  const pagePath = router.asPath
 
   const { loading, data, error } = useFetchBoardContent(boardId)
 
@@ -38,7 +39,7 @@ export default function DynamicBoardPage() {
   }
 
   return (
-    <Scaffold title={title} loginRedirect={router.asPath} additionalNavComponent={navBarItems}>
+    <Scaffold title={title} loginRedirect={pagePath} additionalNavComponent={navBarItems}>
       <main
         className={styles.main}
         style={{
