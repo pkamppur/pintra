@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { CSSProperties, Dispatch, ReactNode, SetStateAction, useState } from 'react'
+import { CSSProperties, Dispatch, SetStateAction, useState } from 'react'
 import { BoardContent, BoardStyles } from 'shared/board/model'
 import Scaffold from 'components/scaffold'
 import { useFetchBoardContent, useFetchSearch } from 'components/board/useFetchBoard'
