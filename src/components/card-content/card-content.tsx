@@ -13,8 +13,8 @@ interface CardContentProps {
   sectionBackgroundColor?: string
 }
 
-export default function CardContent({ boardId, cardId, name }: CardContentProps) {
-  const { loading, data, error } = useFetchCardContent(boardId, cardId)
+export default function CardContent(props: CardContentProps) {
+  const { loading, data, error } = useFetchCardContent(props.boardId, props.cardId)
 
   let contentNode: ReactNode
   if (error) {
@@ -29,8 +29,9 @@ export default function CardContent({ boardId, cardId, name }: CardContentProps)
     <>
       <div
         className={styles.cardHeader}
+        style={{ color: props.sectionTitleColor, backgroundColor: props.sectionBackgroundColor }}
       >
-        <h2>{name}</h2>
+        <h2>{props.name}</h2>
       </div>
       <div className={styles.cardContent}>{contentNode}</div>
     </>
