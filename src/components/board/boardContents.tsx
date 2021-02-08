@@ -31,7 +31,7 @@ export default function BoardContents({ board }: { board: BoardContent }) {
         <div>{cardContent}</div>
       </Dialog>
       <h1 style={{ color: board?.styles.textColor }}>{`${board.name}`}</h1>
-      <Sections boardId={board.id} sections={board.sections} openCard={openCard} />
+      <Sections boardId={board.id} sections={board.sections} openCard={openCard} closeCard={() => setCardOpen(false)} />
       {/*<InlineAddButton
           title="+ Add Card"
           addButtonLabel="Add Card"
@@ -46,10 +46,12 @@ function Sections({
   boardId,
   sections,
   openCard,
+  closeCard,
 }: {
   boardId: Id
   sections: Section[]
   openCard: (content: ReactNode) => void
+  closeCard: () => void
 }) {
   return (
     <>
@@ -68,6 +70,7 @@ function Sections({
                   boardId={boardId}
                   cardId={card.id}
                   name={card.name}
+                  close={closeCard}
                   sectionName={section.name}
                   sectionTitleColor={section.textColor}
                   sectionBackgroundColor={section.backgroundColor}

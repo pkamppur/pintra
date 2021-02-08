@@ -1,5 +1,5 @@
 import MarkdownIt from 'markdown-it'
-import { ReactNode } from 'react'
+import { MouseEvent, ReactNode } from 'react'
 import { Id } from 'shared/board/model'
 import { useFetchCardContent } from 'components/board/useFetchBoard'
 import styles from './card-content.module.scss'
@@ -8,6 +8,7 @@ interface CardContentProps {
   boardId: Id
   cardId: Id
   name: string
+  close: () => void
   sectionName: string
   sectionTitleColor?: string
   sectionBackgroundColor?: string
@@ -25,12 +26,22 @@ export default function CardContent(props: CardContentProps) {
     contentNode = <Markdown content={data.content} />
   }
 
+  const onClose = (e: MouseEvent) => {
+    e.preventDefault()
+    props.close()
+  }
+
   return (
     <>
       <div
         className={styles.cardHeader}
         style={{ color: props.sectionTitleColor, backgroundColor: props.sectionBackgroundColor }}
       >
+        <div className={styles.closeButtonContainer}>
+          <a className={styles.closeButton} href="#" style={{ color: props.sectionTitleColor }} onClick={onClose}>
+            ×
+          </a>
+        </div>
         <h2>{props.name}</h2>
       </div>
       <div className={styles.cardContent}>{contentNode}</div>

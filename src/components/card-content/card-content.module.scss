@@ -5,6 +5,17 @@
   text-align: center;
 }
 
+.closeButtonContainer {
+  text-align: right;
+  float: right;
+
+  a.closeButton {
+    display: inline-block;
+    font-size: 40px;
+    text-decoration: none;
+  }
+}
+
 .cardContent {
   padding: 20px;
 }
