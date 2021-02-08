@@ -3,7 +3,13 @@ import { ReactNode } from 'react'
 import { Id } from 'shared/board/model'
 import { useFetchCardContent } from 'components/board/useFetchBoard'
 
-export default function CardContent({ boardId, cardId, name }: { boardId: Id; cardId: Id; name: string }) {
+interface CardContentProps {
+  boardId: Id
+  cardId: Id
+  name: string
+}
+
+export default function CardContent({ boardId, cardId, name }: CardContentProps) {
   const { loading, data, error } = useFetchCardContent(boardId, cardId)
 
   let contentNode: ReactNode
