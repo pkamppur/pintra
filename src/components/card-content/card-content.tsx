@@ -8,6 +8,9 @@ interface CardContentProps {
   boardId: Id
   cardId: Id
   name: string
+  sectionName: string
+  sectionTitleColor?: string
+  sectionBackgroundColor?: string
 }
 
 export default function CardContent({ boardId, cardId, name }: CardContentProps) {

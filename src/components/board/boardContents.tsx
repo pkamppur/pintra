@@ -64,7 +64,14 @@ function Sections({
           <section className={styles.cards}>
             {section.cards.map((card) => (
               <Card key={card.id} title={card.name} tags={card.tags} openCard={openCard}>
-                <CardContent boardId={boardId} cardId={card.id} name={card.name} />
+                <CardContent
+                  boardId={boardId}
+                  cardId={card.id}
+                  name={card.name}
+                  sectionName={section.name}
+                  sectionTitleColor={section.textColor}
+                  sectionBackgroundColor={section.backgroundColor}
+                />
               </Card>
             ))}
           </section>
