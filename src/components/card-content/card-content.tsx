@@ -2,6 +2,7 @@ import MarkdownIt from 'markdown-it'
 import { ReactNode } from 'react'
 import { Id } from 'shared/board/model'
 import { useFetchCardContent } from 'components/board/useFetchBoard'
+import styles from './card-content.module.scss'
 
 interface CardContentProps {
   boardId: Id
@@ -23,8 +24,12 @@ export default function CardContent({ boardId, cardId, name }: CardContentProps)
 
   return (
     <>
-      <h2>{name}</h2>
-      {contentNode}
+      <div
+        className={styles.cardHeader}
+      >
+        <h2>{name}</h2>
+      </div>
+      <div className={styles.cardContent}>{contentNode}</div>
     </>
   )
 }

@@ -28,7 +28,7 @@ export default function BoardContents({ board }: { board: BoardContent }) {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <div className={styles.cardContentContainer}>{cardContent}</div>
+        <div>{cardContent}</div>
       </Dialog>
       <h1 style={{ color: board?.styles.textColor }}>{`${board.name}`}</h1>
       <Sections boardId={board.id} sections={board.sections} openCard={openCard} />
