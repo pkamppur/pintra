@@ -64,19 +64,21 @@ function Sections({
             {section.name}
           </div>
           <section className={styles.cards}>
-            {section.cards.map((card) => (
-              <Card key={card.id} title={card.name} tags={card.tags} openCard={openCard}>
-                <CardContent
-                  boardId={boardId}
-                  cardId={card.id}
-                  name={card.name}
-                  close={closeCard}
-                  sectionName={section.name}
-                  sectionTitleColor={section.textColor}
-                  sectionBackgroundColor={section.backgroundColor}
-                />
-              </Card>
-            ))}
+            {section.cards.map((card) => {
+              return (
+                <Card key={card.id} title={card.name} tags={card.tags} openCard={openCard}>
+                  <CardContent
+                    boardId={boardId}
+                    cardId={card.id}
+                    name={card.name}
+                    close={closeCard}
+                    sectionName={section.name}
+                    sectionTitleColor={section.textColor}
+                    sectionBackgroundColor={section.backgroundColor}
+                  />
+                </Card>
+              )
+            })}
           </section>
         </div>
       ))}
