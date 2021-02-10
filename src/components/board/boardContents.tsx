@@ -48,6 +48,24 @@ function Sections(props: {
   openCard: (content: ReactNode) => void
   closeCard: () => void
 }) {
+  const allCards = props.sections.flatMap((section) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { cards, ...displaySection } = section
+
+    return section.cards.map((card) => {
+      return { card, section: displaySection }
+    })
+  })
+
+  const openCard = (index: number) => {
+    const { card, section } = allCards[index]
+    const content = cardContent(card, section, props.boardId, props.closeCard)
+
+    props.openCard(content)
+  }
+
+  let i = 0
+
   return (
     <>
       {props.sections.map((section) => (
@@ -60,13 +78,15 @@ function Sections(props: {
           </div>
           <section className={styles.cards}>
             {section.cards.map((card) => {
+              const index = i++
+
               return (
                 <Card
                   key={card.id}
                   title={card.name}
                   tags={card.tags}
                   openCard={() => {
-                    props.openCard(cardContent(card, section, props.boardId, props.closeCard))
+                    openCard(index)
                   }}
                 />
               )
