@@ -57,9 +57,13 @@ function Sections(props: {
     })
   })
 
+  const closeCard = () => {
+    props.closeCard()
+  }
+
   const openCard = (index: number) => {
     const { card, section } = allCards[index]
-    const content = cardContent(card, section, props.boardId, props.closeCard)
+    const content = cardContent(card, section, props.boardId, closeCard)
 
     props.openCard(content)
   }
