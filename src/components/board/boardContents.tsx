@@ -61,17 +61,25 @@ function Sections(props: {
           <section className={styles.cards}>
             {section.cards.map((card) => {
               return (
-                <Card key={card.id} title={card.name} tags={card.tags} openCard={openCard}>
-                  <CardContent
-                    boardId={props.boardId}
-                    cardId={card.id}
-                    name={card.name}
-                    close={props.closeCard}
-                    sectionName={section.name}
-                    sectionTitleColor={section.textColor}
-                    sectionBackgroundColor={section.backgroundColor}
-                  />
-                </Card>
+                <Card
+                  key={card.id}
+                  title={card.name}
+                  tags={card.tags}
+                  openCard={() => {
+                    const content = (
+                      <CardContent
+                        boardId={props.boardId}
+                        cardId={card.id}
+                        name={card.name}
+                        close={props.closeCard}
+                        sectionName={section.name}
+                        sectionTitleColor={section.textColor}
+                        sectionBackgroundColor={section.backgroundColor}
+                      />
+                    )
+                    props.openCard(content)
+                  }}
+                />
               )
             })}
           </section>
