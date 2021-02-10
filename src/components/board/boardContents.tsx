@@ -78,7 +78,7 @@ function Sections(props: {
   )
 }
 
-const cardContent = (card: ModelCard, section: Section, boardId: string, closeCard: () => void) => {
+const cardContent = (card: ModelCard, section: DisplaySection, boardId: string, closeCard: () => void) => {
   return (
     <CardContent
       boardId={boardId}
@@ -90,4 +90,10 @@ const cardContent = (card: ModelCard, section: Section, boardId: string, closeCa
       sectionBackgroundColor={section.backgroundColor}
     />
   )
+}
+
+interface DisplaySection {
+  name: string
+  textColor?: string
+  backgroundColor?: string
 }
