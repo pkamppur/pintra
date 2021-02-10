@@ -1,8 +1,9 @@
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { Dialog } from '@material-ui/core'
 import { BoardContent, Card as ModelCard, Id, Section } from 'shared/board/model'
 import CardContent from 'components/card-content/card-content'
 import Card from 'components/card/card'
+import useKeyPress from 'components/useKeyPress'
 import InlineAddButton from 'components/inline-add-button/inline-add-button'
 import styles from './boardContents.module.scss'
 
@@ -57,7 +58,10 @@ function Sections(props: {
     })
   })
 
+  const [currentCardIndex, setCurrentCardIndex] = useState<number | undefined>(undefined)
+
   const closeCard = () => {
+    setCurrentCardIndex(undefined)
     props.closeCard()
   }
 
@@ -65,8 +69,35 @@ function Sections(props: {
     const { card, section } = allCards[index]
     const content = cardContent(card, section, props.boardId, closeCard)
 
+    setCurrentCardIndex(index)
     props.openCard(content)
   }
+
+  const moveToPrev = useKeyPress('ArrowLeft')
+  const moveToNext = useKeyPress('ArrowRight')
+
+  useEffect(() => {
+    if (moveToPrev) {
+      if (currentCardIndex !== undefined) {
+        const newIndex = currentCardIndex - 1
+
+        if (newIndex >= 0) {
+          openCard(newIndex)
+        }
+      }
+    }
+
+    if (moveToNext) {
+      if (currentCardIndex !== undefined) {
+        const newIndex = currentCardIndex + 1
+
+        if (newIndex < allCards.length) {
+          openCard(newIndex)
+        }
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [moveToPrev, moveToNext])
 
   let i = 0
 
