@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react'
 import { Dialog } from '@material-ui/core'
-import { BoardContent, Id, Section } from 'shared/board/model'
+import { BoardContent, Card as ModelCard, Id, Section } from 'shared/board/model'
 import CardContent from 'components/card-content/card-content'
 import Card from 'components/card/card'
 import InlineAddButton from 'components/inline-add-button/inline-add-button'
@@ -66,18 +66,7 @@ function Sections(props: {
                   title={card.name}
                   tags={card.tags}
                   openCard={() => {
-                    const content = (
-                      <CardContent
-                        boardId={props.boardId}
-                        cardId={card.id}
-                        name={card.name}
-                        close={props.closeCard}
-                        sectionName={section.name}
-                        sectionTitleColor={section.textColor}
-                        sectionBackgroundColor={section.backgroundColor}
-                      />
-                    )
-                    props.openCard(content)
+                    props.openCard(cardContent(card, section, props.boardId, props.closeCard))
                   }}
                 />
               )
@@ -86,5 +75,19 @@ function Sections(props: {
         </div>
       ))}
     </>
+  )
+}
+
+const cardContent = (card: ModelCard, section: Section, boardId: string, closeCard: () => void) => {
+  return (
+    <CardContent
+      boardId={boardId}
+      cardId={card.id}
+      name={card.name}
+      close={closeCard}
+      sectionName={section.name}
+      sectionTitleColor={section.textColor}
+      sectionBackgroundColor={section.backgroundColor}
+    />
   )
 }
