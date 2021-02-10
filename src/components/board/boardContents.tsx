@@ -42,12 +42,7 @@ export default function BoardContents({ board }: { board: BoardContent }) {
   )
 }
 
-function Sections({
-  boardId,
-  sections,
-  openCard,
-  closeCard,
-}: {
+function Sections(props: {
   boardId: Id
   sections: Section[]
   openCard: (content: ReactNode) => void
@@ -55,7 +50,7 @@ function Sections({
 }) {
   return (
     <>
-      {sections.map((section) => (
+      {props.sections.map((section) => (
         <div key={section.id}>
           <div
             className={styles.sectionDivider}
@@ -68,10 +63,10 @@ function Sections({
               return (
                 <Card key={card.id} title={card.name} tags={card.tags} openCard={openCard}>
                   <CardContent
-                    boardId={boardId}
+                    boardId={props.boardId}
                     cardId={card.id}
                     name={card.name}
-                    close={closeCard}
+                    close={props.closeCard}
                     sectionName={section.name}
                     sectionTitleColor={section.textColor}
                     sectionBackgroundColor={section.backgroundColor}
