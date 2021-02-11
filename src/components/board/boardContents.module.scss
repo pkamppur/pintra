@@ -13,8 +13,6 @@
   border-radius: 6px;
 }
 
-$cardPadding: 6px; // TODO: duplicated with board.module.scss
-
 .cards {
   display: flex;
   flex-flow: row wrap;
