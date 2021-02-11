@@ -40,7 +40,8 @@ export default function DynamicBoardPage() {
     )
   }
 
-  return <BoardPage board={searchFetch.data || data} setSearchTerm={setSearchTerm} pagePath={pagePath} />
+  const board = searchFetch.data || data
+  return <BoardPage board={board} setSearchTerm={setSearchTerm} pagePath={pagePath} />
 }
 
 interface BoardPageProps {
