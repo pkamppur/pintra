@@ -23,9 +23,9 @@ export default function DynamicBoardPage() {
   if (error) {
     return (
       <Scaffold title="Error Loading | Pintra" loginRedirect={pagePath}>
-        <main className={styles.main}>
+        <div className={styles.main}>
           <div>failed to load {JSON.stringify(error)}</div>
-        </main>
+        </div>
       </Scaffold>
     )
   }
@@ -33,9 +33,9 @@ export default function DynamicBoardPage() {
   if (loading || !data) {
     return (
       <Scaffold title="Loading… | Pintra" loginRedirect={pagePath}>
-        <main className={styles.main}>
+        <div className={styles.main}>
           <div>Loading…</div>
-        </main>
+        </div>
       </Scaffold>
     )
   }

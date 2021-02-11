@@ -9,9 +9,9 @@ interface BoardPageProps {
 
 export default function BoardPage({ board }: BoardPageProps) {
   return (
-    <main className={styles.main} style={stylesForBoardStyles(board.styles)}>
+    <div className={styles.main} style={stylesForBoardStyles(board.styles)}>
       <BoardContents board={board} />
-    </main>
+    </div>
   )
 }
 
