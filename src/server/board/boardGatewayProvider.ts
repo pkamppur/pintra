@@ -5,7 +5,7 @@ import trelloBoardContentGateway from 'server/board/trelloBoardContentGateway'
 import { withDB as _withDB } from 'server/db'
 import { PoolClient } from 'pg'
 import { getEnv } from '../env'
-import { createDecipheriv, createCipheriv, randomBytes } from 'crypto'
+import { createDecipheriv, createCipheriv } from 'crypto'
 
 export async function boardContentGateway(userId: Id, boardId: Id): Promise<BoardContentGateway> {
   const config = await configForBoard(userId, boardId)
