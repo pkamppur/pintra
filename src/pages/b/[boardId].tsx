@@ -41,7 +41,7 @@ export default function DynamicBoardPage() {
   }
 
   const board = searchFetch.data || data
-  return <BoardPage board={board} setSearchTerm={setSearchTerm} pagePath={pagePath} />
+  return <LoadedBoard board={board} setSearchTerm={setSearchTerm} pagePath={pagePath} />
 }
 
 interface BoardPageProps {
@@ -50,7 +50,7 @@ interface BoardPageProps {
   pagePath: string
 }
 
-function BoardPage({ board, setSearchTerm, pagePath }: BoardPageProps) {
+function LoadedBoard({ board, setSearchTerm, pagePath }: BoardPageProps) {
   const navBarItems = SearchBox({ search: setSearchTerm })
 
   return (
