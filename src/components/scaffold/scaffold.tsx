@@ -37,7 +37,7 @@ export default function Scaffold({ title, loginRedirect: path, additionalNavComp
           font-family: 'Avenir', sans-serif;
           margin: 0;
         }
-      `}</style>{' '}
+      `}</style>
       <Navigation loginRedirect={path} additionalNavComponent={additionalNavComponent} />
       <div className={styles.scaffoldContainer}>{children}</div>
     </>
