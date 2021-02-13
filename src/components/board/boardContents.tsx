@@ -1,12 +1,11 @@
 import { ReactNode, useEffect, useState } from 'react'
-import { Dialog } from '@material-ui/core'
+import { Dialog, useMediaQuery } from '@material-ui/core'
 import { BoardContent, Card as ModelCard, Id, Section } from 'shared/board/model'
 import CardContent from 'components/card-content/card-content'
 import Card from 'components/card/card'
 import useKeyPress from 'components/useKeyPress'
 import InlineAddButton from 'components/inline-add-button/inline-add-button'
 import styles from './boardContents.module.scss'
-import useWindowDimensions from '../useWindowDimentions'
 
 export default function BoardContents({ board }: { board: BoardContent }) {
   const [cardContent, setCardContent] = useState<ReactNode>()
@@ -21,9 +20,8 @@ export default function BoardContents({ board }: { board: BoardContent }) {
     console.log(`addCard ${name}`)
   }
 
-  const { width: windowWidth } = useWindowDimensions()
   const desktopScreenWidthLimit = 600
-  const isFullscreen = windowWidth < desktopScreenWidthLimit
+  const isFullscreen = useMediaQuery(`(max-width:${desktopScreenWidthLimit}px)`)
 
   return (
     <>
