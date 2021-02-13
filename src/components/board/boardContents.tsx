@@ -69,6 +69,26 @@ function Sections(props: {
     props.closeCard()
   }
 
+  const moveToPrev = () => {
+    if (currentCardIndex !== undefined) {
+      const newIndex = currentCardIndex - 1
+
+      if (newIndex >= 0) {
+        openCard(newIndex)
+      }
+    }
+  }
+
+  const moveToNext = () => {
+    if (currentCardIndex !== undefined) {
+      const newIndex = currentCardIndex + 1
+
+      if (newIndex < allCards.length) {
+        openCard(newIndex)
+      }
+    }
+  }
+
   const openCard = (index: number) => {
     const { card, section } = allCards[index]
     const content = cardContent(card, section, props.boardId, closeCard)
@@ -82,23 +102,11 @@ function Sections(props: {
 
   useEffect(() => {
     if (shouldMoveToPrev) {
-      if (currentCardIndex !== undefined) {
-        const newIndex = currentCardIndex - 1
-
-        if (newIndex >= 0) {
-          openCard(newIndex)
-        }
-      }
+      moveToPrev()
     }
 
     if (shouldMoveToNext) {
-      if (currentCardIndex !== undefined) {
-        const newIndex = currentCardIndex + 1
-
-        if (newIndex < allCards.length) {
-          openCard(newIndex)
-        }
-      }
+      moveToNext()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldMoveToPrev, shouldMoveToNext])
