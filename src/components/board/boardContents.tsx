@@ -77,11 +77,11 @@ function Sections(props: {
     props.openCard(content)
   }
 
-  const moveToPrev = useKeyPress('ArrowLeft')
-  const moveToNext = useKeyPress('ArrowRight')
+  const shouldMoveToPrev = useKeyPress('ArrowLeft')
+  const shouldMoveToNext = useKeyPress('ArrowRight')
 
   useEffect(() => {
-    if (moveToPrev) {
+    if (shouldMoveToPrev) {
       if (currentCardIndex !== undefined) {
         const newIndex = currentCardIndex - 1
 
@@ -91,7 +91,7 @@ function Sections(props: {
       }
     }
 
-    if (moveToNext) {
+    if (shouldMoveToNext) {
       if (currentCardIndex !== undefined) {
         const newIndex = currentCardIndex + 1
 
@@ -101,7 +101,7 @@ function Sections(props: {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [moveToPrev, moveToNext])
+  }, [shouldMoveToPrev, shouldMoveToNext])
 
   let i = 0
 
