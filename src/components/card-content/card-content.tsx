@@ -38,7 +38,12 @@ export default function CardContent(props: CardContentProps) {
         style={{ color: props.sectionTitleColor, backgroundColor: props.sectionBackgroundColor }}
       >
         <div className={styles.closeButtonContainer}>
-          <a className={styles.closeButton} href="#" style={{ color: props.sectionTitleColor }} onClick={onClose}>
+          <a
+            className={styles.closeButton}
+            href="#"
+            style={{ color: props.sectionTitleColor ?? '#000' }}
+            onClick={onClose}
+          >
             ×
           </a>
         </div>
