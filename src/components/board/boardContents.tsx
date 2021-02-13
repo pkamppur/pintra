@@ -30,8 +30,8 @@ export default function BoardContents({ board }: { board: BoardContent }) {
         transitionDuration={100}
         fullScreen={isFullscreen}
         onClose={() => setCardOpen(false)}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
+        aria-labelledby="Card Overlay"
+        aria-describedby="Card Overlay"
       >
         <div className={styles.cardDialogContentContainer}>{cardContent}</div>
       </Dialog>
