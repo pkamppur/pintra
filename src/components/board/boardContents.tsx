@@ -6,6 +6,7 @@ import Card from 'components/card/card'
 import useKeyPress from 'components/useKeyPress'
 import InlineAddButton from 'components/inline-add-button/inline-add-button'
 import styles from './boardContents.module.scss'
+import useWindowDimensions from '../useWindowDimentions'
 
 export default function BoardContents({ board }: { board: BoardContent }) {
   const [cardContent, setCardContent] = useState<ReactNode>()
@@ -20,11 +21,16 @@ export default function BoardContents({ board }: { board: BoardContent }) {
     console.log(`addCard ${name}`)
   }
 
+  const { width: windowWidth } = useWindowDimensions()
+  const desktopScreenWidthLimit = 600
+  const isFullscreen = windowWidth < desktopScreenWidthLimit
+
   return (
     <>
       <Dialog
         open={cardOpen}
         transitionDuration={100}
+        fullScreen={isFullscreen}
         onClose={() => setCardOpen(false)}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
