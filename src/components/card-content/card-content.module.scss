@@ -1,10 +1,12 @@
 @use 'components/common.scss';
 
 .cardHeader {
+  $cardNavAreaWidth: 80px;
+
   padding: 1px 10px;
   text-align: center;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: $cardNavAreaWidth auto $cardNavAreaWidth;
 
   .navButtonContainer {
     margin-top: auto;
@@ -26,12 +28,12 @@
 
   h2 {
     display: inline-block;
-    flex-grow: 1;
   }
 
   .closeButtonContainer {
     padding-left: 5px;
     padding-right: 5px;
+    text-align: left;
     user-select: none;
 
     a.closeButton {
