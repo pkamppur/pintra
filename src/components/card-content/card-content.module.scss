@@ -3,16 +3,42 @@
 .cardHeader {
   padding: 1px 10px;
   text-align: center;
-}
+  display: flex;
+  justify-content: space-between;
 
-.closeButtonContainer {
-  text-align: right;
-  float: right;
+  .navButtonContainer {
+    margin-top: auto;
+    margin-bottom: auto;
+    user-select: none;
 
-  a.closeButton {
+    :first-child {
+      margin-right: 2px;
+    }
+
+    .navButton {
+      display: inline;
+      padding-left: 10px;
+      padding-right: 10px;
+
+      font-size: 26px;
+    }
+  }
+
+  h2 {
     display: inline-block;
-    font-size: 40px;
-    text-decoration: none;
+    flex-grow: 1;
+  }
+
+  .closeButtonContainer {
+    padding-left: 5px;
+    padding-right: 5px;
+    user-select: none;
+
+    a.closeButton {
+      display: inline-block;
+      font-size: 40px;
+      text-decoration: none;
+    }
   }
 }
 

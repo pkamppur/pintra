@@ -9,6 +9,8 @@ interface CardContentProps {
   cardId: Id
   name: string
   close: () => void
+  prev: () => void
+  next: () => void
   sectionName: string
   sectionTitleColor?: string
   sectionBackgroundColor?: string
@@ -43,11 +45,20 @@ export default function CardContent(props: CardContentProps) {
             href="#"
             style={{ color: props.sectionTitleColor ?? '#000' }}
             onClick={onClose}
+            aria-labelledby="Close Button"
           >
             ×
           </a>
         </div>
         <h2>{props.name}</h2>
+        <div className={styles.navButtonContainer}>
+          <a className={styles.navButton} style={{ color: props.sectionTitleColor }} onClick={props.prev}>
+            {'<'}
+          </a>
+          <a className={styles.navButton} style={{ color: props.sectionTitleColor }} onClick={props.next}>
+            {'>'}
+          </a>
+        </div>
       </div>
       <div className={styles.cardContent}>{contentNode}</div>
     </>

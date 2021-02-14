@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { Dialog, useMediaQuery } from '@material-ui/core'
 import { BoardContent, Card as ModelCard, Id, Section } from 'shared/board/model'
 import CardContent from 'components/card-content/card-content'
@@ -74,7 +74,7 @@ function Sections(props: {
       const newIndex = currentCardIndex - 1
 
       if (newIndex >= 0) {
-        openCard(newIndex)
+        setCurrentCardIndex(newIndex)
       }
     }
   }
@@ -84,21 +84,24 @@ function Sections(props: {
       const newIndex = currentCardIndex + 1
 
       if (newIndex < allCards.length) {
-        openCard(newIndex)
+        setCurrentCardIndex(newIndex)
       }
     }
   }
 
-  const openCard = (index: number) => {
-    const { card, section } = allCards[index]
-    const content = cardContent(card, section, props.boardId, closeCard)
-
-    setCurrentCardIndex(index)
-    props.openCard(content)
-  }
-
   const shouldMoveToPrev = useKeyPress('ArrowLeft')
   const shouldMoveToNext = useKeyPress('ArrowRight')
+
+  useEffect(() => {
+    if (currentCardIndex !== undefined) {
+      const { card, section } = allCards[currentCardIndex]
+      const content = cardContent(card, section, props.boardId, closeCard, moveToPrev, moveToNext)
+
+      props.openCard(content)
+    } else {
+      props.closeCard()
+    }
+  }, [currentCardIndex])
 
   useEffect(() => {
     if (shouldMoveToPrev) {
@@ -133,7 +136,7 @@ function Sections(props: {
                   title={card.name}
                   tags={card.tags}
                   openCard={() => {
-                    openCard(index)
+                    setCurrentCardIndex(index)
                   }}
                 />
               )
@@ -145,13 +148,22 @@ function Sections(props: {
   )
 }
 
-const cardContent = (card: ModelCard, section: DisplaySection, boardId: string, closeCard: () => void) => {
+const cardContent = (
+  card: ModelCard,
+  section: DisplaySection,
+  boardId: string,
+  closeCard: () => void,
+  moveToPrev: () => void,
+  moveToNext: () => void
+) => {
   return (
     <CardContent
       boardId={boardId}
       cardId={card.id}
       name={card.name}
       close={closeCard}
+      prev={moveToPrev}
+      next={moveToNext}
       sectionName={section.name}
       sectionTitleColor={section.textColor}
       sectionBackgroundColor={section.backgroundColor}
