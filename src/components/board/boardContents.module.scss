@@ -13,8 +13,6 @@
   border-radius: 6px;
 }
 
-$cardPadding: 6px; // TODO: duplicated with board.module.scss
-
 .cards {
   display: flex;
   flex-flow: row wrap;
@@ -34,5 +32,20 @@ $cardPadding: 6px; // TODO: duplicated with board.module.scss
   @include common.desktop-huge {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
+}
+
+.cardDialogContentContainer {
+  min-width: 80vw;
+  min-height: 80vh;
+
+  @include common.desktop-small {
+    min-width: 70vw;
+    min-height: 80vh;
+  }
+
+  @include common.desktop {
+    min-width: 600px;
+    min-height: 500px;
   }
 }

@@ -1,8 +1,9 @@
-import { ReactNode, useState } from 'react'
-import { Dialog } from '@material-ui/core'
+import { ReactNode, useCallback, useEffect, useState } from 'react'
+import { Dialog, useMediaQuery } from '@material-ui/core'
 import { BoardContent, Card as ModelCard, Id, Section } from 'shared/board/model'
 import CardContent from 'components/card-content/card-content'
 import Card from 'components/card/card'
+import useKeyPress from 'components/useKeyPress'
 import InlineAddButton from 'components/inline-add-button/inline-add-button'
 import styles from './boardContents.module.scss'
 
@@ -19,16 +20,20 @@ export default function BoardContents({ board }: { board: BoardContent }) {
     console.log(`addCard ${name}`)
   }
 
+  const desktopScreenWidthLimit = 600
+  const isFullscreen = useMediaQuery(`(max-width:${desktopScreenWidthLimit}px)`)
+
   return (
     <>
       <Dialog
         open={cardOpen}
         transitionDuration={100}
+        fullScreen={isFullscreen}
         onClose={() => setCardOpen(false)}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
+        aria-labelledby="Card Overlay"
+        aria-describedby="Card Overlay"
       >
-        <div>{cardContent}</div>
+        <div className={styles.cardDialogContentContainer}>{cardContent}</div>
       </Dialog>
       <h1 style={{ color: board?.styles.textColor }}>{`${board.name}`}</h1>
       <Sections boardId={board.id} sections={board.sections} openCard={openCard} closeCard={() => setCardOpen(false)} />
@@ -57,16 +62,57 @@ function Sections(props: {
     })
   })
 
+  const [currentCardIndex, setCurrentCardIndex] = useState<number | undefined>(undefined)
+
   const closeCard = () => {
+    setCurrentCardIndex(undefined)
     props.closeCard()
   }
 
-  const openCard = (index: number) => {
-    const { card, section } = allCards[index]
-    const content = cardContent(card, section, props.boardId, closeCard)
+  const moveToPrev = () => {
+    if (currentCardIndex !== undefined) {
+      const newIndex = currentCardIndex - 1
 
-    props.openCard(content)
+      if (newIndex >= 0) {
+        setCurrentCardIndex(newIndex)
+      }
+    }
   }
+
+  const moveToNext = () => {
+    if (currentCardIndex !== undefined) {
+      const newIndex = currentCardIndex + 1
+
+      if (newIndex < allCards.length) {
+        setCurrentCardIndex(newIndex)
+      }
+    }
+  }
+
+  const shouldMoveToPrev = useKeyPress('ArrowLeft')
+  const shouldMoveToNext = useKeyPress('ArrowRight')
+
+  useEffect(() => {
+    if (currentCardIndex !== undefined) {
+      const { card, section } = allCards[currentCardIndex]
+      const content = cardContent(card, section, props.boardId, closeCard, moveToPrev, moveToNext)
+
+      props.openCard(content)
+    } else {
+      props.closeCard()
+    }
+  }, [currentCardIndex])
+
+  useEffect(() => {
+    if (shouldMoveToPrev) {
+      moveToPrev()
+    }
+
+    if (shouldMoveToNext) {
+      moveToNext()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldMoveToPrev, shouldMoveToNext])
 
   let i = 0
 
@@ -90,7 +136,7 @@ function Sections(props: {
                   title={card.name}
                   tags={card.tags}
                   openCard={() => {
-                    openCard(index)
+                    setCurrentCardIndex(index)
                   }}
                 />
               )
@@ -102,13 +148,22 @@ function Sections(props: {
   )
 }
 
-const cardContent = (card: ModelCard, section: DisplaySection, boardId: string, closeCard: () => void) => {
+const cardContent = (
+  card: ModelCard,
+  section: DisplaySection,
+  boardId: string,
+  closeCard: () => void,
+  moveToPrev: () => void,
+  moveToNext: () => void
+) => {
   return (
     <CardContent
       boardId={boardId}
       cardId={card.id}
       name={card.name}
       close={closeCard}
+      prev={moveToPrev}
+      next={moveToNext}
       sectionName={section.name}
       sectionTitleColor={section.textColor}
       sectionBackgroundColor={section.backgroundColor}

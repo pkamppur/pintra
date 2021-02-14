@@ -1,0 +1,10 @@
+@use 'components/common.scss';
+
+.main {
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+
+  padding-bottom: 1rem; // margin collapse clips card shadow from bottom
+  padding: 1rem;
+}
