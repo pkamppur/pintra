@@ -20,22 +20,95 @@ export default function BoardContents({
   setCurrentCard,
   currentCardContentResult,
 }: BoardContentProps) {
+  const addCard = (name: string) => {
+    console.log(`addCard ${name}`)
+  }
+
+  const [closeCard, cardContent] = useCardContent(board, currentCard, setCurrentCard, currentCardContentResult)
+
+  const desktopScreenWidthLimit = 600
+  const isFullscreen = useMediaQuery(`(max-width:${desktopScreenWidthLimit}px)`)
+
+  return (
+    <>
+      <Dialog
+        open={!!currentCard}
+        transitionDuration={100}
+        fullScreen={isFullscreen}
+        onClose={closeCard}
+        aria-labelledby="Card Overlay"
+        aria-describedby="Card Overlay"
+      >
+        <div className={styles.cardDialogContentContainer}>{cardContent}</div>
+      </Dialog>
+      <h1 style={{ color: board?.styles.textColor }}>{board.name}</h1>
+      <SectionsContent sections={board.sections} setCurrentCard={setCurrentCard} />{' '}
+      {/*<InlineAddButton
+          title="+ Add Card"
+          addButtonLabel="Add Card"
+          placeholder="Name for new card"
+          addAction={addCard}
+        />*/}
+    </>
+  )
+}
+
+function SectionsContent({
+  sections,
+  setCurrentCard,
+}: {
+  sections: Section[]
+  setCurrentCard: (card: { index: number; id: string } | undefined) => void
+}) {
+  let i = 0
+
+  return (
+    <>
+      {sections.map((section) => (
+        <div key={section.id}>
+          <div
+            className={styles.sectionDivider}
+            style={{ color: section.textColor, backgroundColor: section.backgroundColor }}
+          >
+            {section.name}
+          </div>
+          <section className={styles.cards}>
+            {section.cards.map((card) => {
+              const index = i++
+
+              return (
+                <Card
+                  key={card.id}
+                  title={card.name}
+                  tags={card.tags}
+                  openCard={() => {
+                    setCurrentCard({ index, id: card.id })
+                  }}
+                />
+              )
+            })}
+          </section>
+        </div>
+      ))}
+    </>
+  )
+}
+
+function useCardContent(
+  board: BoardContent,
+  currentCard: { index: number; id: string } | undefined,
+  setCurrentCard: (card: { index: number; id: string } | undefined) => void,
+  currentCardContentResult: CardContentLoadResult
+): [() => void, ReactNode] {
   const [cardContent, setCardContent] = useState<ReactNode>()
 
   const openCard = (content: ReactNode) => {
     setCardContent(content)
   }
 
-  const addCard = (name: string) => {
-    console.log(`addCard ${name}`)
-  }
-
   const closeCard = () => {
     setCurrentCard(undefined)
   }
-
-  const desktopScreenWidthLimit = 600
-  const isFullscreen = useMediaQuery(`(max-width:${desktopScreenWidthLimit}px)`)
 
   const allCards = board.sections.flatMap((section) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -103,67 +176,5 @@ export default function BoardContents({
     }
   }, [shouldMoveToPrev, shouldMoveToNext])
 
-  return (
-    <>
-      <Dialog
-        open={!!currentCard}
-        transitionDuration={100}
-        fullScreen={isFullscreen}
-        onClose={closeCard}
-        aria-labelledby="Card Overlay"
-        aria-describedby="Card Overlay"
-      >
-        <div className={styles.cardDialogContentContainer}>{cardContent}</div>
-      </Dialog>
-      <h1 style={{ color: board?.styles.textColor }}>{board.name}</h1>
-      <SectionsContent sections={board.sections} setCurrentCard={setCurrentCard} />{' '}
-      {/*<InlineAddButton
-          title="+ Add Card"
-          addButtonLabel="Add Card"
-          placeholder="Name for new card"
-          addAction={addCard}
-        />*/}
-    </>
-  )
-}
-
-function SectionsContent({
-  sections,
-  setCurrentCard,
-}: {
-  sections: Section[]
-  setCurrentCard: (card: { index: number; id: string } | undefined) => void
-}) {
-  let i = 0
-
-  return (
-    <>
-      {sections.map((section) => (
-        <div key={section.id}>
-          <div
-            className={styles.sectionDivider}
-            style={{ color: section.textColor, backgroundColor: section.backgroundColor }}
-          >
-            {section.name}
-          </div>
-          <section className={styles.cards}>
-            {section.cards.map((card) => {
-              const index = i++
-
-              return (
-                <Card
-                  key={card.id}
-                  title={card.name}
-                  tags={card.tags}
-                  openCard={() => {
-                    setCurrentCard({ index, id: card.id })
-                  }}
-                />
-              )
-            })}
-          </section>
-        </div>
-      ))}
-    </>
-  )
+  return [closeCard, cardContent]
 }
