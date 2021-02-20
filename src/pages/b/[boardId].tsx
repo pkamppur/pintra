@@ -30,7 +30,7 @@ export default function DynamicBoardPage() {
     )
   }
 
-  if (loading || !data) {
+  if (!boardId || loading || !data) {
     return (
       <Scaffold title="Loading… | Pintra" loginRedirect={pagePath}>
         <div className={styles.main}>
@@ -41,16 +41,17 @@ export default function DynamicBoardPage() {
   }
 
   const board = searchFetch.data || data
-  return <LoadedBoard board={board} setSearchTerm={setSearchTerm} pagePath={pagePath} />
+  return <LoadedBoard boardId={boardId} board={board} setSearchTerm={setSearchTerm} pagePath={pagePath} />
 }
 
 interface BoardPageProps {
+  boardId: string
   board: BoardContent
   setSearchTerm: Dispatch<SetStateAction<string>>
   pagePath: string
 }
 
-function LoadedBoard({ board, setSearchTerm, pagePath }: BoardPageProps) {
+function LoadedBoard({ boardId, board, setSearchTerm, pagePath }: BoardPageProps) {
   const navBarItems = SearchBox({ search: setSearchTerm })
   const [currentCard, setCurrentCard] = useState<{ index: number; id: string } | undefined>(undefined)
 

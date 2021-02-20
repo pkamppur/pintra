@@ -7,8 +7,6 @@ export interface Board {
 }
 
 export interface BoardContent {
-  id: Id
-
   name: string
   sections: Section[]
 
