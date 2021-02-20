@@ -14,7 +14,12 @@ interface BoardContentProps {
   currentCardContentResult: CardContentLoadResult
 }
 
-export default function BoardContents(props: BoardContentProps) {
+export default function BoardContents({
+  board,
+  currentCard,
+  setCurrentCard,
+  currentCardContentResult,
+}: BoardContentProps) {
   const [cardContent, setCardContent] = useState<ReactNode>()
 
   const openCard = (content: ReactNode) => {
@@ -26,59 +31,13 @@ export default function BoardContents(props: BoardContentProps) {
   }
 
   const closeCard = () => {
-    props.setCurrentCard(undefined)
+    setCurrentCard(undefined)
   }
 
   const desktopScreenWidthLimit = 600
   const isFullscreen = useMediaQuery(`(max-width:${desktopScreenWidthLimit}px)`)
 
-  return (
-    <>
-      <Dialog
-        open={!!props.currentCard}
-        transitionDuration={100}
-        fullScreen={isFullscreen}
-        onClose={closeCard}
-        aria-labelledby="Card Overlay"
-        aria-describedby="Card Overlay"
-      >
-        <div className={styles.cardDialogContentContainer}>{cardContent}</div>
-      </Dialog>
-      <h1 style={{ color: props.board?.styles.textColor }}>{props.board.name}</h1>
-      <Sections
-        sections={props.board.sections}
-        currentCard={props.currentCard}
-        setCurrentCard={props.setCurrentCard}
-        currentCardContentResult={props.currentCardContentResult}
-        openCard={openCard}
-        closeCard={closeCard}
-      />
-      {/*<InlineAddButton
-          title="+ Add Card"
-          addButtonLabel="Add Card"
-          placeholder="Name for new card"
-          addAction={addCard}
-        />*/}
-    </>
-  )
-}
-
-function Sections({
-  sections,
-  currentCard,
-  setCurrentCard,
-  currentCardContentResult,
-  openCard,
-  closeCard,
-}: {
-  sections: Section[]
-  currentCard?: { index: number; id: string }
-  setCurrentCard: (card: { index: number; id: string } | undefined) => void
-  currentCardContentResult: CardContentLoadResult
-  openCard: (content: ReactNode) => void
-  closeCard: () => void
-}) {
-  const allCards = sections.flatMap((section) => {
+  const allCards = board.sections.flatMap((section) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { cards, ...displaySection } = section
 
@@ -144,7 +103,28 @@ function Sections({
     }
   }, [shouldMoveToPrev, shouldMoveToNext])
 
-  return <SectionsContent sections={sections} setCurrentCard={setCurrentCard} />
+  return (
+    <>
+      <Dialog
+        open={!!currentCard}
+        transitionDuration={100}
+        fullScreen={isFullscreen}
+        onClose={closeCard}
+        aria-labelledby="Card Overlay"
+        aria-describedby="Card Overlay"
+      >
+        <div className={styles.cardDialogContentContainer}>{cardContent}</div>
+      </Dialog>
+      <h1 style={{ color: board?.styles.textColor }}>{board.name}</h1>
+      <SectionsContent sections={board.sections} setCurrentCard={setCurrentCard} />{' '}
+      {/*<InlineAddButton
+          title="+ Add Card"
+          addButtonLabel="Add Card"
+          placeholder="Name for new card"
+          addAction={addCard}
+        />*/}
+    </>
+  )
 }
 
 function SectionsContent({
