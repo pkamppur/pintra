@@ -50,3 +50,9 @@ export interface Tag {
 export interface CardContent {
   content: string
 }
+
+export interface CardContentLoadResult {
+  data: CardContent | undefined
+  error: unknown
+  loading: boolean
+}

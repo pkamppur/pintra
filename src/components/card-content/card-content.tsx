@@ -1,13 +1,11 @@
 import MarkdownIt from 'markdown-it'
 import { MouseEvent, ReactNode } from 'react'
-import { Id } from 'shared/board/model'
-import { useFetchCardContent } from 'components/board/useFetchBoard'
+import { CardContentLoadResult } from '../../shared/board/model'
 import styles from './card-content.module.scss'
 
 interface CardContentProps {
-  boardId: Id
-  cardId: Id
   name: string
+  contentLoadResult: CardContentLoadResult
   close: () => void
   prev: () => void
   next: () => void
@@ -17,7 +15,7 @@ interface CardContentProps {
 }
 
 export default function CardContent(props: CardContentProps) {
-  const { loading, data, error } = useFetchCardContent(props.boardId, props.cardId)
+  const { loading, data, error } = props.contentLoadResult
 
   let contentNode: ReactNode
   if (error) {

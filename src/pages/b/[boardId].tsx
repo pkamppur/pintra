@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router'
 import { Dispatch, SetStateAction, useState } from 'react'
-import { BoardContent } from 'shared/board/model'
+import { BoardContent, Id } from 'shared/board/model'
 import Scaffold from 'components/scaffold'
-import { useFetchBoardContent, useFetchSearch } from 'components/board/useFetchBoard'
+import { useFetchBoardContent, useFetchSearch, useFetchCardContent } from 'components/board/useFetchBoard'
 import { asString } from 'components/stringHelpers'
 import SearchBox from 'components/searchbox/searchbox'
 import BoardPage from 'components/board-page/board-page'
@@ -52,10 +52,18 @@ interface BoardPageProps {
 
 function LoadedBoard({ board, setSearchTerm, pagePath }: BoardPageProps) {
   const navBarItems = SearchBox({ search: setSearchTerm })
+  const [currentCard, setCurrentCard] = useState<{ index: number; id: string } | undefined>(undefined)
+
+  const currentCardContentResult = useFetchCardContent(boardId, currentCard?.id)
 
   return (
     <Scaffold title={`${board.name} | Pintra`} loginRedirect={pagePath} additionalNavComponent={navBarItems}>
-      <BoardPage board={board} />
+      <BoardPage
+        board={board}
+        currentCard={currentCard}
+        setCurrentCard={setCurrentCard}
+        currentCardContentResult={currentCardContentResult}
+      />
     </Scaffold>
   )
 }

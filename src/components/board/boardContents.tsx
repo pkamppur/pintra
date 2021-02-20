@@ -1,23 +1,32 @@
-import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { Dialog, useMediaQuery } from '@material-ui/core'
-import { BoardContent, Card as ModelCard, Id, Section } from 'shared/board/model'
+import { ReactNode, useCallback, useEffect, useState } from 'react'
+import { BoardContent, CardContentLoadResult, Section } from 'shared/board/model'
 import CardContent from 'components/card-content/card-content'
 import Card from 'components/card/card'
 import useKeyPress from 'components/useKeyPress'
 import InlineAddButton from 'components/inline-add-button/inline-add-button'
 import styles from './boardContents.module.scss'
 
-export default function BoardContents({ board }: { board: BoardContent }) {
+interface BoardContentProps {
+  board: BoardContent
+  currentCard?: { index: number; id: string }
+  setCurrentCard: (card: { index: number; id: string } | undefined) => void
+  currentCardContentResult: CardContentLoadResult
+}
+
+export default function BoardContents(props: BoardContentProps) {
   const [cardContent, setCardContent] = useState<ReactNode>()
-  const [cardOpen, setCardOpen] = useState(false)
 
   const openCard = (content: ReactNode) => {
     setCardContent(content)
-    setCardOpen(true)
   }
 
   const addCard = (name: string) => {
     console.log(`addCard ${name}`)
+  }
+
+  const closeCard = () => {
+    props.setCurrentCard(undefined)
   }
 
   const desktopScreenWidthLimit = 600
@@ -26,17 +35,24 @@ export default function BoardContents({ board }: { board: BoardContent }) {
   return (
     <>
       <Dialog
-        open={cardOpen}
+        open={!!props.currentCard}
         transitionDuration={100}
         fullScreen={isFullscreen}
-        onClose={() => setCardOpen(false)}
+        onClose={closeCard}
         aria-labelledby="Card Overlay"
         aria-describedby="Card Overlay"
       >
         <div className={styles.cardDialogContentContainer}>{cardContent}</div>
       </Dialog>
-      <h1 style={{ color: board?.styles.textColor }}>{`${board.name}`}</h1>
-      <Sections boardId={board.id} sections={board.sections} openCard={openCard} closeCard={() => setCardOpen(false)} />
+      <h1 style={{ color: props.board?.styles.textColor }}>{props.board.name}</h1>
+      <Sections
+        sections={props.board.sections}
+        currentCard={props.currentCard}
+        setCurrentCard={props.setCurrentCard}
+        currentCardContentResult={props.currentCardContentResult}
+        openCard={openCard}
+        closeCard={closeCard}
+      />
       {/*<InlineAddButton
           title="+ Add Card"
           addButtonLabel="Add Card"
@@ -47,13 +63,22 @@ export default function BoardContents({ board }: { board: BoardContent }) {
   )
 }
 
-function Sections(props: {
-  boardId: Id
+function Sections({
+  sections,
+  currentCard,
+  setCurrentCard,
+  currentCardContentResult,
+  openCard,
+  closeCard,
+}: {
   sections: Section[]
+  currentCard?: { index: number; id: string }
+  setCurrentCard: (card: { index: number; id: string } | undefined) => void
+  currentCardContentResult: CardContentLoadResult
   openCard: (content: ReactNode) => void
   closeCard: () => void
 }) {
-  const allCards = props.sections.flatMap((section) => {
+  const allCards = sections.flatMap((section) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { cards, ...displaySection } = section
 
@@ -62,29 +87,24 @@ function Sections(props: {
     })
   })
 
-  const [currentCardIndex, setCurrentCardIndex] = useState<number | undefined>(undefined)
-
-  const closeCard = () => {
-    setCurrentCardIndex(undefined)
-    props.closeCard()
-  }
-
   const moveToPrev = () => {
-    if (currentCardIndex !== undefined) {
-      const newIndex = currentCardIndex - 1
+    if (currentCard !== undefined) {
+      const newIndex = currentCard.index - 1
 
       if (newIndex >= 0) {
-        setCurrentCardIndex(newIndex)
+        const prev = allCards[newIndex]
+        setCurrentCard({ id: prev.card.id, index: newIndex })
       }
     }
   }
 
   const moveToNext = () => {
-    if (currentCardIndex !== undefined) {
-      const newIndex = currentCardIndex + 1
+    if (currentCard !== undefined) {
+      const newIndex = currentCard.index + 1
 
       if (newIndex < allCards.length) {
-        setCurrentCardIndex(newIndex)
+        const next = allCards[newIndex]
+        setCurrentCard({ id: next.card.id, index: newIndex })
       }
     }
   }
@@ -93,15 +113,26 @@ function Sections(props: {
   const shouldMoveToNext = useKeyPress('ArrowRight')
 
   useEffect(() => {
-    if (currentCardIndex !== undefined) {
-      const { card, section } = allCards[currentCardIndex]
-      const content = cardContent(card, section, props.boardId, closeCard, moveToPrev, moveToNext)
+    if (currentCard !== undefined) {
+      const { card, section } = allCards[currentCard.index]
+      const content = (
+        <CardContent
+          name={card.name}
+          contentLoadResult={currentCardContentResult}
+          close={closeCard}
+          prev={moveToPrev}
+          next={moveToNext}
+          sectionName={section.name}
+          sectionTitleColor={section.textColor}
+          sectionBackgroundColor={section.backgroundColor}
+        />
+      )
 
-      props.openCard(content)
+      openCard(content)
     } else {
-      props.closeCard()
+      closeCard()
     }
-  }, [currentCardIndex])
+  }, [currentCard, currentCardContentResult])
 
   useEffect(() => {
     if (shouldMoveToPrev) {
@@ -111,14 +142,23 @@ function Sections(props: {
     if (shouldMoveToNext) {
       moveToNext()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldMoveToPrev, shouldMoveToNext])
 
+  return <SectionsContent sections={sections} setCurrentCard={setCurrentCard} />
+}
+
+function SectionsContent({
+  sections,
+  setCurrentCard,
+}: {
+  sections: Section[]
+  setCurrentCard: (card: { index: number; id: string } | undefined) => void
+}) {
   let i = 0
 
   return (
     <>
-      {props.sections.map((section) => (
+      {sections.map((section) => (
         <div key={section.id}>
           <div
             className={styles.sectionDivider}
@@ -136,7 +176,7 @@ function Sections(props: {
                   title={card.name}
                   tags={card.tags}
                   openCard={() => {
-                    setCurrentCardIndex(index)
+                    setCurrentCard({ index, id: card.id })
                   }}
                 />
               )
@@ -146,33 +186,4 @@ function Sections(props: {
       ))}
     </>
   )
-}
-
-const cardContent = (
-  card: ModelCard,
-  section: DisplaySection,
-  boardId: string,
-  closeCard: () => void,
-  moveToPrev: () => void,
-  moveToNext: () => void
-) => {
-  return (
-    <CardContent
-      boardId={boardId}
-      cardId={card.id}
-      name={card.name}
-      close={closeCard}
-      prev={moveToPrev}
-      next={moveToNext}
-      sectionName={section.name}
-      sectionTitleColor={section.textColor}
-      sectionBackgroundColor={section.backgroundColor}
-    />
-  )
-}
-
-interface DisplaySection {
-  name: string
-  textColor?: string
-  backgroundColor?: string
 }
