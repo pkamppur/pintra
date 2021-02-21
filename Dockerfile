@@ -1,4 +1,4 @@
-FROM node:14.15.4-alpine3.11 AS build-deps
+FROM node:14.15.5-alpine3.11 AS build-deps
 
 RUN mkdir /usr/local/pintra
 WORKDIR /usr/local/pintra
@@ -8,7 +8,7 @@ RUN npm ci
 
 
 
-FROM node:14.15.4-alpine3.11 AS runtime-deps
+FROM node:14.15.5-alpine3.11 AS runtime-deps
 
 RUN mkdir /usr/local/pintra
 WORKDIR /usr/local/pintra
@@ -22,7 +22,7 @@ RUN npm ci --only=production
 # This is where because may be the case that you would try
 # to build the app based on some `X_TAG` in my case (Git commit hash)
 # but the code hasn't changed.
-FROM node:14.15.4-alpine3.11 AS builder
+FROM node:14.15.5-alpine3.11 AS builder
 
 RUN mkdir /usr/local/pintra
 WORKDIR /usr/local/pintra
@@ -36,7 +36,7 @@ RUN npm run build
 
 
 # Production image, copy all the files and run next
-FROM node:14.15.4-alpine3.11 AS runner
+FROM node:14.15.5-alpine3.11 AS runner
 
 RUN adduser -D pintra && \
     mkdir /usr/local/pintra && \
