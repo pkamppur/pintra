@@ -64,6 +64,6 @@ export default function CardContent(props: CardContentProps) {
 }
 
 function Markdown({ content }: { content: string }) {
-  const renderedContent = MarkdownIt({ html: false, linkify: true }).render(content)
+  const renderedContent = MarkdownIt({ html: true, linkify: true }).render(content)
   return <div dangerouslySetInnerHTML={{ __html: renderedContent }} />
 }
