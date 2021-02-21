@@ -1,9 +1,6 @@
 FROM node:14.15.4-alpine3.11 AS build-deps
 
-RUN adduser -D pintra && \
-    mkdir /usr/local/pintra && \
-    chown pintra:pintra /usr/local/pintra
-USER pintra
+RUN mkdir /usr/local/pintra
 WORKDIR /usr/local/pintra
 
 COPY package.json package-lock.json ./
@@ -13,10 +10,7 @@ RUN npm ci
 
 FROM node:14.15.4-alpine3.11 AS runtime-deps
 
-RUN adduser -D pintra && \
-    mkdir /usr/local/pintra && \
-    chown pintra:pintra /usr/local/pintra
-USER pintra
+RUN mkdir /usr/local/pintra
 WORKDIR /usr/local/pintra
 
 COPY package.json package-lock.json ./
@@ -30,16 +24,13 @@ RUN npm ci --only=production
 # but the code hasn't changed.
 FROM node:14.15.4-alpine3.11 AS builder
 
-RUN adduser -D pintra && \
-    mkdir /usr/local/pintra && \
-    chown pintra:pintra /usr/local/pintra
-USER pintra
-
+RUN mkdir /usr/local/pintra
 WORKDIR /usr/local/pintra
-COPY --chown=pintra:pintra package.json package-lock.json tsconfig.json .eslintrc.js next.config.js /usr/local/pintra/
-COPY --chown=pintra:pintra src /usr/local/pintra/src/
-COPY --chown=pintra:pintra public /usr/local/pintra/public/
-COPY --from=build-deps --chown=pintra:pintra /usr/local/pintra/node_modules ./node_modules
+
+COPY package.json package-lock.json tsconfig.json .eslintrc.js next.config.js /usr/local/pintra/
+COPY src /usr/local/pintra/src/
+COPY public /usr/local/pintra/public/
+COPY --from=build-deps /usr/local/pintra/node_modules ./node_modules
 RUN npm run build
 
 
