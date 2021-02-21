@@ -58,7 +58,11 @@ function LoadedBoard({ boardId, board, setSearchTerm, pagePath }: BoardPageProps
   const currentCardContentResult = useFetchCardContent(boardId, currentCard?.id)
 
   return (
-    <Scaffold title={`${board.name} | Pintra`} loginRedirect={pagePath} additionalNavComponent={navBarItems}>
+    <Scaffold
+      title={`${board.name} | Pintra`}
+      loginRedirect={pagePath}
+      additionalNavComponent={<div style={{ float: 'left' }}>{navBarItems}</div>}
+    >
       <BoardPage
         board={board}
         currentCard={currentCard}

@@ -1,8 +1,19 @@
+@use 'components/common.scss';
+
 .searchContainer {
-  float: left;
+  padding-left: 10px;
+  padding-right: 10px;
 
   .searchInput {
-    width: 400px;
+    @include common.phone {
+      width: 95vw;
+      max-width: 400px;
+    }
+    @include common.desktop-small {
+      width: 90vw;
+      max-width: 400px;
+    }
+
     height: 32px;
     border: none;
 
