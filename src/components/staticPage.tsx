@@ -24,14 +24,37 @@ export default function StaticBoardPage({ title, board }: { title: string; board
     loading: !currentCardContent,
   }
 
+  const searchResultsBoard = searchTerm ? filterBoard(board, searchTerm) : undefined
+
   return (
     <StaticPageScaffold title={title} topBarItem={topBarItem}>
       <BoardPage
-        board={board}
+        board={searchResultsBoard ?? board}
         currentCard={currentCard}
         setCurrentCard={setCurrentCard}
         currentCardContentResult={currentCardContentResult}
       />
     </StaticPageScaffold>
+  )
+}
+
+function filterBoard(board: StaticBoardContent, searchTerm: string): StaticBoardContent {
+  const lowerCaseSearchTerm = searchTerm.toLocaleLowerCase()
+  const sections = board.sections
+    .map((section) => {
+      const cards = section.cards.filter((card) => {
+        return cardMatchesSearchTerm(card, lowerCaseSearchTerm)
+      })
+      return { ...section, cards }
+    })
+    .filter((section) => section.cards.length > 0)
+  return { ...board, sections }
+}
+
+function cardMatchesSearchTerm(card: StaticCard, lowerCaseSearchTerm: string): boolean {
+  return (
+    card.name.toLocaleLowerCase().includes(lowerCaseSearchTerm) ||
+    card.content.toLocaleLowerCase().includes(lowerCaseSearchTerm) ||
+    card.tags.filter((tag) => tag.name.toLocaleLowerCase().includes(lowerCaseSearchTerm)).length > 0
   )
 }
