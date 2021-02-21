@@ -1,0 +1,35 @@
+@use 'components/common.scss';
+
+.scaffoldContainer {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.topBarContainer {
+  width: 100%;
+  line-height: 50px;
+  font-family: sans-serif;
+  background-color: #555;
+  flex: 0 1 auto;
+  vertical-align: middle;
+
+  h1 {
+    display: inline-block;
+    margin: 0;
+    font-size: 30px;
+    color: white;
+    vertical-align: middle;
+
+    @include common.phone {
+      display: block;
+      text-align: center;
+      padding-top: 10px;
+    }
+    @include common.desktop-small {
+      padding-left: 20px;
+      padding-right: 15px;
+    }
+  }
+}
