@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prebuild": "which eslint",
     "lint": "eslint src/**",
     "dev": "next -p 3001",
     "build": "next build",
