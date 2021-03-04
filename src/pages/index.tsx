@@ -1,6 +1,6 @@
 import Scaffold from 'components/scaffold'
 import Link from 'next/link'
-import { useFetchBoards } from '../components/board/useFetchBoard'
+import { useFetchBoards } from '../components/useFetchBoard'
 import styles from './home.module.scss'
 
 export default function HomePage() {
