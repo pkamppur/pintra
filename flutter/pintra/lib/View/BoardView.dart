@@ -65,7 +65,11 @@ class SectionView extends StatelessWidget {
                       .map((card) => SizedBox(
                           width: (sizeConfig.screenWidth - cardInset * 2) /
                               _columnCount,
-                          child: CardView(title: card.name)))
+                          child: GestureDetector(
+                            onTap: () {
+                            },
+                            child: CardView(title: card.name),
+                          )))
                       .toList()))),
         ].toList());
   }
