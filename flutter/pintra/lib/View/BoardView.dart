@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:pintra/Data/BoardModel.dart';
+import 'package:pintra/Data/BoardModel.dart' as Model;
 import 'package:pintra/View/SizeConfig.dart';
 import 'package:pintra/View/parseColor.dart';
 
 class BoardView extends StatefulWidget {
   BoardView({Key? key, required this.board}) : super(key: key);
 
-  final Board board;
+  final Model.Board board;
 
   @override
   _BoardViewState createState() => _BoardViewState(board: board);
 }
 
 class _BoardViewState extends State<BoardView> {
-  final Board board;
+  final Model.Board board;
 
   _BoardViewState({required this.board});
 
@@ -42,7 +42,7 @@ class SectionView extends StatelessWidget {
   SectionView({Key? key, required this.section, required this.sizeConfig})
       : super(key: key);
 
-  final Section section;
+  final Model.Section section;
   final SizeConfig sizeConfig;
 
   @override
