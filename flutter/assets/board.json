@@ -1,0 +1,56 @@
+{
+    "name": "Test Board",
+    "sections": [
+        {
+            "id": "section-0",
+            "name": "First Section",
+            "textColor": "#000",
+            "backgroundColor": "#eee",
+            "cards": [
+                {
+                    "id": "card-0",
+                    "name": "First Card",
+                    "tags": [
+
+                    ],
+                    "content": "Contents"
+                },
+                {
+                    "id": "card-1",
+                    "name": "Second Card",
+                    "tags": [
+
+                    ],
+                    "content": "Contents 2"
+                }
+            ]
+        },
+        {
+            "id": "section-1",
+            "name": "Second Section",
+            "textColor": "#ddd",
+            "backgroundColor": "#000",
+            "cards": [
+                {
+                    "id": "card-2",
+                    "name": "Third Card",
+                    "tags": [
+
+                    ],
+                    "content": "Contents 3"
+                },
+                {
+                    "id": "card-3",
+                    "name": "Fourth Card",
+                    "tags": [
+
+                    ],
+                    "content": "Contents 4"
+                }
+            ]
+        }
+    ],
+    "styles": {
+        "backgroundColor": "#eee"
+    }
+}
