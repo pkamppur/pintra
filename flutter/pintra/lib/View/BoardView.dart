@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pintra/Data/BoardModel.dart' as Model;
 import 'package:pintra/View/SizeConfig.dart';
 import 'package:pintra/View/parseColor.dart';
@@ -51,6 +54,22 @@ class SectionView extends StatelessWidget {
     final rows = chunked(section.cards, _columnCount);
     final double cardInset = 8;
 
+    final dialog = (Model.Card card) => SimpleDialog(
+            titlePadding: EdgeInsets.zero,
+            title: Container(
+                decoration: BoxDecoration(color: Color(0xFF000000)),
+                child: Column(children: [
+                  Text("${card.name}",
+                      style: TextStyle(color: Color(0xFFFFFFFF))),
+                ])),
+            children: [
+              SizedBox(
+                  width: min(sizeConfig.screenWidth, 600),
+                  child: Container(
+                      padding: EdgeInsets.all(20),
+                      child: Column(children: [Text(card.content)]))),
+            ]);
+
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -67,6 +86,9 @@ class SectionView extends StatelessWidget {
                               _columnCount,
                           child: GestureDetector(
                             onTap: () {
+                              showDialog<void>(
+                                  context: context,
+                                  builder: (context) => dialog(card));
                             },
                             child: CardView(title: card.name),
                           )))
