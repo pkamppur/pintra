@@ -56,6 +56,7 @@ class SectionView extends StatelessWidget {
 
     final dialog = (Model.Card card) => SimpleDialog(
             titlePadding: EdgeInsets.zero,
+            insetPadding: EdgeInsets.zero,
             title: Container(
                 decoration: BoxDecoration(color: Color(0xFF000000)),
                 child: Column(children: [
@@ -67,7 +68,8 @@ class SectionView extends StatelessWidget {
                   width: min(sizeConfig.screenWidth, 600),
                   child: Container(
                       padding: EdgeInsets.all(20),
-                      child: Column(children: [Text(card.content)]))),
+                      child: Column(
+                          children: [MarkdownBody(data: card.content)]))),
             ]);
 
     return Column(
