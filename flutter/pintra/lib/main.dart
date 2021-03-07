@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch:
             MaterialColor(primaryColor.value, swatchForColor(primaryColor)),
+        fontFamily: 'Avenir',
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page', board: board),
     );
