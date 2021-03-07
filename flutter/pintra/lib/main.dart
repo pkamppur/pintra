@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pintra/Data/BoardGateway.dart';
 import 'package:pintra/Data/BoardModel.dart';
 import 'package:pintra/View/BoardView.dart';
+import 'package:pintra/View/colorUtils.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,6 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final assetBundle = DefaultAssetBundle.of(context);
     final board = loadBoard(assetBundle: assetBundle);
+    final primaryColor = Color(0xFF555555);
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -25,7 +28,8 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch:
+            MaterialColor(primaryColor.value, swatchForColor(primaryColor)),
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page', board: board),
     );
