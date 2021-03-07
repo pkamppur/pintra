@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pintra/Data/BoardModel.dart' as Model;
 import 'package:pintra/View/SizeConfig.dart';
-import 'package:pintra/View/parseColor.dart';
+import 'package:pintra/View/colorUtils.dart';
 
 class BoardView extends StatefulWidget {
   BoardView({Key? key, required this.board}) : super(key: key);
