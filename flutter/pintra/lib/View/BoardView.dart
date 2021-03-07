@@ -29,14 +29,12 @@ class _BoardViewState extends State<BoardView> {
             child: Container(
       decoration: BoxDecoration(color: Color(0xffeeeeee)),
       child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('${board.name}'),
-            ...board.sections.expand((section) => [
-                  SectionView(section: section, sizeConfig: sizeConfig),
-                  SizedBox(height: 30)
-                ])
-          ].toList()),
+        ...board.sections.expand((section) => [
+              SectionView(section: section, sizeConfig: sizeConfig),
+              SizedBox(height: 30)
+            ])
+      ].toList()),
     )));
   }
 }
