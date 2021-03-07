@@ -142,8 +142,9 @@ class SectionNameView extends StatelessWidget {
               color: parseColor(backgroundColor) ?? Color(0x00000000),
               borderRadius: BorderRadius.all(Radius.circular(5))),
           child: Text(title,
-              style:
-                  TextStyle(color: parseColor(textColor) ?? Color(0xFF000000))),
+              style: TextStyle(
+                  fontSize: 18,
+                  color: parseColor(textColor) ?? Color(0xFF000000))),
         ));
   }
 }
@@ -169,7 +170,10 @@ class CardView extends StatelessWidget {
               offset: Offset(0, 1), // changes position of shadow
             ),
           ]),
-      child: Center(child: Text(title)),
+      child: Text(
+        title,
+        style: TextStyle(fontSize: 16),
+      ),
     );
   }
 }
