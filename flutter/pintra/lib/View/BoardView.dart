@@ -56,11 +56,13 @@ class SectionView extends StatelessWidget {
             titlePadding: EdgeInsets.zero,
             insetPadding: EdgeInsets.zero,
             title: Container(
+                constraints: BoxConstraints(minHeight: 80),
                 decoration: BoxDecoration(color: Color(0xFF000000)),
-                child: Column(children: [
-                  Text("${card.name}",
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text("${card.name}",
                       style: TextStyle(color: Color(0xFFFFFFFF))),
-                ])),
+                )),
             children: [
               SizedBox(
                   width: min(sizeConfig.screenWidth, 600),
